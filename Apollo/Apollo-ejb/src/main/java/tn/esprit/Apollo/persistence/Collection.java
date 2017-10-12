@@ -4,29 +4,25 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
 
+import tn.esprit.Apollo.Facade.EntityBone;
+
 /**
  * Entity implementation class for Entity: Collection
  *
  */
 @Entity
 
-public class Collection implements Serializable {
+public class Collection extends EntityBone {
 
 	   
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	@Transient
 	private static final long serialVersionUID = 1L;
 	private String description;
+	
 	@ManyToMany
 	private List<ArtWork> artworks;
 	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
+
 	public List<ArtWork> getArtworks() {
 		return artworks;
 	}
