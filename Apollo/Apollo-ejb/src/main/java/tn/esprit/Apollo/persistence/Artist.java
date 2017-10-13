@@ -16,9 +16,9 @@ import javax.persistence.*;
 public class Artist extends GalleryOwner implements Serializable {
 	@OneToMany(mappedBy="artist")
 	private List<Follow> followers;
-    @OneToMany
+    @OneToMany(mappedBy="artist")
     private List<ArtWork> artworks;
-    @OneToMany
+    @OneToMany(mappedBy="artist")
 	private List<ShowRoom> showrooms; 
     private ArtistType type;
     

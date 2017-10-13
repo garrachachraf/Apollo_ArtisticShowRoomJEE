@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Entity implementation class for Entity: ShowRoom
  *
@@ -14,22 +16,16 @@ import javax.persistence.*;
 
 public class ShowRoom implements Serializable {  
 	@Id
-	private Integer id;
+	private int id;
 	private static final long serialVersionUID = 1L;
     private String title;
     private String description;
-	@OneToMany
+    @JsonIgnore
+	@OneToMany(mappedBy="showroom")
 	List<ArtWork> artWorks;
+    @JsonIgnore
 	@ManyToOne
 	private Artist artist;
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	public List<ArtWork> getArtWorks() {
 		return artWorks;
@@ -63,6 +59,11 @@ public class ShowRoom implements Serializable {
 	}
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	@Override
+	public String toString() {
+		return "ShowRoom [id=" + id + ", title=" + title + ", description=" + description 
+				+ ", artist=" + artist + "]";
 	}   
 
    

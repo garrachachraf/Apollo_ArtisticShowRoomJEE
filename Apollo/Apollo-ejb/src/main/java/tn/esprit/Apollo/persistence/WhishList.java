@@ -16,12 +16,10 @@ import javax.persistence.*;
 
 public class WhishList implements Serializable {
 
-	   
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
+	private int id;
 	private static final long serialVersionUID = 1L;
-	private float value;
 	
 	@OneToMany
     private List<ArtWork> artWorks;
@@ -33,11 +31,6 @@ public class WhishList implements Serializable {
 		this.artWorks = artWorks;
 	}
 
-	
-
-	@Temporal(TemporalType.TIMESTAMP)	
-	private Date updateDate;
-
 	public Integer getId() {
 		return id;
 	}
@@ -45,22 +38,6 @@ public class WhishList implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-	public float getValue() {
-		return value;
-	}
-
-	public void setValue(float value) {
-		this.value = value;
-	}
-
-	public Date getUpdateDate() {
-		return updateDate;
-	}
-
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	} 
 
 
    

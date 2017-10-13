@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import tn.esprit.Apollo.Facade.*;
 /**
  * Entity implementation class for Entity: ArtWork
@@ -20,10 +23,12 @@ public class ArtWork extends EntityBone {
    private String mediaPath;
    @ManyToOne
    private Artist artist;
+   @ManyToOne
+   private ShowRoom showroom;
    @OneToOne(mappedBy="artWork")
    private Media media;
+   @JsonIgnore
    @OneToMany(mappedBy = "artWork")
-   @Transient
    private List<Rating> ratings;
    private float price;
    private ArtWorkCategory category;

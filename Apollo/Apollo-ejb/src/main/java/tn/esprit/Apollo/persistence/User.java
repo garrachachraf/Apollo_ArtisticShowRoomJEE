@@ -13,6 +13,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 // can use @Table here to specify table name
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -39,6 +41,9 @@ public class User implements Serializable{
 	private String zipCode;
 	@OneToMany(mappedBy="user")
     private List<Follow> followings;
+	@OneToMany(mappedBy="user")
+    private List<Notification> notifications;
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Rating> ratings;
 	@OneToOne
