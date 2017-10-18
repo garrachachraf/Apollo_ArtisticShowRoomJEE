@@ -16,12 +16,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ShowRoom implements Serializable {  
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	private static final long serialVersionUID = 1L;
     private String title;
     private String description;
     @JsonIgnore
-	@OneToMany(mappedBy="showroom")
+	@OneToMany
 	List<ArtWork> artWorks;
     @JsonIgnore
 	@ManyToOne

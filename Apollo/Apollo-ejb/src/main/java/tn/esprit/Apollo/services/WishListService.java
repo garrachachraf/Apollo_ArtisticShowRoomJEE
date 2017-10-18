@@ -23,6 +23,7 @@ public class WishListService implements WishListServiceLocal, WishListServiceRem
 		ArrayList<ArtWork> artworks = (ArrayList<ArtWork>) wishList.getArtWorks();
 		artworks.add(artwork);
 		wishList.setArtWorks(artworks);
+		em.merge(wishList);
 	}
 
 	@Override
@@ -32,7 +33,7 @@ public class WishListService implements WishListServiceLocal, WishListServiceRem
 		ArrayList<ArtWork> artworks = (ArrayList<ArtWork>) wishList.getArtWorks();
 		artworks.remove(artwork);
 		wishList.setArtWorks(artworks);
-		
+		em.merge(artworks);
 	}
 
 	@Override

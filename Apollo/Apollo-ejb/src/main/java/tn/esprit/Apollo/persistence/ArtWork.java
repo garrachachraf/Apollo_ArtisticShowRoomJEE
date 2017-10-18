@@ -9,6 +9,9 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+
 import tn.esprit.Apollo.Facade.*;
 /**
  * Entity implementation class for Entity: ArtWork
@@ -21,17 +24,19 @@ public class ArtWork extends EntityBone {
    @Temporal(TemporalType.TIMESTAMP)
    private Date releaseDate,uploadDate;
    private String mediaPath;
-   @ManyToOne
+   @ManyToOne(fetch=FetchType.EAGER)
    private Artist artist;
-   @ManyToOne
-   private ShowRoom showroom;
-   @OneToOne(mappedBy="artWork")
+
+   @OneToOne(mappedBy="artWork",cascade=CascadeType.ALL)
    private Media media;
-   @JsonIgnore
-   @OneToMany(mappedBy = "artWork")
+   @OneToMany(mappedBy = "artWork",fetch=FetchType.EAGER,cascade=CascadeType.PERSIST )
+   @JsonManagedReference
    private List<Rating> ratings;
    private float price;
    private ArtWorkCategory category;
+   
+  
+	
 
 public String getMediaPath() {
 	return mediaPath;

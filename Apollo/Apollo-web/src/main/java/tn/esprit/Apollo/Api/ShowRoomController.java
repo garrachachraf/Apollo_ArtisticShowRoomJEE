@@ -5,6 +5,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -13,7 +14,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import tn.esprit.Apollo.persistence.ShowRoom;
-import tn.esprit.Apollo.services.ShowRoomService;
 import tn.esprit.Apollo.services.ShowRoomServiceLocal;
 
 @Path(value="showroom")
@@ -26,21 +26,30 @@ public class ShowRoomController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response findOne(@PathParam("id") int id){
 		ShowRoom showroom = showroomService.findOne(id);
-		return Response.status(Status.OK).entity(showroom).build();
+		if(showroom != null) {
+			return Response.status(Status.OK).entity(showroom).build();
+		}
+		else {
+			return Response.status(Status.NO_CONTENT).build();
+		}
 	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response findAll(){
-		for (ShowRoom s : showroomService.findAll()) {
-			System.out.println(s);
-		}
-		return Response.ok(showroomService.findAll()).build();
+		return Response.status(Status.OK).entity(showroomService.findAll()).build();
 	}
 	
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response createShowroom(ShowRoom showroom) {
+		showroomService.createShowRoom(showroom);
+		return Response.status(Status.CREATED).build();
+	}
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createShowroom(ShowRoom showroom) {;
+	public Response updateShowroom(ShowRoom showroom) {
+		showroomService.updateShowRoom(showroom);
 		return Response.status(Status.OK).build();
 	}
 	
