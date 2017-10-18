@@ -17,6 +17,7 @@ import javax.persistence.*;
 public class Artist extends GalleryOwner implements Serializable {
 	@OneToMany(mappedBy="artist",fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )
 	private List<Follow> followers;
+
     @OneToMany(mappedBy="artist",fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )
     private List<ArtWork> artworks;
     @OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )

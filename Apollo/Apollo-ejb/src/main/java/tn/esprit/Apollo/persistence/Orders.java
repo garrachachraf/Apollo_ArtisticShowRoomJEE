@@ -12,7 +12,9 @@ import javax.persistence.*;
  *
  */
 @Entity
-public class Order implements Serializable {
+
+
+public class Orders implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer Id;

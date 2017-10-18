@@ -8,7 +8,9 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 import tn.esprit.Apollo.Facade.*;
 /**
@@ -24,6 +26,7 @@ public class ArtWork extends EntityBone {
    private String mediaPath;
    @ManyToOne(fetch=FetchType.EAGER)
    private Artist artist;
+
    @OneToOne(mappedBy="artWork",cascade=CascadeType.ALL)
    private Media media;
    @OneToMany(mappedBy = "artWork",fetch=FetchType.EAGER,cascade=CascadeType.PERSIST )

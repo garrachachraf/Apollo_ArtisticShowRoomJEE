@@ -23,8 +23,7 @@ public class Rating implements Serializable {
 	@JoinColumn(name="idArt",referencedColumnName="id",insertable=false,updatable=false)
 	@JsonBackReference
     private ArtWork artWork;
-	@Transient
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="idUser",referencedColumnName="id",insertable=false,updatable=false)
 	@JsonBackReference
 	private User user;

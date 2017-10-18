@@ -17,7 +17,11 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+
 import tn.esprit.Apollo.Facade.EntityBone;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 // can use @Table here to specify table name
 @Entity
@@ -42,7 +46,11 @@ public class User  extends EntityBone{
 	private String zipCode;
 	@OneToMany(mappedBy="user",cascade=CascadeType.PERSIST )
     private List<Follow> followings;
-	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )
+
+	@OneToMany(mappedBy="user")
+    private List<Notification> notifications;
+	@JsonIgnore
+	@OneToMany(mappedBy="user")
 	private List<Rating> ratings;
 	@OneToOne
 	private WhishList whishList;
