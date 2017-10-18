@@ -6,41 +6,26 @@ import java.util.Date;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 /**
  * Entity implementation class for Entity: Ticket
  *
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
+
 public class Ticket implements Serializable {
 
 	   
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private static final long serialVersionUID = 1L;
-//    private Date ticketDate;
+    private Date ticketDate;
     private String title;
     private String description;
     private Float price;
     private Date orderDate;
-//    @JsonIgnore
-//	@JsonIdentityInfo
-//    @JsonManagedReference(value="event")
-//    @ManyToOne(fetch=FetchType.EAGER)
-//   @JoinColumn(name="forumAnswerId",referencedColumnName="id",insertable=true,updatable=true,nullable=true)
-//    @JsonManagedReference
-//    @JsonBackReference 
-//    @JoinColumn(name="event_id",referencedColumnName="id")
     @ManyToOne
-    @JsonBackReference 
     private Event event;
-//    @JsonBackReference 
+     
 	public Event getEvent() {
 		return event;
 	}
@@ -56,12 +41,12 @@ public class Ticket implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-//	public Date getTicketDate() {
-//		return ticketDate;
-//	}
-//	public void setTicketDate(Date ticketDate) {
-//		this.ticketDate = ticketDate;
-//	}
+	public Date getTicketDate() {
+		return ticketDate;
+	}
+	public void setTicketDate(Date ticketDate) {
+		this.ticketDate = ticketDate;
+	}
 	public String getTitle() {
 		return title;
 	}
