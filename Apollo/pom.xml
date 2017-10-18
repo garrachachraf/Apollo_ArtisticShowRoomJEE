@@ -85,5 +85,6 @@
     <module>Apollo-ejb</module>
     <module>Apollo-web</module>
     <module>Apollo-ear</module>
+    <module>Apollo-client</module>
   </modules>
 </project>
