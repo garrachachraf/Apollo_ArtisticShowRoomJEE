@@ -12,7 +12,6 @@ import javax.persistence.*;
  *
  */
 @Entity
-
 public class Order implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

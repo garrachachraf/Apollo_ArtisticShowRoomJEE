@@ -13,26 +13,22 @@ import javax.persistence.*;
  */
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue("Artist")
 public class Artist extends GalleryOwner implements Serializable {
-	@OneToMany(mappedBy="artist")
+	@OneToMany(mappedBy="artist",fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )
 	private List<Follow> followers;
-    @OneToMany
+    @OneToMany(mappedBy="artist",fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )
     private List<ArtWork> artworks;
-    @OneToMany
+    @OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )
 	private List<ShowRoom> showrooms; 
     private ArtistType type;
-    
-    
-    
-    
-    
     public List<ShowRoom> getShowrooms() {
 		return showrooms;
 	}
 	public void setShowrooms(List<ShowRoom> showrooms) {
 		this.showrooms = showrooms;
 	}
-
+@Transient
 	private static final long serialVersionUID = 1L;
 
 	public Artist() {

@@ -86,4 +86,11 @@
     <module>Apollo-web</module>
     <module>Apollo-ear</module>
   </modules>
+  <dependencies>
+  	<dependency>
+  		<groupId>io.jsonwebtoken</groupId>
+  		<artifactId>jjwt</artifactId>
+  		<version>0.6.0</version>
+  	</dependency>
+  </dependencies>
 </project>
