@@ -22,7 +22,7 @@ import tn.esprit.Authentificateur.JWTTokenNeeded;
 
 @Path(value = "ArtWork")
 @Stateless
-@LocalBean
+
 public class ArtWorkRest {
 	@EJB
 	private ArtWorkServiceRemote ARTWORK;

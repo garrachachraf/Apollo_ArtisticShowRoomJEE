@@ -3,10 +3,13 @@ package tn.esprit.Apollo.persistence;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Notification {
@@ -16,6 +19,7 @@ public class Notification {
 	
 	private Date date;
 	@ManyToOne
+	@JsonIgnore
 	private User user;
 	private boolean seen;
 	private String link;

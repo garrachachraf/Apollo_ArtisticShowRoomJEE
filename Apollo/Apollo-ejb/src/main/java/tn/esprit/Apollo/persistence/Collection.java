@@ -21,7 +21,7 @@ public class Collection extends EntityBone {
 	private static final long serialVersionUID = 1L;
 	private String description;
     @JsonManagedReference
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany
 	private List<ArtWork> artworks;
 	
 
