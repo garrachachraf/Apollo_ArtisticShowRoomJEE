@@ -48,11 +48,11 @@ public class UserEnpoint {
 	public Response authenticateUser(@FormParam("login") String login, @FormParam("password") String password) {
 		try {
 
-			// Authenticate the user using the credentials provided
+			 //Authenticate the user using the credentials provided
 			authenticate(login, password);
-			// Issue a token for the user
+			 //Issue a token for the user
 			String token = issueToken(login);
-			// Return the token on the response
+			 //Return the token on the response
 			return Response.ok().header(AUTHORIZATION, "Bearer " + token).build();
 
 		} catch (Exception e) {
@@ -73,12 +73,12 @@ public class UserEnpoint {
 		return jwtToken;
 	}
 
-	// algo needed for token generation
+	 //algo needed for token generation
 	private Date toDate(LocalDateTime localDateTime) {
 		return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
 	}
 
-	// just validating the password and login
+	 //just validating the password and login
 	private void authenticate(String login, String password) throws Exception {
 		if (User.findBy(login, password) == null)
 			throw new SecurityException("Invalid user/password");

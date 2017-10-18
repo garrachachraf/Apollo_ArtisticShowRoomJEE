@@ -9,6 +9,10 @@ import javax.persistence.PersistenceContext;
 
 import tn.esprit.Apollo.persistence.User;
 
+
+
+
+
 @Stateless
 @LocalBean
 public class UserService implements UserServiceLocal , UserServiceRemote {

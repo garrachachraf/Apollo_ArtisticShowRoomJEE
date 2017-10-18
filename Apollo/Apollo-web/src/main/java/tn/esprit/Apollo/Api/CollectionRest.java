@@ -18,7 +18,7 @@ import tn.esprit.Apollo.services.CollectionServiceRemote;
 
 @Path(value = "Collection")
 @Stateless
-@LocalBean
+
 public class CollectionRest {
 	@EJB
 	private CollectionServiceRemote Collection;
