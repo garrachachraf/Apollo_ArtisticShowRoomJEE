@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Gallery implements Serializable {
 	@Id
@@ -19,7 +21,8 @@ public class Gallery implements Serializable {
 	private String description;
 	@ManyToOne
     private GalleryOwner galleryOwner;
-	@OneToMany(mappedBy="gallery")
+	@JsonManagedReference
+    @OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE }, orphanRemoval = true)
 	private List<Event> events;
 	@OneToMany(mappedBy="gallery")
 	private List<Media>media;
