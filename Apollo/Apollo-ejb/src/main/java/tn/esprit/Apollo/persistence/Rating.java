@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 public class Rating implements Serializable {
     @EmbeddedId
+
 	private RatingPk ratingPk;   
 	@Transient
 	private static final long serialVersionUID = 1L;
@@ -27,9 +28,6 @@ public class Rating implements Serializable {
 	@JoinColumn(name="idUser",referencedColumnName="id",insertable=false,updatable=false)
 	@JsonBackReference
 	private User user;
-	
-	
-	
 	
 	public ArtWork getArtWork() {
 		return artWork;
@@ -45,7 +43,7 @@ public class Rating implements Serializable {
 	}
 
 	private Date RatingDate;
-    private int RatingValue;
+    private float RatingValue;
     
     
 	public Date getRatingDate() {
@@ -54,15 +52,23 @@ public class Rating implements Serializable {
 	public void setRatingDate(Date ratingDate) {
 		RatingDate = ratingDate;
 	}
-	public int getRatingValue() {
+	public float getRatingValue() {
 		return RatingValue;
 	}
-	public void setRatingValue(int ratingValue) {
-		RatingValue = ratingValue;
+	public void setRatingValue(float value) {
+		RatingValue = value;
 	}
 	public Rating() {
 		super();
 	}   
+ 
+	
+	public RatingPk getRatingPk() {
+		return ratingPk;
+	}
+	public void setRatingPk(RatingPk ratingPk) {
+		this.ratingPk = ratingPk;
+	}
 
    
 }
