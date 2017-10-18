@@ -6,106 +6,127 @@ import javax.persistence.*;
 
 @Entity
 public class Gallery implements Serializable {
+
+
+	 private static final long serialVersionUID = 1L;
+	 
+	 private Integer id;	
+	 private String name;
+	 private Integer maxCapacity ;
+	 private Marker location;
+     private Pricing pricing ;
+	 private Double surface;
+	 private String description;
+     private GalleryOwner galleryOwner;
+     private List<Event> events;	
+	 private List<Media>album;
+     private List<Schedule> calendar ;
+	 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
-	private static final long serialVersionUID = 1L;
-	private String street;
-	private String city;
-	private String state;
-	private String country;
-	private String zip_code;
-	private float surface;
-	private String description;
-	@ManyToOne
-    private GalleryOwner galleryOwner;
-	@OneToMany(mappedBy="gallery")
-	private List<Event> events;
-	@OneToMany(mappedBy="gallery")
-	private List<Media>media;
-	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-
-
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
 
-	public String getStreet() {
-		return street;
+	
+	public Integer getMaxCapacity() {
+		return maxCapacity;
+	}
+	public void setMaxCapacity(Integer maxCapacity) {
+		this.maxCapacity = maxCapacity;
+	}
+	
+	
+	
+
+	@Embedded 
+	public Marker getLocation() {
+		return location;
+	}
+	public void setLocation(Marker location) {
+		this.location = location;
 	}
 
 
-	public void setStreet(String street) {
-		this.street = street;
+
+	@Embedded 
+	public Pricing getPricing() {
+		return pricing;
+	}
+	public void setPricing(Pricing pricing) {
+		this.pricing = pricing;
 	}
 
 
-	public String getCity() {
-		return city;
-	}
 
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-
-	public String getState() {
-		return state;
-	}
-
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-
-	public String getCountry() {
-		return country;
-	}
-
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
-
-	public String getZip_code() {
-		return zip_code;
-	}
-
-
-	public void setZip_code(String zip_code) {
-		this.zip_code = zip_code;
-	}
-
-
-	public float getSurface() {
+	public Double getSurface() {
 		return surface;
 	}
-
-
-	public void setSurface(float surface) {
-		this.surface = surface;
+	public void setSurface(double d) {
+		this.surface = d;
 	}
+
 
 
 	public String getDescription() {
 		return description;
 	}
-
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
 
+	@ManyToOne
+	public GalleryOwner getGalleryOwner() {
+		return galleryOwner;
+	}
+	public void setGalleryOwner(GalleryOwner galleryOwner) {
+		this.galleryOwner = galleryOwner;
+	}
+
+
+	@OneToMany(mappedBy="gallery")
+	public List<Event> getEvents() {
+		return events;
+	}
+	public void setEvents(List<Event> events) {
+		this.events = events;
+	}
+
+
+	@OneToMany(mappedBy="gallery")
+	public List<Media> getAlbum() {
+		return album;
+	}
+	public void setAlbum(List<Media> album) {
+		this.album = album;
+	}
+
+
+	
+	@OneToMany(fetch=FetchType.EAGER)
+	public List<Schedule> getCalendar() {
+		return calendar;
+	}
+	public void setCalendar(List<Schedule> calendar) {
+		this.calendar = calendar;
+	}   
+
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
 	public Gallery() {
 		super();
-	}   
-   
+	}
+	
 }

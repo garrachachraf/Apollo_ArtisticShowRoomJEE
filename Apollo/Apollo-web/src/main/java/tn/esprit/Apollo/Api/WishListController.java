@@ -12,12 +12,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import tn.esprit.Apollo.services.WishListServiceLocal;
+import tn.esprit.Apollo.services.WishListService;
 
 @Path(value="wishlist")
 public class WishListController {
 	@EJB
-	WishListServiceLocal wishListService;
+	WishListService wishListService;
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

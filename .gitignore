@@ -7,7 +7,13 @@ tmp/
 node_modules/
 jaxws/jaxws-client/src/main/
 */target/**
- 
+Apollo/Apollo-ear/target
+Apollo/Apollo-ejb/target
+Apollo/Apollo-web/target
+Apollo/Apollo-web/.settings
+Apollo/Apollo-ejb/.settings
+Apollo/Apollo-ear/.settings
+Apollo/.settings
 # OS Files #
 .DS_Store
  
