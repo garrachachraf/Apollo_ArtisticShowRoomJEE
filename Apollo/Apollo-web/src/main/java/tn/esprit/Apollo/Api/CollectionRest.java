@@ -25,7 +25,7 @@ public class CollectionRest {
 	 @GET
 	    @Path(value="find/{id}")
 	    @Produces(MediaType.APPLICATION_JSON)
-	    public Response find(@PathParam("id") String id){
+	    public Response find(@PathParam("id") String id) throws Exception{
 	    	if	(Collection.read(Integer.valueOf(id))==null){
 	    		return Response.status(Response.Status.NOT_FOUND).build();}
 				return Response.ok(Collection.read(Integer.valueOf(id))).build() ;				
