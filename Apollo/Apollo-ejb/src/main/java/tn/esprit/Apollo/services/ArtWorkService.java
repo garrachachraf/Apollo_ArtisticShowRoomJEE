@@ -25,7 +25,4 @@ public class ArtWorkService extends AbstractFacade<ArtWork> implements ArtWorkSe
 		super(ArtWork.class);
 		// TODO Auto-generated constructor stub
 	}
-
-	
-
 }
