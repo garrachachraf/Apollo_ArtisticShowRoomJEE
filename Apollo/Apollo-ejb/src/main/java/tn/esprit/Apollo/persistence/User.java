@@ -46,7 +46,6 @@ public class User  extends EntityBone{
 	private String zipCode;
 	@OneToMany(mappedBy="user",cascade=CascadeType.PERSIST )
     private List<Follow> followings;
-
 	@OneToMany(mappedBy="user")
     private List<Notification> notifications;
 	@JsonIgnore

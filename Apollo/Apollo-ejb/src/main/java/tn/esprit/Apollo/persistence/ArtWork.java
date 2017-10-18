@@ -24,12 +24,12 @@ public class ArtWork extends EntityBone {
    @Temporal(TemporalType.TIMESTAMP)
    private Date releaseDate,uploadDate;
    private String mediaPath;
-   @ManyToOne(fetch=FetchType.EAGER)
+   @ManyToOne
    private Artist artist;
 
    @OneToOne(mappedBy="artWork",cascade=CascadeType.ALL)
    private Media media;
-   @OneToMany(mappedBy = "artWork",fetch=FetchType.EAGER,cascade=CascadeType.PERSIST )
+   @OneToMany(mappedBy = "artWork",cascade=CascadeType.PERSIST )
    @JsonManagedReference
    private List<Rating> ratings;
    private float price;
