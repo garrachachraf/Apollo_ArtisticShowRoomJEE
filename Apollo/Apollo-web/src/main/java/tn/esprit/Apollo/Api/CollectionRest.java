@@ -21,61 +21,6 @@ import tn.esprit.Apollo.services.CollectionServiceRemote;
 
 public class CollectionRest {
 	@EJB
-<<<<<<< HEAD
-	private CollectionService Collection; 
-	//recherche par id
-	 @GET
-	    @Path(value="find/{id}")
-	    @Produces(MediaType.APPLICATION_JSON)
-	    public Response find(@PathParam("id") String id) throws Exception{
-	    	if	(Collection.read(Integer.valueOf(id))==null){
-	    		return Response.status(Response.Status.NOT_FOUND).build();}
-				return Response.ok(Collection.read(Integer.valueOf(id))).build() ;				
-	    }
-	    @GET
-	    @Path(value="add/{id}")
-	    @Produces(MediaType.APPLICATION_JSON)
-	    public Response create(@PathParam("id") int id){
-	     Collection newArtWork = new Collection();
-	     
-	       
-	    	
-	    	System.out.println(newArtWork.toString());
-	    	if(Collection.create(newArtWork)==null){
-		        return Response.status(Response.Status.NOT_FOUND).build();}
-		    	//return Response.status(Response.Status.OK).build();
-		    	return Response.ok().build();
-	    	
-	    }
-	    @GET
-	    @Path(value="remove/{id}")
-	    @Produces(MediaType.APPLICATION_JSON)
-	    public Response remove(@PathParam("id") int id){
-	     Collection newArtWork = new Collection();
-	       newArtWork.setId(id);
-	    	System.out.println(newArtWork.toString());
-	    	if(Collection.delete(newArtWork)==false){
-		        return Response.status(Response.Status.NOT_FOUND).build();}
-		    	//return Response.status(Response.Status.OK).build();
-		    	return Response.ok().build();
-	    	
-	    }
-	    @GET
-	    @Path(value="update/{id}")
-	    @Produces(MediaType.APPLICATION_JSON)
-	    public Response update(@PathParam("id") int id){
-	     Collection newArtWork = new Collection();
-	       newArtWork.setId(id);
-	    	System.out.println(newArtWork.toString());
-	    	if(Collection.update(newArtWork)==false){
-		        return Response.status(Response.Status.NOT_FOUND).build();}
-		    	//return Response.status(Response.Status.OK).build();
-		    	return Response.ok().build();
-	    	
-	    }
-	    
-	    
-=======
 	private CollectionServiceRemote Collection;
 
 	// recherche par id
@@ -134,5 +79,4 @@ public class CollectionRest {
 
 	}
 
->>>>>>> 07a9040b2857d7802ba22f85db1a1ed02f82a3a3
 }

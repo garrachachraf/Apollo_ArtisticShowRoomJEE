@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;;
+
 @Entity
 public class Gallery implements Serializable {
 
@@ -18,8 +21,10 @@ public class Gallery implements Serializable {
 	 private Double surface;
 	 private String description;
      private GalleryOwner galleryOwner;
+     
      private List<Event> events;	
-	 private List<Media>album;
+	 
+     private List<Media>album;
      private List<Schedule> calendar ;
 	 
 	@Id
@@ -81,6 +86,7 @@ public class Gallery implements Serializable {
 
 
 	@ManyToOne
+	@JsonBackReference
 	public GalleryOwner getGalleryOwner() {
 		return galleryOwner;
 	}
@@ -89,7 +95,8 @@ public class Gallery implements Serializable {
 	}
 
 
-	@OneToMany(mappedBy="gallery")
+	@JsonManagedReference
+    @OneToMany( cascade = { CascadeType.MERGE }, orphanRemoval = true)
 	public List<Event> getEvents() {
 		return events;
 	}
@@ -99,6 +106,7 @@ public class Gallery implements Serializable {
 
 
 	@OneToMany(mappedBy="gallery")
+	@JsonManagedReference
 	public List<Media> getAlbum() {
 		return album;
 	}
@@ -109,6 +117,7 @@ public class Gallery implements Serializable {
 
 	
 	@OneToMany(fetch=FetchType.EAGER)
+	@JsonManagedReference
 	public List<Schedule> getCalendar() {
 		return calendar;
 	}
