@@ -25,8 +25,6 @@ public class Media implements Serializable {
 	private User user;
 	@OneToOne
 	private ArtWork artWork;
-	@ManyToOne
-	private Gallery gallery;
 	
 	
 	
@@ -61,12 +59,6 @@ public class Media implements Serializable {
 	}
 	public void setArtWork(ArtWork artWork) {
 		this.artWork = artWork;
-	}
-	public Gallery getGallery() {
-		return gallery;
-	}
-	public void setGallery(Gallery gallery) {
-		this.gallery = gallery;
 	}
 	public Media() {
 		super();

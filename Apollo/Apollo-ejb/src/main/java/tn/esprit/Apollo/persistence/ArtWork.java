@@ -30,7 +30,6 @@ public class ArtWork extends EntityBone {
    @OneToOne(mappedBy="artWork",cascade=CascadeType.ALL)
    private Media media;
    @OneToMany(mappedBy = "artWork",cascade=CascadeType.PERSIST )
-   @JsonManagedReference
    private List<Rating> ratings;
    private float price;
    private ArtWorkCategory category;

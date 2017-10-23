@@ -3,9 +3,7 @@ package tn.esprit.Apollo.persistence;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class Pricing {
 	
-	 private Float hourly;
 	 private Float daily;
 	 private Float monthly;
 	 private Float weekly;
@@ -55,8 +53,5 @@ public class Pricing {
 	public void setCleaningFee(Float cleaningFee) {
 		this.cleaningFee = cleaningFee;
 	}
-
-	 
-	 
 
 }

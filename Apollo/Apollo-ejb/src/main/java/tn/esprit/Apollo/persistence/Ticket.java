@@ -38,7 +38,6 @@ public class Ticket implements Serializable {
 //    @JsonBackReference 
 //    @JoinColumn(name="event_id",referencedColumnName="id")
     @ManyToOne
-    @JsonBackReference 
     private Event event;
 //    @JsonBackReference 
 	public Event getEvent() {
