@@ -10,6 +10,7 @@ import javax.persistence.*;
  */
 @Embeddable
 
+public class Marker {
 
 	
 	private String address;
@@ -38,4 +39,5 @@ import javax.persistence.*;
 	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
+   
 }

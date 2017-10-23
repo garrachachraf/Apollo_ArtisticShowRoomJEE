@@ -3,10 +3,12 @@ package tn.esprit.Apollo.persistence;
 import java.io.Serializable;
 import java.lang.Integer;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -30,6 +32,8 @@ public class Event implements Serializable {
 	private Integer capacity;
 	private EventStatus status;
 	private String imagePath;
+//	@JoinColumn(name = "galleryId", referencedColumnName = "id")
+	@JsonBackReference
 	@ManyToOne
 	private Gallery gallery;
 //	@OneToMany(fetch=FetchType.EAGER)
@@ -39,12 +43,17 @@ public class Event implements Serializable {
 //	@Cascade(org.hibernate.annotations.CascadeType.DELETE)
 //	@JsonBackReference(value="tickets")
 //	@OneToMany(mappedBy="event", fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
+	@JsonManagedReference
+    @OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE }, orphanRemoval = true)
+	private List<Ticket> tickets;
 	
 
+	public List<Ticket> getTickets() {
 		return tickets;
 	}
 
 
+	public void setTickets(List<Ticket> tickets) {
 		this.tickets = tickets;
 	}
 
@@ -148,3 +157,4 @@ public class Event implements Serializable {
 	}   
 	
    
+}

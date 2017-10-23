@@ -3,6 +3,7 @@ package tn.esprit.Apollo.persistence;
 import java.io.Serializable;
 import java.lang.Integer;
 import java.lang.String;
+import java.util.Calendar;
 import javax.persistence.*;
 
 /**
@@ -16,6 +17,8 @@ public class Schedule implements Serializable {
 
 	private Integer id;
 	private String title;
+	private Calendar startDate;
+	private Calendar endDate;
 	private Cause type ;
 	
 	private static final long serialVersionUID = 1L;
@@ -24,6 +27,8 @@ public class Schedule implements Serializable {
 		super();
 	}  
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	public Integer getId() {
 		return this.id;
 	}
@@ -41,19 +46,26 @@ public class Schedule implements Serializable {
 	}
 	
 	
+	@Temporal(TemporalType.TIMESTAMP )
+	public Calendar getStartDate() {
 		return this.startDate;
 	}
+	public void setStartDate(Calendar startDate) {
 		this.startDate = startDate;
 	}   
 
 	
 
+	@Temporal(TemporalType.TIMESTAMP )
+	public Calendar getEndDate() {
 		return this.endDate;
 	}
+	public void setEndDate(Calendar endDate) {
 		this.endDate = endDate;
 	}
 
 	
+	@Enumerated(EnumType.STRING)
 	public Cause getType() {
 		return type;
 	}
@@ -75,4 +87,5 @@ public class Schedule implements Serializable {
         		sch.startDate.equals(startDate)  &&
         				sch.endDate.equals(endDate);
 	}
+	
 }
