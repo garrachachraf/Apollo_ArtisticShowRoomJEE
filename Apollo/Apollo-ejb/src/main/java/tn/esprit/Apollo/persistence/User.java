@@ -16,6 +16,7 @@ import tn.esprit.Apollo.Facade.EntityBone;
 
 // can use @Table here to specify table name
 @Entity
+@DiscriminatorValue("user")
 @DiscriminatorColumn(name = "role")
 public class User extends EntityBone {
 
@@ -96,7 +97,7 @@ public class User extends EntityBone {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
+	
 	public String getPassword() {
 		return password;
 	}
@@ -160,7 +161,7 @@ public class User extends EntityBone {
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
-
+	@JsonIgnore
 	@Transient
 	public String getDecriminatorValue() {
 		return this.getClass().getAnnotation(DiscriminatorValue.class).value();

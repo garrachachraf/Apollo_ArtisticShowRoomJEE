@@ -11,13 +11,16 @@ import javax.ws.rs.core.Response.Status;
 
 import tn.esprit.Apollo.persistence.User;
 import tn.esprit.Apollo.services.NotificationServiceLocal;
+import tn.esprit.Authentificateur.JWTTokenNeeded;
 
 @Path(value="Notifications")
 public class NotificationAccess {
 	@EJB
 	NotificationServiceLocal NotificationService ;
+	
 	@GET
 	@Path(value="{id}")
+	@JWTTokenNeeded(role="user")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response findAllByOne(@PathParam("id") String id){
 		
@@ -25,6 +28,7 @@ public class NotificationAccess {
 	}
 	
 	@GET
+	@JWTTokenNeeded(role="Admin")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response findAll(){	
 		return Response.status(Status.OK).entity(NotificationService.GetAllNotifs()).build();
