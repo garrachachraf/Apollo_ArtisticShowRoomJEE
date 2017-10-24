@@ -59,7 +59,7 @@ public class FollowController {
 	@Path(value="{artistId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response follow(@PathParam("artistId") int artistId) {
-		User user=null; // getcurrentuser
+		User user = new User(); // getcurrentuser
 		followService.follow(artistId, user.getId());
 		return Response.status(Status.CREATED).build();
 	}

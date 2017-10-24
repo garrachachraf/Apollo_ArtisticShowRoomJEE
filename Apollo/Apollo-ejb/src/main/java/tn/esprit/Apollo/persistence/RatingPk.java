@@ -12,11 +12,8 @@ public class RatingPk implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int idUser;
-	
-	
-	
-    
 	private int idArt;
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -39,6 +36,18 @@ public class RatingPk implements Serializable {
 		if (idUser != other.idUser)
 			return false;
 		return true;
+	}
+	public int getIdUser() {
+		return idUser;
+	}
+	public void setIdUser(int idUser) {
+		this.idUser = idUser;
+	}
+	public int getIdArt() {
+		return idArt;
+	}
+	public void setIdArt(int idArt) {
+		this.idArt = idArt;
 	}
 	
 

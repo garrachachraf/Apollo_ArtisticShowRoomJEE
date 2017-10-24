@@ -5,7 +5,7 @@ import tn.esprit.Apollo.persistence.User;
 
 public interface RatingServiceRemote {
 	
-	float getAverageRating(int artworkId);
+	double getAverageRating(int artworkId);
 
 	void addRating(int artworkId, float ratingValue, User user);
 

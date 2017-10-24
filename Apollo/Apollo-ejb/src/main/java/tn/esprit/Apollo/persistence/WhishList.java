@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 /**
  * Entity implementation class for Entity: WhishList
  *
@@ -21,7 +23,8 @@ public class WhishList implements Serializable {
 	private int id;
 	private static final long serialVersionUID = 1L;
 	
-	@OneToMany
+	@OneToMany(fetch=FetchType.EAGER)
+	@JsonManagedReference(value="wishlistartwork")
     private List<ArtWork> artWorks;
 	public List<ArtWork> getArtWorks() {
 		return artWorks;

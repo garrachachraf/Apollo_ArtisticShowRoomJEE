@@ -12,24 +12,28 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import tn.esprit.Apollo.services.UserService;
 import tn.esprit.Apollo.services.WishListService;
 
 @Path(value="wishlist")
 public class WishListController {
 	@EJB
 	WishListService wishListService;
+	@EJB
+	UserService userService;
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getWishList(){
-		return Response.status(Status.OK).entity(wishListService.getWishList()).build();
+		return Response.status(Status.OK).entity(wishListService.getWishList(userService.FindUserById(1))).build();
 	}
 	
 	
 	@POST
+	@Path(value="{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addItem(int itemId) {
-		wishListService.addItem(itemId);
+	public Response addItem(@PathParam("id")int itemId) {
+		wishListService.addItem(itemId,userService.FindUserById(1));
 		return Response.status(Status.OK).build();
 	}
 	
@@ -37,7 +41,7 @@ public class WishListController {
 	@Path(value="{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteItem(@PathParam("id") int id) {
-		wishListService.deleteItem(id);
+		wishListService.deleteItem(id,userService.FindUserById(1));
 		return Response.status(Status.OK).build();
 	}
 }
