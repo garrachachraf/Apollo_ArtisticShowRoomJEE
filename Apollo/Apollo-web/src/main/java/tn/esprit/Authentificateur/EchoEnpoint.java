@@ -19,10 +19,10 @@ public class EchoEnpoint {
 	    public Response echo(@QueryParam("message") String message) {
 	        return Response.ok().entity(message == null ? "no message" : message).build();
 	    }
-	 
+	 //test the filter by role artist
 	    @GET
 	    @Path("jwt")
-	    @JWTTokenNeeded
+	    @JWTTokenNeeded(role="Artist")
 	    public Response echoWithJWTToken(@QueryParam("message") String message) {
 	        return Response.ok().entity(message == null ? "jwt rick i'm jwt rick" : message).build();
 	    }
