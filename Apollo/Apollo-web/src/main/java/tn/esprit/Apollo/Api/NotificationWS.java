@@ -44,7 +44,7 @@ public class NotificationWS {
 	     allSessions = session.getOpenSessions();
 	     for (Session sess: allSessions){          
 	        try{   
-	        	System.out.println(sess.getUserProperties().isEmpty());
+	        	
 	          sess.getBasicRemote().sendText("Notifs : "+tojson());
 	          
 	          } catch (IOException ioe) {        

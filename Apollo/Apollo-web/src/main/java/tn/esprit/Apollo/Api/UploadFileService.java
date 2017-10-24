@@ -6,28 +6,40 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
+import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+
+import tn.esprit.Apollo.persistence.Media;
+import tn.esprit.Apollo.persistence.MediaType;
+import tn.esprit.Apollo.persistence.User;
+import tn.esprit.Apollo.services.MediaServiceRemote;
 
 
 @Path("/upload")
 public class UploadFileService {
 
 	private final String UPLOADED_FILE_PATH = "/tmp/";
-	
+	@EJB
+	MediaServiceRemote mediaservice ;
 	@POST
 	@Consumes("multipart/form-data")
+	@Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public Response uploadFile(MultipartFormDataInput input) {
 
 		String fileName = "";
-		
+		Media m = new Media();
 		Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
 		List<InputPart> inputParts = uploadForm.get("uploadedFile");
 
@@ -37,30 +49,33 @@ public class UploadFileService {
 
 				MultivaluedMap<String, String> header = inputPart.getHeaders();
 				fileName = getFileName(header);
-				System.out.println(fileName + " test : "+allowedMIMEType(header)+ "  "+ allowedExt(fileName));
+				//System.out.println(fileName + " test : "+allowedMIMEType(header)+ "  "+ allowedExt(fileName));
 				
 					//convert the uploaded file to inputstream
 					InputStream inputStream = inputPart.getBody(InputStream.class,null);
-
+					
 					byte [] bytes = IOUtils.toByteArray(inputStream);
 					if (allowedMIMEType(header) && allowedExt(fileName)){
 					//constructs upload file path
-					fileName = UPLOADED_FILE_PATH + fileName;
-					
+						m = detectType(m, fileName);
+					fileName = UUID.randomUUID().toString()+fileName;
+					m.setPath(fileName);
+					fileName = fileName + UPLOADED_FILE_PATH;
 					writeFile(bytes,fileName);
 					
-					System.out.println("Done");
 				}
 				
 
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
 		}
-
+		
+		
+		mediaservice.AddMediafile(m);
 		return Response.status(200)
-				.entity("uploadFile is called, Uploaded file name : " + fileName).build();
+				.entity(mediaservice.FindByPath(m.getPath())).build();
 
 	}
 
@@ -123,6 +138,19 @@ public class UploadFileService {
 		return false ;
 	}
 	
+	private Media detectType(Media m , String filename){
+		int position = filename.lastIndexOf(".");
+		String ext = filename.substring(position+1);
+		if (ext.equals("mp3")) {
+			m.setType(MediaType.music);
+		} else {
+			m.setType(MediaType.photo);
+		}
+		
+		
+		return m;
+	}
+	
 	//save to somewhere
 	private void writeFile(byte[] content, String filename) throws IOException {
 
@@ -139,6 +167,8 @@ public class UploadFileService {
 		fop.close();
 
 	}
+	
+	
 	
 	
 }

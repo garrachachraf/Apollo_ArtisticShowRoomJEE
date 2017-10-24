@@ -2,7 +2,6 @@ package tn.esprit.Apollo.persistence;
 
 import java.io.Serializable;
 import java.lang.Integer;
-import java.util.Date;
 import java.util.List;
 
 
@@ -25,6 +24,7 @@ public class WhishList implements Serializable {
 	
 	@OneToMany(fetch=FetchType.EAGER)
 	@JsonManagedReference(value="wishlistartwork")
+
     private List<ArtWork> artWorks;
 	public List<ArtWork> getArtWorks() {
 		return artWorks;

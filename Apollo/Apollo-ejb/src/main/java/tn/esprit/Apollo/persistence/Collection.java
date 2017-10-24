@@ -20,11 +20,17 @@ public class Collection extends EntityBone {
 	@Transient
 	private static final long serialVersionUID = 1L;
 	private String description;
+
     @JsonManagedReference
-	@ManyToMany
+	@ManyToMany(cascade=CascadeType.PERSIST)
 	private List<ArtWork> artworks;
 	
 
+	
+	
+	
+	
+	
 	public List<ArtWork> getArtworks() {
 		return artworks;
 	}

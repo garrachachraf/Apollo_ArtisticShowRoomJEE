@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 
 
@@ -18,8 +20,8 @@ import javax.persistence.*;
 public class Artist extends GalleryOwner implements Serializable {
 	@OneToMany(mappedBy="artist",fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )
 	private List<Follow> followers;
-
     @OneToMany(mappedBy="artist",fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )
+    @JsonManagedReference(value="usertoartwork")
     private List<ArtWork> artworks;
     @OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )
 	private List<ShowRoom> showrooms; 
