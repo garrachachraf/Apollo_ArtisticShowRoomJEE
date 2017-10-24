@@ -1,34 +1,44 @@
 package tn.esprit.Apollo.persistence;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
+
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Gallery implements Serializable {
 
 
 	 private static final long serialVersionUID = 1L;
-	 
+	 @Id
+	 @GeneratedValue(strategy=GenerationType.AUTO)
 	 private Integer id;	
 	 private String name;
 	 private Integer maxCapacity ;
+	 @Embedded 
 	 private Marker location;
+	 @Embedded 
      private Pricing pricing ;
 	 private Double surface;
 	 private String description;
+	 @ManyToOne
+	 @JsonBackReference("owner-galleries")
      private GalleryOwner galleryOwner;
-     
-     private List<Event> events;	
 	 
-     private List<Media>album;
-     private List<Schedule> calendar ;
+	 @JsonIgnore
+     @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+     private Set<Event> events;	
 	 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+ 	 @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
+     private Set<Media>album;
+ 	 
+ 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch=FetchType.EAGER)
+     private Set<Schedule> calendar ;
+	 
+ 	
 	public Integer getId() {
 		return id;
 	}
@@ -46,9 +56,6 @@ public class Gallery implements Serializable {
 	}
 	
 	
-	
-
-	@Embedded 
 	public Marker getLocation() {
 		return location;
 	}
@@ -58,7 +65,6 @@ public class Gallery implements Serializable {
 
 
 
-	@Embedded 
 	public Pricing getPricing() {
 		return pricing;
 	}
@@ -66,16 +72,12 @@ public class Gallery implements Serializable {
 		this.pricing = pricing;
 	}
 
-
-
 	public Double getSurface() {
 		return surface;
 	}
 	public void setSurface(double d) {
 		this.surface = d;
 	}
-
-
 
 	public String getDescription() {
 		return description;
@@ -85,8 +87,7 @@ public class Gallery implements Serializable {
 	}
 
 
-	@ManyToOne
-	@JsonBackReference
+
 	public GalleryOwner getGalleryOwner() {
 		return galleryOwner;
 	}
@@ -95,33 +96,29 @@ public class Gallery implements Serializable {
 	}
 
 
-	@JsonManagedReference
-    @OneToMany( cascade = { CascadeType.MERGE }, orphanRemoval = true)
-	public List<Event> getEvents() {
+	public Set<Event> getEvents() {
 		return events;
 	}
-	public void setEvents(List<Event> events) {
+	public void setEvents(Set<Event> events) {
 		this.events = events;
 	}
 
 
-	@OneToMany(mappedBy="gallery")
-	@JsonManagedReference
-	public List<Media> getAlbum() {
+
+	public Set<Media> getAlbum() {
 		return album;
 	}
-	public void setAlbum(List<Media> album) {
+	public void setAlbum(Set<Media> album) {
 		this.album = album;
 	}
 
 
 	
-	@OneToMany(fetch=FetchType.EAGER)
-	@JsonManagedReference
-	public List<Schedule> getCalendar() {
+
+	public Set<Schedule> getCalendar() {
 		return calendar;
 	}
-	public void setCalendar(List<Schedule> calendar) {
+	public void setCalendar(Set<Schedule> calendar) {
 		this.calendar = calendar;
 	}   
 

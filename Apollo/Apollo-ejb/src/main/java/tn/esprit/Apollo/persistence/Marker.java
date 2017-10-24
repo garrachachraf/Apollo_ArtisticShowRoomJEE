@@ -1,5 +1,6 @@
 package tn.esprit.Apollo.persistence;
 
+import java.io.Serializable;
 import java.lang.Float;
 import java.lang.String;
 import javax.persistence.*;
@@ -10,9 +11,13 @@ import javax.persistence.*;
  */
 @Embeddable
 
-public class Marker {
+public class Marker implements Serializable {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String address;
 	private Double longitude;
 	private Double latitude;

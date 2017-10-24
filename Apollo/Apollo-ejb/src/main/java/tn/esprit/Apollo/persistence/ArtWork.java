@@ -26,14 +26,16 @@ public class ArtWork extends EntityBone {
    private String mediaPath;
    @ManyToOne(fetch=FetchType.EAGER)
    private Artist artist;
-
    @OneToOne(mappedBy="artWork",cascade=CascadeType.ALL)
    private Media media;
    @OneToMany(mappedBy = "artWork",cascade=CascadeType.PERSIST )
-   @JsonManagedReference
+   @JsonManagedReference("rating")
    private List<Rating> ratings;
    private float price;
    private ArtWorkCategory category;
+   @JsonIgnore
+   @ManyToMany
+   private List<Collection> collections;
    
   
 	

@@ -14,12 +14,14 @@ public class Renting implements Serializable {
 
 	@EmbeddedId
 	 private RentingPk rentingPk;   
-	 @ManyToOne
-		@JoinColumn(name="galleryId",referencedColumnName="id",insertable=false,updatable=false)
-	    private Gallery gallery ;
-		@ManyToOne
-		@JoinColumn(name="artistId",referencedColumnName="id",insertable=false,updatable=false)
-		private Artist artist;
+    
+	@ManyToOne
+    @JoinColumn(name="galleryId",referencedColumnName="id",insertable=false,updatable=false)
+     private Gallery gallery ;
+	
+    @ManyToOne
+	@JoinColumn(name="artistId",referencedColumnName="id",insertable=false,updatable=false)
+	 private Artist artist;
 	
 	private static final long serialVersionUID = 1L;
 
