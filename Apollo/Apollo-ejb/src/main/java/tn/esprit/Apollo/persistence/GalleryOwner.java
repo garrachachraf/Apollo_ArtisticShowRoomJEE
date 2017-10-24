@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.Null;
 
 
 /**
@@ -16,6 +17,7 @@ import javax.persistence.*;
 public class GalleryOwner extends User implements Serializable {
     @OneToMany(mappedBy="galleryOwner",fetch=FetchType.LAZY,cascade=CascadeType.ALL )
 	private List<Gallery> galleries; 
+    @Column(nullable = true)
 	private int PhoneNumber;
 	public int getPhoneNumber() {
 		return PhoneNumber;

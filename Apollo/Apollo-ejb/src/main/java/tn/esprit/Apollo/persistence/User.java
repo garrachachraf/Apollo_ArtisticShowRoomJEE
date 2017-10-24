@@ -1,37 +1,28 @@
 package tn.esprit.Apollo.persistence;
 
-
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-
-
-import tn.esprit.Apollo.Facade.EntityBone;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import tn.esprit.Apollo.Facade.EntityBone;
 
 // can use @Table here to specify table name
 @Entity
 @DiscriminatorColumn(name = "role")
-public class User  extends EntityBone{
+public class User extends EntityBone {
 
 	/**
 	 * 
 	 */
-
+	@Transient private static final long serialVersionUID = 1L;
 	private String firstname;
 	private String lastname;
 	private String email;
@@ -44,21 +35,19 @@ public class User  extends EntityBone{
 	private String state;
 	private String country;
 	private String zipCode;
-	@OneToMany(mappedBy="user",cascade=CascadeType.PERSIST )
-    private List<Follow> followings;
-
-	@OneToMany(mappedBy="user")
-    private List<Notification> notifications;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+	private List<Follow> followings;
+	@OneToMany(mappedBy = "user")
+	private List<Notification> notifications;
 	@JsonIgnore
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy = "user")
 	private List<Rating> ratings;
 	@OneToOne
 	private WhishList whishList;
 	@OneToOne
 	private Collection collection;
-	@OneToOne(mappedBy="user")
+	@OneToOne(mappedBy = "user")
 	private Media avatar;
-   
 
 	public WhishList getWhishList() {
 		return whishList;
@@ -172,7 +161,9 @@ public class User  extends EntityBone{
 		this.zipCode = zipCode;
 	}
 
-
-
+	@Transient
+	public String getDecriminatorValue() {
+		return this.getClass().getAnnotation(DiscriminatorValue.class).value();
+	}
 
 }

@@ -1,9 +1,11 @@
 package tn.esprit.Apollo.Api;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.ejb.EJB;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
@@ -12,43 +14,21 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import tn.esprit.Apollo.Facade.SearchCriteria;
 import tn.esprit.Apollo.persistence.ArtWork;
 import tn.esprit.Apollo.persistence.ArtWorkCategory;
-import tn.esprit.Apollo.services.ArtWorkServiceRemote;
-import tn.esprit.Authentificateur.JWTTokenNeeded;
+import tn.esprit.Apollo.services.ArtWorkService;
 
 @Path(value = "ArtWork")
 @Stateless
-
 public class ArtWorkRest {
 	@EJB
-	private ArtWorkServiceRemote ARTWORK;
-	/*
-	 * @GET
-	 * 
-	 * @Path(value="test")
-	 * 
-	 * @Produces(MediaType.APPLICATION_JSON) public ArtWork
-	 * postJAXBElement(ArtWork e) { return (ArtWork)
-	 * artworkserviceremote.read(primaryKey); }
-	 */
-
-	/*
-	 * //display test
-	 * 
-	 * @GET
-	 * 
-	 * @Path(value="Display") public String display1(){ try { String
-	 * a=artworkserviceremote.display(); return ""+a; } catch (Exception e) {
-	 * System.out.println(e); } return "wrong in display";
-	 * 
-	 * }
-	 */
-
-	// recherche par id
+	private ArtWorkService ARTWORK;
+	// recherche par id ( very simple one )
 	@GET
 	@Path(value = "find/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -58,18 +38,45 @@ public class ArtWorkRest {
 		}
 		return Response.ok(ARTWORK.read(id)).build();
 	}
+	// recherche par paginateur(10 per page)
+	@GET
+	@Path(value = "findall/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response findall(@PathParam("id") int id) {
+		if (ARTWORK.paginateur(id) == null) {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		return Response.ok(ARTWORK.paginateur(id)).build();
+	}
+	// advance search(search per criteria of what the user really need be proud
+	// with this maissen)
+	@GET
+	@Path(value = "search")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response findAll(@QueryParam(value = "search") String search) {
+		List<SearchCriteria> params = new ArrayList<SearchCriteria>();
+		if (search != null) {
+			Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
+			Matcher matcher = pattern.matcher(search + ",");
+			while (matcher.find()) {
+				params.add(new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3)));
+			}
+		}
+		return Response.ok(ARTWORK.searchArtWork(params)).build();
+	}
+	// add an artwork
 	@POST
 	@Path(value = "add")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(@FormParam("title") String title, @FormParam("descreption") String descreption,
-			@FormParam("price") float price, @FormParam("category") ArtWorkCategory category) {
+	public Response create(ArtWork art) {
 		ArtWork newArtWork = new ArtWork();
-		newArtWork.setTitle(title);
-		newArtWork.setDescreption(descreption);
-		newArtWork.setCategory(category);
-		newArtWork.setPrice(price);
-		newArtWork.setUploadDate(new Date());
-		newArtWork.setReleaseDate(new Date());
+		newArtWork.setTitle(art.getTitle());
+		newArtWork.setDescreption(art.getDescreption());
+		newArtWork.setCategory(art.getCategory());
+		newArtWork.setPrice(art.getPrice());
+		newArtWork.setUploadDate(art.getUploadDate());
+		newArtWork.setReleaseDate(art.getReleaseDate());
+		newArtWork.setArtist(art.getArtist());
 		System.out.println(newArtWork.toString());
 		if (ARTWORK.create(newArtWork) == null) {
 			return Response.status(Response.Status.NOT_FOUND).build();
@@ -78,7 +85,7 @@ public class ArtWorkRest {
 		return Response.ok().build();
 
 	}
-
+	// delete art work
 	@DELETE
 	@Path(value = "remove/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -93,7 +100,6 @@ public class ArtWorkRest {
 		return Response.ok().build();
 
 	}
-
 	@POST
 	@Path(value = "update")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -112,45 +118,5 @@ public class ArtWorkRest {
 		}
 		// return Response.status(Response.Status.OK).build();
 		return Response.ok().build();
-
 	}
-
-	/*
-	 * //add or modify
-	 * 
-	 * @GET
-	 * 
-	 * @Path("addOrModify/{id}")
-	 * 
-	 * @Produces(MediaType.APPLICATION_JSON) public Response
-	 * addArtWork(@PathParam("id") int id){ ArtWork a =new ArtWork();
-	 * a.setId(id); a.setPrice(50);
-	 * if(artworkserviceremote.CreateOrUpdate(a)==false){ return
-	 * Response.status(Response.Status.NOT_FOUND).build();} //return
-	 * Response.status(Response.Status.OK).build(); return
-	 * Response.ok().build(); }
-	 * 
-	 * //remove
-	 * 
-	 * @GET
-	 * 
-	 * @Path("remove/{id}")
-	 * 
-	 * @Produces(MediaType.APPLICATION_JSON) public Response
-	 * removeArtWork(@PathParam("id")int id){
-	 * artworkserviceremote.remove(artworkserviceremote.find(id)); return
-	 * Response.ok().build();
-	 * 
-	 * 
-	 * }
-	 * 
-	 * 
-	 * 
-	 * /*
-	 * 
-	 * @POST public void addArtWork(List<ArtWork> artworks){
-	 * artworkserviceremote.addArtWork(artworks); }
-	 * 
-	 */
-
 }
