@@ -22,11 +22,11 @@ public class Rating implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@ManyToOne
 	@JoinColumn(name="idArt",referencedColumnName="id",insertable=false,updatable=false)
-	@JsonBackReference
+	@JsonBackReference("artwork-ratings")
     private ArtWork artWork;
 	@ManyToOne
 	@JoinColumn(name="idUser",referencedColumnName="id",insertable=false,updatable=false)
-	@JsonBackReference
+	@JsonBackReference("user-ratings")
 	private User user;
 	
 	public ArtWork getArtWork() {

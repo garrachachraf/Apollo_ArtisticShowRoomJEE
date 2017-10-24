@@ -1,5 +1,8 @@
 package tn.esprit.Apollo.services;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -22,6 +25,7 @@ public class UserService implements UserServiceLocal , UserServiceRemote {
 	@Override
 	public User CreateUser(User u) {
 		// TODO Auto-generated method stub
+		u.setPassword(MD5It(u.getPassword()));
 		em.persist(u);
 		em.flush();
 		return u;
@@ -75,6 +79,23 @@ public class UserService implements UserServiceLocal , UserServiceRemote {
 			return null;	
 		}
 		return lu.get(0);
+	}
+	
+	public String MD5It(String pass){
+		String generatedPassword = "";
+		try {
+            // Create MessageDigest instance for MD5
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            //Add password bytes to digest
+            
+            md.update(pass.getBytes(),0,pass.length());
+            generatedPassword = new BigInteger(1,md.digest()).toString(16) ;
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+        }
+		return generatedPassword ;
 	}
 
 }
