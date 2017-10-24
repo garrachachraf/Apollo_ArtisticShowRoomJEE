@@ -1,11 +1,17 @@
 package tn.esprit.Apollo.persistence;
 
+import java.io.Serializable;
+
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class Pricing {
+public class Pricing implements Serializable {
 	
-	 private Float hourly;
+	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Float hourly;
 	 private Float daily;
 	 private Float monthly;
 	 private Float weekly;

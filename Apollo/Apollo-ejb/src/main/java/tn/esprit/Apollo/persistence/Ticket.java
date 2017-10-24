@@ -7,15 +7,17 @@ import java.util.Date;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  * Entity implementation class for Entity: Ticket
  *
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "id")
 @Entity
 public class Ticket implements Serializable {
 
@@ -37,8 +39,8 @@ public class Ticket implements Serializable {
 //    @JsonManagedReference
 //    @JsonBackReference 
 //    @JoinColumn(name="event_id",referencedColumnName="id")
+//    @JsonBackReference("evtik")
     @ManyToOne
-    @JsonBackReference 
     private Event event;
 //    @JsonBackReference 
 	public Event getEvent() {

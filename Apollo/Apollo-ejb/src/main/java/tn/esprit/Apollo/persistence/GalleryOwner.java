@@ -1,10 +1,12 @@
 package tn.esprit.Apollo.persistence;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.Null;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 /**
@@ -14,13 +16,23 @@ import javax.validation.constraints.Null;
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue("GalleryOwner")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "id")
 public class GalleryOwner extends User implements Serializable {
+	@JsonManagedReference("owner-galleries")
     @OneToMany(mappedBy="galleryOwner",fetch=FetchType.LAZY,cascade=CascadeType.ALL )
-	private List<Gallery> galleries; 
+
+	private Set<Gallery> galleries; 
     @Column(nullable = true)
+
 	private int PhoneNumber;
 	public int getPhoneNumber() {
 		return PhoneNumber;
+	}
+	public Set<Gallery> getGalleries() {
+		return galleries;
+	}
+	public void setGalleries(Set<Gallery> galleries) {
+		this.galleries = galleries;
 	}
 	public void setPhoneNumber(int phoneNumber) {
 		PhoneNumber = phoneNumber;

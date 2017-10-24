@@ -25,6 +25,7 @@ import tn.esprit.Apollo.Facade.EntityBone;
 @Entity
 public class ArtWork extends EntityBone {
 
+
 	@Transient
 	private static final long serialVersionUID = 1L;
 	private String title, descreption;

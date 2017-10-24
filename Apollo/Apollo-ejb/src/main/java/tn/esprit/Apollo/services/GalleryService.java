@@ -1,15 +1,18 @@
 package tn.esprit.Apollo.services;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
+import java.util.Set;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import tn.esprit.Apollo.algorithme.CompareDate;
 import tn.esprit.Apollo.persistence.Gallery;
 import tn.esprit.Apollo.persistence.GalleryOwner;
 import tn.esprit.Apollo.persistence.Schedule;
@@ -25,24 +28,23 @@ public class GalleryService implements GalleryServiceRemote {
      * Default constructor. 
      */
 	@PersistenceContext
-	private EntityManager entityManger ;
+	private EntityManager entityManager ;
 	
     public GalleryService() {
-        // TODO Auto-generated constructor stub
     }
 
 	@Override
-	public void AddGallery(Gallery gallery) {
-		
-			entityManger.persist(gallery);
-		 
+	public void AddGallery(Gallery gallery)
+	{	
+			entityManager.persist(gallery);
+			entityManager.flush();
 	}
 
 	@Override
 	public boolean EditGallery(Gallery gallery) {
 		try 
 		{
-	    	entityManger.merge(gallery);
+	    	entityManager.merge(gallery);
 		    return true ;		
 			
 		} catch (Exception e) {
@@ -52,155 +54,174 @@ public class GalleryService implements GalleryServiceRemote {
 	}
 
 	@Override
-	public boolean DeleteGallery(Gallery gallery) {
+	public boolean DeleteGallery(int id) {
 		try {
-			Gallery g = entityManger.find(Gallery.class, gallery.getId());
-			entityManger.remove(g);
-			entityManger.flush();
+			Gallery g = entityManager.find(Gallery.class, id);
+			entityManager.remove(g);
+			entityManager.flush();
 			return true ;
 		} catch (Exception e) {
 			System.out.println(e);
 			return false ;
 			// TODO: handle exception
 		}
-		
 	}
 
 	@Override
-	public List<Gallery> FindGalleriesByOwner(GalleryOwner owner) {
-
+	public List<Gallery> FindGalleriesByOwner(GalleryOwner owner) 
+	{
 		try 
 		{
-			return (List<Gallery>)(entityManger.createQuery("Select g from Gallery g where g.galleryOwner =:searchStr").setParameter("searchStr", owner).getResultList());
+			return (List<Gallery>)(entityManager.createQuery("Select g from Gallery g where g.galleryOwner =:searchStr").setParameter("searchStr", owner).getResultList());
 		}
 		catch (Exception e) 
 		{
 			System.out.print("find galleries by owner issue : "+e);
 			return null ;
 		}
-			
 	}
 		
-	
 
-	@Override
 	public List<Gallery> FindGalleriesByLocation(String zone) {
-		try 
-		{
-			return (List<Gallery>)(entityManger.createQuery("Select g from Gallery g where  (0 < LOCATE(:searchStr, g.loction.address))").setParameter("searchStr", zone).getResultList());
-		}
-		catch (Exception e) 
-		{
-			System.out.print("find galleries by location issue : "+e);
-			return null ;
-		}
-	}
+        try 
+        {
+            return (List<Gallery>)(entityManager.createQuery("Select g from Gallery g where  (0 < LOCATE(:searchStr, g.location.address ))").setParameter("searchStr", zone).getResultList());
+        }
+        catch (Exception e) 
+        {
+            System.out.print("find galleries by location issue : "+e);
+            return null ;
+        }
+    }
 
-	@Override
 	public Gallery FindGalleryByName(String name) {
-		try 
-		{
-			return (Gallery)(entityManger.createQuery("Select g from Gallery g where  g.name =:searchStr").setParameter("searchStr", name).getResultList());
-		}
-		catch (Exception e) 
-		{
-			System.out.print("find gallery by name issue : "+e);
-			return null ;
-		}
-	}
+        try 
+        {
+            return (Gallery)(entityManager.createQuery("Select g from Gallery g where  g.name = :searchStr").setParameter("searchStr", name).getSingleResult());
+        }
+        catch (Exception e) 
+        {
+            System.out.print("find gallery by name issue : "+e);
+            return null ;
+        }
+    }
 
 	@Override
-	public List<Gallery> FindGalleriesByDate(Calendar dateS , Calendar dateE) {
-
-		try 
-		{
-		    List<Gallery> tmpGalleries ;
-		    List<Gallery> galleries = null ;
-		    
-		    tmpGalleries = entityManger.createQuery("Select g from Gallery g where 1").getResultList();
-		    for (Gallery gallery : tmpGalleries)
-		    {
-		    	int i =0 ;
-		    	for (Schedule tmpSch : gallery.getCalendar()) {
-		    		if ((dateS != tmpSch.getStartDate()) && (dateE != tmpSch.getEndDate()) )
-		    			i++ ;	
-				}
-		    	if (gallery.getCalendar().size()==i)
-		    		galleries.add(gallery);
+	public List<Gallery> FindGalleriesByDate(String dateS , String dateE) {
+		   try
+		   {
+				DateFormat formatter ; 
+				Date dateStart ; 
+				Date dateEnd ; 
+				   formatter = new SimpleDateFormat("yyyy-MM-dd");
 				
-			}
-		    return galleries ;
-		
-		}
-		catch (Exception e) 
+					dateStart = formatter.parse(dateS);
+		    		dateEnd   = formatter.parse(dateE);
+				
+				List<Gallery> tmpGalleries = entityManager.createQuery("Select g from Gallery g ").getResultList();
+				List<Gallery> galleries = new ArrayList<Gallery>() ;
+				for (Gallery gallery : tmpGalleries) 
+				{
+					int i =0;
+					for (Schedule sch : gallery.getCalendar())
+					{				
+						if ((CompareDate.compareTwoDates(dateStart, sch.getStartDate())==-1)&&(CompareDate.compareTwoDates(dateEnd, sch.getStartDate())==-1))
+						{
+							i++ ;
+						}
+						else if ((CompareDate.compareTwoDates(dateStart, sch.getEndDate())==1))
+						{
+							i++;
+						}
+						else 
+						{
+							i--;
+						}
+					}
+					if (gallery.getCalendar().size()==i)
+						galleries.add(gallery);	
+				}
+				return galleries ;
+	    }
+		catch (ParseException e) 
 		{
-			System.out.print("find galleries by location issue : "+e);
-			return null ;
+			   System.out.println("find by calendar error : "+e);
+			   return null ;
 		}
+			   
 	}
 
 	@Override
-	public boolean AddPlanToGallery(Gallery gallery, Schedule sch) {
+	public boolean AddPlanToGallery(int id, Schedule sch) {
 		try
 		{
-			 Gallery g = entityManger.find(Gallery.class, gallery.getId());
-			 List<Schedule> list ;
+			 Gallery g = entityManager.find(Gallery.class, id);
+			 Set<Schedule> list ;
 			 list = g.getCalendar();
 			 list.add(sch);
 			 g.setCalendar(list);
-			 entityManger.merge(g);
-			 entityManger.flush();
+			 entityManager.merge(g);
+			 entityManager.flush();
 			 return true ;
 		} catch (Exception e)
 		{
 			System.out.println("affect plan to a gallery issue : "+e);
 			return false;
-			// TODO: handle exception
 		}
 	}
 
 	@Override
-	public boolean EditPlanToGallery(Gallery gallery, Schedule sch) {
+	public boolean EditPlanToGallery(int id, Schedule sch) 
+	{
 		try
 		{
-		 Gallery g = entityManger.find(Gallery.class, gallery.getId());
-		 List<Schedule> tmp ;
+		 Gallery g = entityManager.find(Gallery.class, id);
+		 Set<Schedule> tmp ;
 		 tmp = g.getCalendar();
 		 for (Schedule s : tmp) 
 		 {
 			    if (s.getId()==sch.getId())
+			    {
 			       	s= sch ;
+					entityManager.merge(g);
+					 return true ;
+			    }
 	    	}
-		 entityManger.merge(g);
-		 return true ;
-	   } 
+		 return false;
+	    } 
 		catch (Exception e)
-	{
+		{
 		System.out.println("affect plan to a gallery issue : "+e);
 		return false;
-		// TODO: handle exception
-	}
+		}
 	}
 
 	@Override
-	public boolean CancelPlanToGallery(Gallery gallery, Schedule sch) {
-		// TODO Auto-generated method stub
+	public boolean CancelPlanToGallery(int id, int sch)
+	{
+		 Gallery g = entityManager.find(Gallery.class, id);
+		 Set<Schedule> tmp ;
+		 tmp = g.getCalendar();
+		 for (Schedule s : tmp) 
+		 {
+		    if (s.getId()==sch)
+		    {
+				tmp.remove(s);
+				entityManager.merge(g);
+		    	entityManager.remove(s);
+				entityManager.flush();
+				 return true ;
+		    }
+	     }
 		return false;
-	}
-
-	@Override
-	public void Display() {
-		System.out.println("Hi Waleed !");
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void CreateGalleryOwner(GalleryOwner gOwner) {
 		try 
 		{	
-			entityManger.persist(gOwner);
-			entityManger.flush();
+			entityManager.persist(gOwner);
+			entityManager.flush();
 		} catch (Exception e) {
 			System.err.println(e);
 		}
@@ -210,18 +231,14 @@ public class GalleryService implements GalleryServiceRemote {
 	}
 
 	@Override
-	public String findOwner() {
-		GalleryOwner g = new GalleryOwner() ;
-		g  = entityManger.find(GalleryOwner.class, 1);
-		return g.getGender();
-
+	public GalleryOwner findOwner(int id) 
+	{
+		return  entityManager.find(GalleryOwner.class, id);
 	}
-	
+
 	@Override
-	public GalleryOwner findOw() {
-		return  entityManger.find(GalleryOwner.class, 1);
-
+	public List<Gallery> FindAllGalleries() {
+		return (List<Gallery>)(entityManager.createQuery("Select g from Gallery g ").getResultList());
 	}
-
 
 }

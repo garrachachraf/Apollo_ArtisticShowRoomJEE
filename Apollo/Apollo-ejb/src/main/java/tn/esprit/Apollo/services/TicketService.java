@@ -34,7 +34,6 @@ public class TicketService implements TicketServiceRemote {
 	@Override
 	public void updateTicket(Ticket ticket) {
 		em.merge(ticket);
-		
 	}
 
 	@Override
