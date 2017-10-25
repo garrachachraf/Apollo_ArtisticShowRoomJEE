@@ -17,8 +17,8 @@ import tn.esprit.Apollo.loggerListener.RatingLoggerListener;
 @Entity
 @EntityListeners(RatingLoggerListener.class)
 public class Rating implements Serializable {
+	
     @EmbeddedId
-
 	private RatingPk ratingPk;   
 	@Transient
 	private static final long serialVersionUID = 1L;
@@ -44,21 +44,21 @@ public class Rating implements Serializable {
 		this.user = user;
 	}
 
-	private Date RatingDate;
-    private float RatingValue;
+	private Date ratingDate;
+    private float ratingValue;
     
-    
+   
 	public Date getRatingDate() {
-		return RatingDate;
+		return ratingDate;
 	}
 	public void setRatingDate(Date ratingDate) {
-		RatingDate = ratingDate;
+		this.ratingDate = ratingDate;
 	}
 	public float getRatingValue() {
-		return RatingValue;
+		return ratingValue;
 	}
-	public void setRatingValue(float value) {
-		RatingValue = value;
+	public void setRatingValue(float ratingValue) {
+		this.ratingValue = ratingValue;
 	}
 	public Rating() {
 		super();

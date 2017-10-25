@@ -36,27 +36,27 @@ public class FollowService implements FollowServiceLocal{
 	}
 
 	@Override
-	public int countFollowers(int artistId) {
-		return (int) (em.createQuery("SELECT count(*) FROM Follow f WHERE f.artist.id = :artistId")
+	public long countFollowers(int artistId) {
+		return (long) (em.createQuery("SELECT count(*) FROM Follow f WHERE f.artist.id = :artistId")
 				.setParameter("artistId", artistId)).getSingleResult();
 	}
 
 	@Override
-	public int countFollowings(int userId) {
-		return (int) (em.createQuery("SELECT count(*) FROM Follow f WHERE f.user.id = :userId")
+	public long countFollowings(int userId) {
+		return  (long) (em.createQuery("SELECT count(*) FROM Follow f WHERE f.user.id = :userId")
 				.setParameter("userId", userId)).getSingleResult();
 	}
 
 	@Override
 	public List<User> getFollowers(int artistId) {
-		return (List<User>) (em.createQuery("SELECT f FROM Follow f WHERE f.artist.id = :artistId")
+		return (List<User>) (em.createQuery("SELECT f.user FROM Follow f WHERE f.artist.id = :artistId")
 				.setParameter("artistId", artistId)).getResultList();
 	}
 
 	@Override
-	public List<Artist> getFollowings(int artistId) {
-		return (List<Artist>) (em.createQuery("SELECT f FROM Follow f WHERE f.user.id = :userId")
-				.setParameter("ArtistId", artistId)).getResultList();
+	public List<Artist> getFollowings(int userId) {
+		return (List<Artist>) (em.createQuery("SELECT f.artist FROM Follow f WHERE f.user.id = :userId")
+				.setParameter("userId", userId)).getResultList();
 	}
 
 	@Override

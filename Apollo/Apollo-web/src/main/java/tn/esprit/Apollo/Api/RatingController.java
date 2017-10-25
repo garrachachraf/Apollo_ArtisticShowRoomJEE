@@ -13,11 +13,14 @@ import javax.ws.rs.core.Response.Status;
 
 import tn.esprit.Apollo.persistence.User;
 import tn.esprit.Apollo.services.RatingService;
+import tn.esprit.Apollo.services.UserService;
 
 @Path(value="rating")
 public class RatingController {
 	@EJB
 	RatingService ratingService;
+	@EJB
+	UserService userService;
 	
 	@GET
 	@Path(value="{artWorkId}")
@@ -30,7 +33,7 @@ public class RatingController {
 	@Path(value="myrating/{artWorkId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getMyRating(@PathParam("artWorkId") int artWorkId){
-		User user = null;
+		User user =userService.FindUserById(1);
 		return Response.status(Status.OK).entity(ratingService.findByArtworkAndUser(artWorkId, user.getId())).build();
 	}
 	
@@ -38,7 +41,7 @@ public class RatingController {
 	@Path(value="{artWorkId}/{value}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addRating(@PathParam("value") float value,@PathParam("artWorkId") int artWorkId) {
-		User user=null; // getcurrentuser
+		User user =userService.FindUserById(2);
 		ratingService.addRating(artWorkId, value, user);
 		return Response.status(Status.CREATED).build();
 	}

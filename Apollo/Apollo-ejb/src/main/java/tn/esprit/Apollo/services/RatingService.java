@@ -1,6 +1,7 @@
 package tn.esprit.Apollo.services;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -9,6 +10,7 @@ import javax.persistence.PersistenceContext;
 
 import tn.esprit.Apollo.persistence.ArtWork;
 import tn.esprit.Apollo.persistence.Rating;
+import tn.esprit.Apollo.persistence.RatingPk;
 import tn.esprit.Apollo.persistence.User;
 
 @Stateless
@@ -18,8 +20,8 @@ public class RatingService implements RatingServiceLocal,RatingServiceRemote{
     private EntityManager em;
 	
 	@Override
-	public float getAverageRating(int artworkId) {
-		return (float)(em.createQuery("SELECT AVG(r.value) FROM Rating r WHERE r.artwork.id = :artworkId ")
+	public double getAverageRating(int artworkId) {
+		return (double)(em.createQuery("SELECT AVG(r.ratingValue) FROM Rating r WHERE r.artWork.id = :artworkId ")
 				.setParameter("artworkId", artworkId)).getSingleResult();
 	}
 
@@ -31,10 +33,15 @@ public class RatingService implements RatingServiceLocal,RatingServiceRemote{
 			myRating.setRatingDate(new Date());
 			em.merge(myRating);
 		}else {
+			ArtWork artwork = em.find(ArtWork.class, artworkId);
 			Rating r = new Rating();
+			RatingPk rp = new RatingPk();
+			rp.setIdArt(artwork.getId());
+			rp.setIdUser(user.getId());
+			r.setRatingPk(rp);
 			r.setRatingValue(value);
 			r.setUser(user);
-			r.setArtWork(em.find(ArtWork.class, artworkId));
+			r.setArtWork(artwork);
 			r.setRatingDate(new Date());
 			em.persist(r);	
 		}
@@ -43,9 +50,13 @@ public class RatingService implements RatingServiceLocal,RatingServiceRemote{
 
 	@Override
 	public Rating findByArtworkAndUser(int artworkId ,int userId) {
-		return (Rating)(em.createQuery("SELECT r FROM Rating r WHERE r.artwork.id = :artworkId AND r.user.id = :userId")
+		List<Rating> r = (List<Rating>)(em.createQuery("SELECT r FROM Rating r WHERE r.artWork.id = :artworkId AND r.user.id = :userId")
 				.setParameter("artworkId", artworkId)
-				.setParameter("userId", userId)).getSingleResult();
+				.setParameter("userId", userId)).getResultList();
+		if(r.isEmpty())
+			return null;
+		else
+			return r.get(0);
 	}
 
 }

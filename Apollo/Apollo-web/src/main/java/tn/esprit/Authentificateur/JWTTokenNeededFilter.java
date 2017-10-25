@@ -54,6 +54,7 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
 					System.out.println("role by request " + a);
 					Boolean roleRes = Jwts.parser().setSigningKey(s).parseClaimsJws(token).getBody().getAudience()
 							.equals(a);
+					
 					System.out.println("role by token " + roleRes);
 					if (roleRes == true) {
 						System.out.println(Jwts.parser().setSigningKey(s).parseClaimsJws(token).getBody().getAudience());
