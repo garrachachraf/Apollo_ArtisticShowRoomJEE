@@ -1,39 +1,21 @@
 package tn.esprit.Authentificateur;
 
-import javax.ejb.EJB;
-import javax.ws.rs.NotAuthorizedException;
-
 import io.jsonwebtoken.Jwts;
-import tn.esprit.Apollo.persistence.User;
-import tn.esprit.Apollo.services.UserServiceLocal;
 
 public class UserCourant {
 	
-	@EJB
-	UserServiceLocal UserService ;
 	
 	
 
 
-public UserCourant( UserServiceLocal userService) {
-		super();
-		UserService = userService;
-	}
 
 
-
-
-public User usernameToken(String authorizationHeader){
-		
-		if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-			throw new NotAuthorizedException("Authorization header must be provided");
-		}
+public static Boolean verifyToken(String token){
 		String s = "maissen";
-		// Extract the token from the HTTP Authorization header
-		String token = authorizationHeader.substring("Bearer".length() + 1).trim();
-		String id=Jwts.parser().setSigningKey(s).parseClaimsJws(token).getBody().getId();
-		System.out.println(Integer.valueOf(id));
+		String id= Jwts.parser().setSigningKey(s).parseClaimsJws(token).getBody().getId();
+		if(id!= null)return true;
+		  return false;
 		
-		return UserService.FindUserById(Integer.valueOf(id));
+	
 	}
 }
