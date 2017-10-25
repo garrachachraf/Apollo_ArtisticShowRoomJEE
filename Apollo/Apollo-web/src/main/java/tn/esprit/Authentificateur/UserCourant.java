@@ -13,10 +13,14 @@ public class UserCourant {
 	UserServiceLocal UserService ;
 	
 	
-public UserCourant(UserServiceLocal userService) {
+
+
+public UserCourant( UserServiceLocal userService) {
 		super();
-		
+		UserService = userService;
 	}
+
+
 
 
 public User usernameToken(String authorizationHeader){
@@ -28,6 +32,8 @@ public User usernameToken(String authorizationHeader){
 		// Extract the token from the HTTP Authorization header
 		String token = authorizationHeader.substring("Bearer".length() + 1).trim();
 		String id=Jwts.parser().setSigningKey(s).parseClaimsJws(token).getBody().getId();
+		System.out.println(Integer.valueOf(id));
+		
 		return UserService.FindUserById(Integer.valueOf(id));
 	}
 }
