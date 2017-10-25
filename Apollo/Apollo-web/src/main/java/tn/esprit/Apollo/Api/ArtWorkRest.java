@@ -19,6 +19,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import io.jsonwebtoken.Jwts;
 import tn.esprit.Apollo.Facade.SearchCriteria;
 import tn.esprit.Apollo.persistence.ArtWork;
 import tn.esprit.Apollo.persistence.ArtWorkCategory;
@@ -36,7 +37,7 @@ public class ArtWorkRest {
 	private ArtWorkService ARTWORK;
 	@EJB
 	UserServiceLocal UserService ;
-	UserCourant u =new UserCourant(UserService);
+	
 	
 	
 	
@@ -78,20 +79,25 @@ public class ArtWorkRest {
 		return Response.ok(ARTWORK.searchArtWork(params)).build();
 	}
 	// add an artwork
+	
+	
+	//marwen this is the example of get user by token
+	
+	
+	
 	@POST
-	@JWTTokenNeeded(role="user")
+	@JWTTokenNeeded(role="Artist")
 	@Path(value = "add")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response create(ArtWork art,@HeaderParam("AUTHORIZATION") String token ) {
-		ArtWork newArtWork = new ArtWork();
-		newArtWork.setTitle(art.getTitle());
-		newArtWork.setDescreption(art.getDescreption());
-		newArtWork.setCategory(art.getCategory());
-		newArtWork.setPrice(art.getPrice());
-		newArtWork.setUploadDate(art.getUploadDate());
-		newArtWork.setReleaseDate(art.getReleaseDate());
-		newArtWork.setArtist((Artist) u.usernameToken(token));	
-		if (ARTWORK.create(newArtWork) == null) {
+		Artist artist=  new Artist();
+		String s = "maissen";
+		// Extract the token from the HTTP Authorization header
+		token =token.substring("Bearer".length() + 1).trim();
+		String id=Jwts.parser().setSigningKey(s).parseClaimsJws(token).getBody().getId();
+		artist.setId(UserService.FindUserById(Integer.valueOf(id)).getId());
+	    art.setArtist(artist);
+		if (ARTWORK.create(art) == null) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		// return Response.status(Response.Status.OK).build();

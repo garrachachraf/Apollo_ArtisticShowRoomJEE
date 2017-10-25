@@ -34,12 +34,17 @@ import tn.esprit.Authentificateur.JWTTokenNeeded;
 @Path(value="Profile")
 public class UserController {
 	@EJB
+	protected
 	UserServiceLocal UserService ;
 	@EJB
 	ArtistServiceLocal ArtistService ;
 	@EJB
 	GalleryOwnerServiceLocal GalleryOwnerService ;
 	
+	
+
+	
+
 	@GET
 	@JWTTokenNeeded(role="user")
 	@Path(value="{id}")
@@ -53,6 +58,7 @@ public class UserController {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createProfile(User u) {
+
 		
 		System.out.println(u.getRole().toString());
 		if (u.getRole().equals("Artist")) {
@@ -89,7 +95,7 @@ public class UserController {
 			UserService.CreateUser(u);
 		}
 		
-		
+
 		return Response.status(Status.OK).build();
 	}
 	
