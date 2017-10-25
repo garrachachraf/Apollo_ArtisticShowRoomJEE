@@ -23,7 +23,7 @@ public class WhishList implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@OneToMany(fetch=FetchType.EAGER)
-	@JsonManagedReference(value="wishlistartwork")
+
 
     private List<ArtWork> artWorks;
 	public List<ArtWork> getArtWorks() {
