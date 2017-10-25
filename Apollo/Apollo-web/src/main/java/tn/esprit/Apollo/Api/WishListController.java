@@ -27,16 +27,22 @@ public class WishListController {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@JWTTokenNeeded(role="user")
+	//@JWTTokenNeeded(role="user")
 	public Response getWishList(@Context HttpHeaders header){
 		
 		return Response.status(Status.OK).entity(wishListService.getWishList(userService.FindUserById(1))).build();
 	}
 	
-	
+	@GET
+	@Path(value="total")
+	@Produces(MediaType.APPLICATION_JSON)
+	//@JWTTokenNeeded(role="user")
+	public Response getTotal(@Context HttpHeaders header){
+		
+		return Response.status(Status.OK).entity(wishListService.getTotal(userService.FindUserById(1))).build();
+	}	
 	@POST
 	@Path(value="{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addItem(@PathParam("id")int itemId) {
 		wishListService.addItem(itemId,userService.FindUserById(1));
 		return Response.status(Status.OK).build();

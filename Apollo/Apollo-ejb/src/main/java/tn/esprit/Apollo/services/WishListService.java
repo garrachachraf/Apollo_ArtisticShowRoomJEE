@@ -1,6 +1,7 @@
 package tn.esprit.Apollo.services;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -32,16 +33,24 @@ public class WishListService implements WishListServiceLocal, WishListServiceRem
 	public void deleteItem(int itemId, User user) {
 		ArtWork artwork =em.find(ArtWork.class, itemId);
 		WhishList wishList =user.getWhishList();
-		ArrayList<ArtWork> artworks = (ArrayList<ArtWork>) wishList.getArtWorks();
+		List<ArtWork> artworks = wishList.getArtWorks();
+		for (int i = 0; i < artworks.size(); i++) {
+			if(artworks.get(i).getId() == artwork.getId()) {
+				artworks.remove(i);
+			}
+		}
 		artworks.remove(artwork);
 		wishList.setArtWorks(artworks);
-		em.merge(artworks);
+		em.merge(wishList);
 	}
 
 	@Override
-	public double getTotal() {
-		return (double)(em.createQuery("SELECT SUM(a.price) FROM Wis a WHERE a.artist.id = :userId ")
-				.setParameter("userId", 1)).getSingleResult();
+	public double getTotal(User user) {
+		double s = 0;
+		for (ArtWork artwork : getWishList(user).getArtWorks()) {
+			s+=artwork.getPrice();
+		}
+		return s;
 	}
 
 	@Override
