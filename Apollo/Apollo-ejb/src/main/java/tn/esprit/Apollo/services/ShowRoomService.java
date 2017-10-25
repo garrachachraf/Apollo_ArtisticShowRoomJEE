@@ -31,6 +31,7 @@ public class ShowRoomService implements ShowRoomServiceLocal, ShowRoomServiceRem
 
 	@Override
 	public void updateShowRoom(ShowRoom showroom) {
+		em.find(ShowRoom.class, showroom.getId());
 		em.merge(showroom);
 	}
 

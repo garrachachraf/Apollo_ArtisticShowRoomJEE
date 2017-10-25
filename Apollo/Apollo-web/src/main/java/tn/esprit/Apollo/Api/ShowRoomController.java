@@ -40,13 +40,13 @@ public class ShowRoomController {
 		return Response.status(Status.OK).entity(showroomService.findAll()).build();
 	}
 	
-	@PUT
+	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createShowroom(ShowRoom showroom) {
 		showroomService.createShowRoom(showroom);
 		return Response.status(Status.CREATED).build();
 	}
-	@POST
+	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateShowroom(ShowRoom showroom) {
 		showroomService.updateShowRoom(showroom);

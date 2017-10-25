@@ -12,9 +12,9 @@ public interface FollowServiceLocal {
 	
 	void unfollow(int artistId,int userId);
 	
-	int countFollowers(int artistId);
+	long countFollowers(int artistId);
 	
-	int countFollowings(int userId);
+	long countFollowings(int userId);
 	
 	List<User> getFollowers(int artistId);
 	

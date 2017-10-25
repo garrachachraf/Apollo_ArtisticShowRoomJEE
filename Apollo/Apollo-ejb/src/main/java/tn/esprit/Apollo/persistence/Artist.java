@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 
+
 /**
  * Entity implementation class for Entity: Artist
  *

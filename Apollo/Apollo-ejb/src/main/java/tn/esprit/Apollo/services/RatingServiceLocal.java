@@ -5,7 +5,7 @@ import tn.esprit.Apollo.persistence.User;
 
 public interface RatingServiceLocal {
 	
-	float getAverageRating(int artworkId);
+	double getAverageRating(int artworkId);
 
 	Rating findByArtworkAndUser(int artworkId, int userId);
 

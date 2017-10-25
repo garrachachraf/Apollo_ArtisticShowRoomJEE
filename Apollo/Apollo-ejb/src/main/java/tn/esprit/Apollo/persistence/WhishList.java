@@ -2,13 +2,12 @@ package tn.esprit.Apollo.persistence;
 
 import java.io.Serializable;
 import java.lang.Integer;
-import java.util.Date;
 import java.util.List;
 
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * Entity implementation class for Entity: WhishList
@@ -22,8 +21,10 @@ public class WhishList implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	private static final long serialVersionUID = 1L;
-	@JsonIgnore
-	@OneToMany
+	
+	@OneToMany(fetch=FetchType.EAGER)
+	@JsonManagedReference(value="wishlistartwork")
+
     private List<ArtWork> artWorks;
 	public List<ArtWork> getArtWorks() {
 		return artWorks;
