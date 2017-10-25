@@ -9,11 +9,14 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import tn.esprit.Apollo.loggerListener.WhishListLoggerListener;
+
 /**
  * Entity implementation class for Entity: WhishList
  *
  */
 @Entity
+@EntityListeners(WhishListLoggerListener.class)
 
 public class WhishList implements Serializable {
 

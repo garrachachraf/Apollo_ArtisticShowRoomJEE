@@ -3,18 +3,13 @@ package tn.esprit.Apollo.persistence;
 import java.io.Serializable;
 import java.lang.Integer;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import tn.esprit.Apollo.loggerListener.EventLoggerListener;
 
 /**
  * Entity implementation class for Entity: Event
@@ -22,6 +17,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
  */
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "id")
 @Entity
+
+@EntityListeners(EventLoggerListener.class)
 public class Event implements Serializable {
 
 	 

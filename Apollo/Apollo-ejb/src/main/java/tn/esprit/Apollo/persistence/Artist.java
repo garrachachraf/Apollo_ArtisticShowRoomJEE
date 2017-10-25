@@ -8,6 +8,9 @@ import javax.validation.constraints.Null;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import tn.esprit.Apollo.loggerListener.ArtistLoggerListener;
+import tn.esprit.Apollo.loggerListener.GalleryLoggerListener;
+
 
 
 
@@ -18,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue("Artist")
+@EntityListeners(ArtistLoggerListener.class)
 public class Artist extends GalleryOwner implements Serializable {
 	@OneToMany(mappedBy="artist",fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )
 	private List<Follow> followers;

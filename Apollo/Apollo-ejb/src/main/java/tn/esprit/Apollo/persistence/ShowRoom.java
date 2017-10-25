@@ -8,12 +8,15 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import tn.esprit.Apollo.loggerListener.ShowRoomLoggerListener;
+
 /**
  * Entity implementation class for Entity: ShowRoom
  *
  */
 @Entity
 
+@EntityListeners(ShowRoomLoggerListener.class)
 public class ShowRoom implements Serializable {  
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

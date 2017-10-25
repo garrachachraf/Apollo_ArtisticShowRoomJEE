@@ -8,12 +8,14 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import tn.esprit.Apollo.loggerListener.RatingLoggerListener;
+
 /**
  * Entity implementation class for Entity: Rating
  *
  */
 @Entity
-
+@EntityListeners(RatingLoggerListener.class)
 public class Rating implements Serializable {
 	
     @EmbeddedId

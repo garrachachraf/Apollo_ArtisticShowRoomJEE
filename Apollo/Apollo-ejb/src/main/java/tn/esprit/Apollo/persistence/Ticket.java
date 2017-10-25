@@ -13,12 +13,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import tn.esprit.Apollo.loggerListener.TicketLoggerListener;
+
 /**
  * Entity implementation class for Entity: Ticket
  *
  */
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "id")
 @Entity
+
+@EntityListeners(TicketLoggerListener.class)
 public class Ticket implements Serializable {
 
 	   

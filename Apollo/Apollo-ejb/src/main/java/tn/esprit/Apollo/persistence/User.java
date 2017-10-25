@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
@@ -14,11 +15,13 @@ import javax.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import tn.esprit.Apollo.Facade.EntityBone;
+import tn.esprit.Apollo.loggerListener.UserLoggerListener;
 
 // can use @Table here to specify table name
 @Entity
 @DiscriminatorValue("user")
 @DiscriminatorColumn(name = "role")
+@EntityListeners(UserLoggerListener.class)
 public class User extends EntityBone {
 
 	/**

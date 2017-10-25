@@ -8,6 +8,8 @@ import javax.validation.constraints.Null;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import tn.esprit.Apollo.loggerListener.GalleryOwnerLoggerListener;
+
 
 /**
  * Entity implementation class for Entity: GalleryOwner
@@ -16,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue("GalleryOwner")
+@EntityListeners(GalleryOwnerLoggerListener.class)
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "id")
 public class GalleryOwner extends User implements Serializable {
 	@JsonManagedReference("owner-galleries")
