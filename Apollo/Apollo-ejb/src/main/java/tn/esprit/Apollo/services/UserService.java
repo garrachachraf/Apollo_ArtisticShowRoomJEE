@@ -12,10 +12,6 @@ import javax.persistence.PersistenceContext;
 
 import tn.esprit.Apollo.persistence.User;
 
-
-
-
-
 @Stateless
 @LocalBean
 public class UserService implements UserServiceLocal , UserServiceRemote {
@@ -81,7 +77,7 @@ public class UserService implements UserServiceLocal , UserServiceRemote {
 		return lu.get(0);
 	}
 	
-	public String MD5It(String pass){
+	public static String MD5It(String pass){
 		String generatedPassword = "";
 		try {
             // Create MessageDigest instance for MD5

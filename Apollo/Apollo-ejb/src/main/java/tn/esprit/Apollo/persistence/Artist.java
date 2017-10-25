@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.Null;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -25,6 +26,7 @@ public class Artist extends GalleryOwner implements Serializable {
     private List<ArtWork> artworks;
     @OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )
 	private List<ShowRoom> showrooms; 
+    @Null
     private ArtistType type;
     public List<ShowRoom> getShowrooms() {
 		return showrooms;

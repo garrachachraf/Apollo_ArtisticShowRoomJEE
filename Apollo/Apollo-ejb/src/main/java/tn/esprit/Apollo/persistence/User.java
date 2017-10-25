@@ -28,6 +28,7 @@ public class User extends EntityBone {
 	private String firstname;
 	private String lastname;
 	private String email;
+	@Column(unique=true)
 	private String userName;
 	private String password;
 	private String gender;
