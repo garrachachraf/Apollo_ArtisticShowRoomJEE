@@ -31,7 +31,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.TextCodec;
 import io.jsonwebtoken.impl.crypto.MacProvider;
 import tn.esprit.Apollo.services.AuthentificationService;
-
+import tn.esprit.Apollo.persistence.User;
 @Path("/users")
 @Produces(APPLICATION_JSON)
 @Consumes(APPLICATION_JSON)
@@ -53,10 +53,11 @@ public class UserEnpoint {
 	public Response authenticateUser(@FormParam("login") String login, @FormParam("password") String password) {
 		try {        
 			 //Authenticate the user using the credentials provided
-		      String role=authenticate(login,password);
+		      String role=authenticate(login,password).getDecriminatorValue();
+		      int id= authenticate(login,password).getId();
 		      System.out.println(authenticate(login, password).toString());
 			 //Issue a token for the user
-			  String token = issueToken(login,role);
+			  String token = issueToken(login,role,id);
 			 //Return the token on the response
 			return Response.ok().header(AUTHORIZATION, "Bearer " + token).build();
 
@@ -66,7 +67,7 @@ public class UserEnpoint {
 		}
 	}
 //creating token with jjwt
-	private String issueToken(String login,String role) {
+	private String issueToken(String login,String role,int id) {
 		Key key = MacProvider.generateKey();
 		String secret = "maissen";
 		String base64Encoded = TextCodec.BASE64.encode(key.getEncoded());
@@ -74,6 +75,7 @@ public class UserEnpoint {
 		System.out.println(base64Encoded);
 		String jwtToken = Jwts.builder().setSubject(login).setIssuer(uriInfo.getAbsolutePath().toString())
 				.setAudience(role)
+				.setId(Integer.toString(id))
 				.setIssuedAt(new Date()).setExpiration(toDate(LocalDateTime.now().plusMinutes(15L)))
 				.signWith(SignatureAlgorithm.HS512, secret).compact();
 		return jwtToken;
@@ -84,17 +86,15 @@ public class UserEnpoint {
 		return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
 	}
 	 //just validating the password and login and getting the role of user as string
-	private String authenticate(String login, String password) throws Exception {
-		System.out.println("fdssdff "+password);
+	private User authenticate(String login, String password) throws Exception {
+		System.out.println("password : "+password);
 		if (User.findBy(login, password) == null)
 			throw new SecurityException("Invalid user/password");
 		
 		try {
-			return User.findBy(login, password).getDecriminatorValue();
+			return User.findBy(login, password);
 		
-		} catch (Exception e) {
-			return "authentification not valid";
-		}
+		} catch (Exception e){throw new SecurityException("Invalid user/password");}
 		
 	}
 	
