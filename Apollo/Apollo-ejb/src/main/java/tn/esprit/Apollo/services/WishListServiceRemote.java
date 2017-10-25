@@ -9,7 +9,7 @@ import tn.esprit.Apollo.persistence.WhishList;
 public interface WishListServiceRemote {
 	void addItem(int itemId, User user);
 	void deleteItem(int itemId, User user);
-	double getTotal();
+	double getTotal(User user);
 	WhishList getWishList(User user);
 
 }
