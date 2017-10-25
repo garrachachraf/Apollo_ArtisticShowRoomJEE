@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -17,12 +18,15 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import tn.esprit.Apollo.Facade.EntityBone;
+import tn.esprit.Apollo.loggerListener.ArtWorkLoggerListener;
 
 /**
  * Entity implementation class for Entity: ArtWork
  *
  */
 @Entity
+
+@EntityListeners(ArtWorkLoggerListener.class)
 public class ArtWork extends EntityBone {
 
 

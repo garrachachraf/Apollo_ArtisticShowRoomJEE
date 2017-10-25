@@ -6,12 +6,16 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import tn.esprit.Apollo.loggerListener.ArtWorkLoggerListener;
+import tn.esprit.Apollo.loggerListener.MediaLoggerListener;
+
 /**
  * Entity implementation class for Entity: Media
  *
  */
 @Entity
 
+@EntityListeners(MediaLoggerListener.class)
 public class Media implements Serializable {
 
 	   

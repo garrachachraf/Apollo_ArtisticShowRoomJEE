@@ -5,12 +5,14 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import tn.esprit.Apollo.loggerListener.FollowLoggerListener;
+
 /**
  * Entity implementation class for Entity: Follow
  *
  */
 @Entity
-
+@EntityListeners(FollowLoggerListener.class)
 public class Follow implements Serializable {
 
 	@EmbeddedId

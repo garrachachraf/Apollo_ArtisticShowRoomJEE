@@ -3,12 +3,16 @@ package tn.esprit.Apollo.persistence;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import tn.esprit.Apollo.loggerListener.NotificationLoggerListener;
+import tn.esprit.Apollo.loggerListener.RentingLoggerListener;
+
 /**
  * Entity implementation class for Entity: Renting
  *
  */
 @Entity
 
+@EntityListeners(RentingLoggerListener.class)
 public class Renting implements Serializable {
 	
 

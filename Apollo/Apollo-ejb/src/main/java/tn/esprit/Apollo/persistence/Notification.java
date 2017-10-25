@@ -3,6 +3,7 @@ package tn.esprit.Apollo.persistence;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,7 +12,11 @@ import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import tn.esprit.Apollo.loggerListener.NotificationLoggerListener;
+
 @Entity
+
+@EntityListeners(NotificationLoggerListener.class)
 public class Notification {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

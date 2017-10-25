@@ -19,6 +19,7 @@ import tn.esprit.Apollo.persistence.Gallery;
 import tn.esprit.Apollo.persistence.GalleryOwner;
 import tn.esprit.Apollo.persistence.Schedule;
 import tn.esprit.Apollo.services.GalleryServiceRemote;
+import tn.esprit.Authentificateur.JWTTokenNeeded;
 
 @Path(value="gallery")
 @Stateless
@@ -31,6 +32,7 @@ public class GalleryRest
 	private GalleryServiceRemote galleryService ;
 
 	@PUT
+	@JWTTokenNeeded(role="GalleryOwner")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createGallery(Gallery gallery)
 	{
@@ -43,8 +45,10 @@ public class GalleryRest
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response editGallery(Gallery gallery)
 	{
-		galleryService.EditGallery(gallery);
-		return Response.status(Status.OK).build();	
+		if (galleryService.EditGallery(gallery))
+		return Response.status(Status.OK).build();
+		else
+      	return  Response.status(Status.NO_CONTENT).build();
 	}
 	
 	@DELETE
