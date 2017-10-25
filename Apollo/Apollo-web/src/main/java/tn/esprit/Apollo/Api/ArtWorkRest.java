@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -21,13 +22,25 @@ import javax.ws.rs.core.Response;
 import tn.esprit.Apollo.Facade.SearchCriteria;
 import tn.esprit.Apollo.persistence.ArtWork;
 import tn.esprit.Apollo.persistence.ArtWorkCategory;
+import tn.esprit.Apollo.persistence.Artist;
 import tn.esprit.Apollo.services.ArtWorkService;
+import tn.esprit.Apollo.services.UserServiceLocal;
+import tn.esprit.Authentificateur.JWTTokenNeeded;
+import tn.esprit.Authentificateur.UserCourant;
+import tn.esprit.Apollo.Api.UserController;
 
 @Path(value = "ArtWork")
 @Stateless
 public class ArtWorkRest {
 	@EJB
 	private ArtWorkService ARTWORK;
+	@EJB
+	UserServiceLocal UserService ;
+	UserCourant u =new UserCourant(UserService);
+	
+	
+	
+	
 	// recherche par id ( very simple one )
 	@GET
 	@Path(value = "find/{id}")
@@ -66,9 +79,10 @@ public class ArtWorkRest {
 	}
 	// add an artwork
 	@POST
+	@JWTTokenNeeded(role="user")
 	@Path(value = "add")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(ArtWork art) {
+	public Response create(ArtWork art,@HeaderParam("AUTHORIZATION") String token ) {
 		ArtWork newArtWork = new ArtWork();
 		newArtWork.setTitle(art.getTitle());
 		newArtWork.setDescreption(art.getDescreption());
@@ -76,8 +90,7 @@ public class ArtWorkRest {
 		newArtWork.setPrice(art.getPrice());
 		newArtWork.setUploadDate(art.getUploadDate());
 		newArtWork.setReleaseDate(art.getReleaseDate());
-		newArtWork.setArtist(art.getArtist());
-		System.out.println(newArtWork.toString());
+		newArtWork.setArtist((Artist) u.usernameToken(token));	
 		if (ARTWORK.create(newArtWork) == null) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}

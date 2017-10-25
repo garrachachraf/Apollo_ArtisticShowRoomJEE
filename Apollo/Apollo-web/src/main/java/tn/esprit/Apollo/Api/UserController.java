@@ -44,6 +44,8 @@ public class UserController {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createProfile(User u) {
+		
+		System.out.println(u.getRole().toString());
 		UserService.CreateUser(u);
 		return Response.status(Status.OK).build();
 	}
@@ -61,7 +63,7 @@ public class UserController {
 	@JWTTokenNeeded(role="Admin")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response AllUsers(@Context HttpHeaders header){
-		System.out.println(usernameToken(header).getId());
+		
 		List<User> lst = UserService.GetAllUsers() ;
 		lst.forEach(u->u.setPassword("not allowed to see"));
 		return Response.status(Status.OK).entity(lst).build();
@@ -81,8 +83,7 @@ public class UserController {
 	}
 	
 	
-	public User usernameToken(HttpHeaders header){
-		String authorizationHeader = header.getHeaderString(HttpHeaders.AUTHORIZATION);
+	public User usernameToken(String authorizationHeader){
 		
 		if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
 			throw new NotAuthorizedException("Authorization header must be provided");
@@ -90,8 +91,8 @@ public class UserController {
 		String s = "maissen";
 		// Extract the token from the HTTP Authorization header
 		String token = authorizationHeader.substring("Bearer".length() + 1).trim();
-		String userName=Jwts.parser().setSigningKey(s).parseClaimsJws(token).getBody().getSubject();
-		return UserService.FindUserByUsername(userName);
+		String id=Jwts.parser().setSigningKey(s).parseClaimsJws(token).getBody().getId();
+		return UserService.FindUserById(Integer.valueOf(id));
 	}
 	
 }

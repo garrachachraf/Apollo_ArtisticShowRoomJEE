@@ -3,6 +3,7 @@ package tn.esprit.Apollo.persistence;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -36,6 +37,8 @@ public class User extends EntityBone {
 	private String state;
 	private String country;
 	private String zipCode;
+	@Column(name = "role", insertable=false, updatable=false, nullable = false)
+    private String role;    
 	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
 	private List<Follow> followings;
 	@OneToMany(mappedBy = "user")
@@ -166,5 +169,15 @@ public class User extends EntityBone {
 	public String getDecriminatorValue() {
 		return this.getClass().getAnnotation(DiscriminatorValue.class).value();
 	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+
 
 }
