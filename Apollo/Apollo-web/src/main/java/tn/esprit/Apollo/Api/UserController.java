@@ -21,8 +21,13 @@ import io.jsonwebtoken.Jwts;
 
 import javax.ws.rs.core.Context;
 
+import tn.esprit.Apollo.persistence.Artist;
+import tn.esprit.Apollo.persistence.Gallery;
+import tn.esprit.Apollo.persistence.GalleryOwner;
 import tn.esprit.Apollo.persistence.ShowRoom;
 import tn.esprit.Apollo.persistence.User;
+import tn.esprit.Apollo.services.ArtistServiceLocal;
+import tn.esprit.Apollo.services.GalleryOwnerServiceLocal;
 import tn.esprit.Apollo.services.UserServiceLocal;
 import tn.esprit.Authentificateur.JWTTokenNeeded;
 
@@ -31,6 +36,10 @@ public class UserController {
 	@EJB
 	protected
 	UserServiceLocal UserService ;
+	@EJB
+	ArtistServiceLocal ArtistService ;
+	@EJB
+	GalleryOwnerServiceLocal GalleryOwnerService ;
 	
 	
 
@@ -49,7 +58,44 @@ public class UserController {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createProfile(User u) {
-		UserService.CreateUser(u);
+
+		
+		System.out.println(u.getRole().toString());
+		if (u.getRole().equals("Artist")) {
+			Artist a = new Artist() ;
+			a.setCity(u.getCity());
+			a.setCountry(u.getCountry());
+			a.setEmail(u.getEmail());
+			a.setFirstname(u.getFirstname());
+			a.setGender(u.getGender());
+			a.setLastname(u.getLastname());
+			a.setPassword(u.getPassword());
+			a.setState(u.getState());
+			a.setStreet(u.getStreet());
+			a.setUserName(u.getUserName());
+			a.setZipCode(u.getZipCode());
+			ArtistService.CreateUser(a);
+		}
+		else if (u.getRole().equals("GalleryOwner")) {
+			GalleryOwner g = new Artist() ;
+			g.setCity(u.getCity());
+			g.setCountry(u.getCountry());
+			g.setEmail(u.getEmail());
+			g.setFirstname(u.getFirstname());
+			g.setGender(u.getGender());
+			g.setLastname(u.getLastname());
+			g.setPassword(u.getPassword());
+			g.setState(u.getState());
+			g.setStreet(u.getStreet());
+			g.setUserName(u.getUserName());
+			g.setZipCode(u.getZipCode());
+			GalleryOwnerService.CreateUser(g);
+		}
+		else {
+			UserService.CreateUser(u);
+		}
+		
+
 		return Response.status(Status.OK).build();
 	}
 	
