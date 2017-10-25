@@ -79,8 +79,14 @@ public class ArtWorkRest {
 		return Response.ok(ARTWORK.searchArtWork(params)).build();
 	}
 	// add an artwork
+	
+	
+	//marwen this is the example of get user by token
+	
+	
+	
 	@POST
-	@JWTTokenNeeded(role="user")
+	@JWTTokenNeeded(role="Artist")
 	@Path(value = "add")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response create(ArtWork art,@HeaderParam("AUTHORIZATION") String token ) {
