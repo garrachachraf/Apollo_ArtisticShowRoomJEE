@@ -3,6 +3,8 @@ package tn.esprit.Apollo.services;
 import java.util.Date;
 import java.util.List;
 
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -11,6 +13,8 @@ import tn.esprit.Apollo.persistence.Orders;
 import tn.esprit.Apollo.persistence.Rating;
 import tn.esprit.Apollo.persistence.User;
 
+@Stateless
+@LocalBean
 public class OrderService implements OrderServiceLocal{
 	@PersistenceContext
     private EntityManager em;
@@ -27,8 +31,10 @@ public class OrderService implements OrderServiceLocal{
 
 	private float countTotal(List<ArtWork> artworks) {
 		float total =0;
+		ArtWork myArtwork;
 		for (ArtWork artWork : artworks) {
-			total+=artWork.getPrice();
+			myArtwork=em.find(ArtWork.class, artWork.getId());
+			total+=myArtwork.getPrice();
 		}
 		return total;
 	}

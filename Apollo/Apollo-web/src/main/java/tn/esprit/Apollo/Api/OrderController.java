@@ -46,10 +46,9 @@ public class OrderController {
 		return Response.status(Status.OK).entity(orderService.GetOrdersByUser(userId)).build();
 	}	
 	@POST
-	@Path(value="{id}")
 	@JWTTokenNeeded(role="user")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createOrder(List<ArtWork> artworks,@PathParam("id")int itemId,@Context HttpHeaders header) {
+	public Response createOrder(List<ArtWork> artworks,@Context HttpHeaders header) {
 		User user = usernameToken(header);
 		orderService.createOrder(artworks,user);
 		return Response.status(Status.OK).build();

@@ -24,7 +24,7 @@ public class Orders implements Serializable {
 	private float totalAmount;
 	@ManyToOne
 	private User user;
-	@OneToMany
+	@OneToMany(fetch=FetchType.EAGER)
     private List<ArtWork> ArtWorks;
     
     public Integer getId() {
