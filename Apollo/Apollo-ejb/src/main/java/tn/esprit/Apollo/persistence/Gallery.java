@@ -8,7 +8,10 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import tn.esprit.Apollo.loggerListener.GalleryLoggerListener;
+
 @Entity
+@EntityListeners(GalleryLoggerListener.class)
 public class Gallery implements Serializable {
 
 
@@ -133,6 +136,11 @@ public class Gallery implements Serializable {
 	
 	public Gallery() {
 		super();
+	}
+	
+	@Override
+	public String toString() {
+		return this.name+" "+this.description+" "+this.maxCapacity+" "+this.location.getAddress();
 	}
 	
 }

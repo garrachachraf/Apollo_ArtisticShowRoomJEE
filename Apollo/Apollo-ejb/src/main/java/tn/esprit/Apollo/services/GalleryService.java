@@ -44,8 +44,14 @@ public class GalleryService implements GalleryServiceRemote {
 	public boolean EditGallery(Gallery gallery) {
 		try 
 		{
+			Gallery aichouch = entityManager.find(Gallery.class, gallery.getId());
+			Gallery newG = gallery ; 
+			gallery = aichouch ;
+			gallery.setName(newG.getName());
+
 	    	entityManager.merge(gallery);
-		    return true ;		
+	    	
+	    	return true ;		
 			
 		} catch (Exception e) {
 			System.out.println(e);

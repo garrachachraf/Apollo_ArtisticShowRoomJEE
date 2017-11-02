@@ -52,6 +52,7 @@ public class UserController {
 	public Response findOne(@PathParam("id") int id){
 		User user = UserService.FindUserById(id);
 		user.setPassword("Not Allowed to see ");
+		
 		return Response.status(Status.OK).entity(user).build();
 	}
 	
@@ -77,7 +78,7 @@ public class UserController {
 			ArtistService.CreateUser(a);
 		}
 		else if (u.getRole().equals("GalleryOwner")) {
-			GalleryOwner g = new Artist() ;
+			GalleryOwner g = new GalleryOwner() ;
 			g.setCity(u.getCity());
 			g.setCountry(u.getCountry());
 			g.setEmail(u.getEmail());
@@ -109,7 +110,7 @@ public class UserController {
 	}
 	
 	@GET
-	@JWTTokenNeeded(role="Admin")
+	@JWTTokenNeeded(role="Artist")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response AllUsers(@Context HttpHeaders header){
 		

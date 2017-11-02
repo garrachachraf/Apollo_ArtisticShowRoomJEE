@@ -123,11 +123,12 @@ public class TestGallery {
 		    proxy.AddGallery(gallery2);
 		     
 		    FileGenerator myFile = new FileGenerator() ;
-		     List<Gallery> listTmp = new ArrayList<Gallery>();
+		    
+		    List<Gallery> listTmp = new ArrayList<Gallery>();
 		     listTmp = proxy.FindAllGalleries();
 		     for (Gallery g : listTmp) 
 		     {
-		    	 myFile.trace(g.getName());
+		    	// myFile.trace(g.getName());
 		    	 System.out.println(g.getName());	
 			 }
 		} catch (NamingException | ParseException e) {

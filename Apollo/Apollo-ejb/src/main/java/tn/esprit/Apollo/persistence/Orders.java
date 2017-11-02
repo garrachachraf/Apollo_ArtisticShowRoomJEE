@@ -7,13 +7,14 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import tn.esprit.Apollo.loggerListener.OrderLoggerListener;
+
 /**
  * Entity implementation class for Entity: Order
  *
  */
 @Entity
-
-
+@EntityListeners(OrderLoggerListener.class)
 public class Orders implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

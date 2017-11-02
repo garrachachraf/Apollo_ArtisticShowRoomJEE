@@ -1,6 +1,10 @@
 package tn.esprit.Apollo.persistence;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -8,6 +12,8 @@ import javax.validation.constraints.Null;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import tn.esprit.Apollo.loggerListener.GalleryOwnerLoggerListener;
 
 
 /**
@@ -17,12 +23,14 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue("GalleryOwner")
+@EntityListeners(GalleryOwnerLoggerListener.class)
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "id")
 public class GalleryOwner extends User implements Serializable {
 	@JsonManagedReference("owner-galleries")
     @OneToMany(mappedBy="galleryOwner",fetch=FetchType.LAZY,cascade=CascadeType.ALL )
 	@JsonIgnore
 	private Set<Gallery> galleries; 
+
     @Column(nullable = true)
 
 	private int PhoneNumber;
