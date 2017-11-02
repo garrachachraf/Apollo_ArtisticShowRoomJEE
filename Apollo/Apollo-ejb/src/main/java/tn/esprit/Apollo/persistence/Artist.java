@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.Null;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
@@ -25,6 +26,7 @@ public class Artist extends GalleryOwner implements Serializable {
     @JsonManagedReference(value="usertoartwork")
     private List<ArtWork> artworks;
     @OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )
+    @JsonIgnore
 	private List<ShowRoom> showrooms; 
     @Null
     private ArtistType type;

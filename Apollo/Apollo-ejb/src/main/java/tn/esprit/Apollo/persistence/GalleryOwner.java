@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Null;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
@@ -20,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class GalleryOwner extends User implements Serializable {
 	@JsonManagedReference("owner-galleries")
     @OneToMany(mappedBy="galleryOwner",fetch=FetchType.LAZY,cascade=CascadeType.ALL )
-
+	@JsonIgnore
 	private Set<Gallery> galleries; 
     @Column(nullable = true)
 

@@ -48,6 +48,7 @@ public class User extends EntityBone {
 	@OneToMany(mappedBy = "user")
 	private List<Rating> ratings;
 	@OneToOne
+	@JsonIgnore
 	private WhishList whishList;
 	@OneToOne
 	private Collection collection;

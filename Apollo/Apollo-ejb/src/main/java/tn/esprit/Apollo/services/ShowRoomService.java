@@ -31,8 +31,7 @@ public class ShowRoomService implements ShowRoomServiceLocal, ShowRoomServiceRem
 
 	@Override
 	public void updateShowRoom(ShowRoom showroom) {
-		em.find(ShowRoom.class, showroom.getId());
-		em.merge(showroom);
+		em.merge(em.find(ShowRoom.class, showroom.getId()));
 	}
 
 	@Override
@@ -47,19 +46,19 @@ public class ShowRoomService implements ShowRoomServiceLocal, ShowRoomServiceRem
 
 	@Override
 	public List<ShowRoom> findByArtist(int artistId) {
-		return (em.createQuery("SELECT s FROM ShowRoom WHERE s.artist.id = :artistId")
+		return (em.createQuery("SELECT s FROM ShowRoom s WHERE s.artist.id = :artistId")
 				.setParameter("artistId", artistId)).getResultList();
 	}
 
 	@Override
 	public List<ShowRoom> findByKeyWord(String keyWord) {
 		//
-		ArrayList<ShowRoom> showrooms = (ArrayList<ShowRoom>) 
-				em.createQuery("SELECT s FROM ShowRoom WHERE s.description LIKE CONCAT('%',:keyword,'%')\"" )
+		List<ShowRoom> showrooms = 
+				em.createQuery("SELECT s FROM ShowRoom s WHERE s.description LIKE CONCAT('%',:keyword,'%')")
 				.setParameter("keyword", keyWord).getResultList();
-		showrooms.addAll((ArrayList<ShowRoom>) em
-				.createQuery("SELECT a FROM ShowRoom a WHERE s.title LIKE CONCAT('%',:keyword,'%')")
-				.setParameter("keyword", keyWord));
+		showrooms.addAll((List<ShowRoom>) em
+				.createQuery("SELECT s FROM ShowRoom s WHERE s.title LIKE CONCAT('%',:keyword,'%')")
+				.setParameter("keyword", keyWord).getResultList());
 		return showrooms;
 	}
 

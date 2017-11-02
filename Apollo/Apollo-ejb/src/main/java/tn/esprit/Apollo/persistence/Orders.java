@@ -17,10 +17,12 @@ import javax.persistence.*;
 public class Orders implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer Id;
+	private int Id;
 	private static final long serialVersionUID = 1L;
 	private Date orderDate;
-	private float amount;
+	private float totalAmount;
+	@ManyToOne
+	private User user;
 	@OneToMany
     private List<ArtWork> ArtWorks;
     
@@ -36,11 +38,12 @@ public class Orders implements Serializable {
 	public void setOrderDate(Date orderDate) {
 		this.orderDate = orderDate;
 	}
-	public float getAmount() {
-		return amount;
+	
+	public float getTotalAmount() {
+		return totalAmount;
 	}
-	public void setAmount(float amount) {
-		this.amount = amount;
+	public void setTotalAmount(float totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 	public List<ArtWork> getArtWorks() {
 		return ArtWorks;
@@ -48,4 +51,14 @@ public class Orders implements Serializable {
 	public void setArtWorks(List<ArtWork> artWorks) {
 		ArtWorks = artWorks;
 	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public void setId(int id) {
+		Id = id;
+	}
+	
 }
