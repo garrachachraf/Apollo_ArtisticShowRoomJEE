@@ -45,6 +45,7 @@ public class ArtWork extends EntityBone {
 	private Set<Rating> ratings;
 	private float price;
 	private ArtWorkCategory category;
+	
 
 	public String getMediaPath() {
 		return mediaPath;

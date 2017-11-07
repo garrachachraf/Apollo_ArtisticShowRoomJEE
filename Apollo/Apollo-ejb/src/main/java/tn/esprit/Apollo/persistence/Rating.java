@@ -7,6 +7,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import tn.esprit.Apollo.loggerListener.RatingLoggerListener;
 
@@ -19,6 +20,7 @@ import tn.esprit.Apollo.loggerListener.RatingLoggerListener;
 public class Rating implements Serializable {
 	
     @EmbeddedId
+    @JsonIgnore
 	private RatingPk ratingPk;   
 	@Transient
 	private static final long serialVersionUID = 1L;

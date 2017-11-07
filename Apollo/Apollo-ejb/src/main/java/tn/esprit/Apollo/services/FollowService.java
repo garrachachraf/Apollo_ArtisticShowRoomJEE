@@ -11,6 +11,7 @@ import java.util.Date;
 
 import tn.esprit.Apollo.persistence.Artist;
 import tn.esprit.Apollo.persistence.Follow;
+import tn.esprit.Apollo.persistence.FollowPk;
 import tn.esprit.Apollo.persistence.User;
 
 @Stateless
@@ -26,6 +27,10 @@ public class FollowService implements FollowServiceLocal{
 			f.setArtist(em.find(Artist.class, artistId));
 			f.setUser(em.find(User.class, userId));
 			f.setFollowDate(new Date());
+			FollowPk fk = new FollowPk();
+			fk.setArtistId(artistId);
+			fk.setUserId(userId);
+			f.setFollowPk(fk);
 			em.persist(f);
 		}
 	}
@@ -61,10 +66,13 @@ public class FollowService implements FollowServiceLocal{
 
 	@Override
 	public Follow findFollow(int userId, int artistId) {
-		Follow f =(Follow)(em.createQuery("SELECT f FROM Follow f WHERE f.user.id = :userId AND f.artist.id = :artistId")
+		List<Follow> f =(em.createQuery("SELECT f FROM Follow f WHERE f.user.id = :userId AND f.artist.id = :artistId")
 				.setParameter("artistId", artistId)
-				.setParameter("userId", userId)).getSingleResult();
-		return (f);
+				.setParameter("userId", userId)).getResultList();
+		if(f.isEmpty()){
+			return null;
+		}else
+			return (f.get(0));
 	}
 
 }
