@@ -77,7 +77,7 @@ public class UserController {
 			ArtistService.CreateUser(a);
 		}
 		else if (u.getRole().equals("GalleryOwner")) {
-			GalleryOwner g = new Artist() ;
+			GalleryOwner g = new GalleryOwner() ;
 			g.setCity(u.getCity());
 			g.setCountry(u.getCountry());
 			g.setEmail(u.getEmail());
