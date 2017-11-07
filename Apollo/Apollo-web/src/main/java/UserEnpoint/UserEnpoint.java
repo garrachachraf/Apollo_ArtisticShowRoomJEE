@@ -59,7 +59,7 @@ public class UserEnpoint {
 			 //Issue a token for the user
 			  String token = issueToken(login,role,id);
 			 //Return the token on the response
-			return Response.ok().header(AUTHORIZATION, "Bearer " + token).build();
+			return Response.ok(role).header(AUTHORIZATION, "Bearer " + token).build();
 
 		} catch (Exception e) {
 			System.out.println("" + e);
