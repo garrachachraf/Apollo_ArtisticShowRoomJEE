@@ -1,5 +1,9 @@
 package tn.esprit.Apollo.loggerListener;
 
+import java.io.IOException;
+import java.sql.Timestamp;
+
+import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
 import javax.persistence.PostRemove;
 import javax.persistence.PostUpdate;
@@ -7,38 +11,63 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 
-	public class EventLoggerListener {/*
-		@PrePersist
-		public void methodInvokedBeforePersist(Gallery gallery) {
-			System.out.println("persisting Gallery with id = " + gallery.getIdGallery());
-		}
+import tn.esprit.Apollo.algorithme.Audit;
+import tn.esprit.Apollo.algorithme.FileGenerator;
+import tn.esprit.Apollo.persistence.Event;
+
+	public class EventLoggerListener {
+
 
 		@PostPersist
-		public void methodInvokedAfterPersist(Gallery gallery) {
-			System.out.println("Persisted Gallery with id = " + gallery.getIdGallery());
-		}
+		public void methodInvokedAfterPersist(Event Event) {
 
-		@PreUpdate
-		public void methodInvokedBeforeUpdate(Gallery gallery) {
-			System.out.println("Updating Gallery with id = " + gallery.getIdGallery());
-		}
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+			Audit audit = new Audit();
+			audit.setObj(Event);
+			audit.setOperationType("CREATE");
+			audit.setOperationTime(timestamp);
+			FileGenerator f = new FileGenerator();
+			try {
+				f.writeOnJsonFile(audit);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}		
+			}
 
-		@PostUpdate
-		public void methodInvokedAfterUpdate(Gallery gallery) {
-			System.out.println("Updated Gallery with id = " + gallery.getIdGallery());
-		}
+		@PostLoad
+		public void methodInvokedBeforeLoad(Event Event) {
+
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+			Audit audit = new Audit();
+			audit.setObj(Event);
+			audit.setOperationType("UPDATE");
+			audit.setOperationTime(timestamp);
+			FileGenerator f = new FileGenerator();
+			try {
+				f.writeOnTextFile(audit);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}	
+		}		
+
 
 		@PreRemove
-		private void methodInvokedBeforeRemove(Gallery gallery) {
-			System.out.println("Removing Gallery with id = " + gallery.getIdGallery());
+		private void methodInvokedBeforeRemove(Event Event) {
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+			Audit audit = new Audit();
+			audit.setObj(Event);
+			audit.setOperationType("REMOVE");
+			audit.setOperationTime(timestamp);
+			FileGenerator f = new FileGenerator();
+			try {
+				f.writeOnTextFile(audit);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}		
 		}
 
-		@PostRemove
-		public void methodInvokedAfterRemove(Gallery gallery) {
-			System.out.println("Removed Gallery with id = " + gallery.getIdGallery() );
-		}
 
-	}*/
+
 
 
 }

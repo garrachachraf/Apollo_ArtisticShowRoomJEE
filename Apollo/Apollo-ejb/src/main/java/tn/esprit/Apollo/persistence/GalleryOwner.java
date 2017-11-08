@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Null;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import tn.esprit.Apollo.loggerListener.GalleryOwnerLoggerListener;
@@ -21,7 +22,7 @@ import tn.esprit.Apollo.loggerListener.GalleryOwnerLoggerListener;
 @EntityListeners(GalleryOwnerLoggerListener.class)
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "id")
 public class GalleryOwner extends User implements Serializable {
-	@JsonManagedReference("owner-galleries")
+	@JsonIgnore
     @OneToMany(mappedBy="galleryOwner",fetch=FetchType.LAZY,cascade=CascadeType.ALL )
 
 	private Set<Gallery> galleries; 
