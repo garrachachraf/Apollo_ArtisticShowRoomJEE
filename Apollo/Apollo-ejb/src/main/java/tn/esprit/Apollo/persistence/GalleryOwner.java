@@ -1,6 +1,10 @@
 package tn.esprit.Apollo.persistence;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -24,8 +28,9 @@ import tn.esprit.Apollo.loggerListener.GalleryOwnerLoggerListener;
 public class GalleryOwner extends User implements Serializable {
 	@JsonIgnore
     @OneToMany(mappedBy="galleryOwner",fetch=FetchType.LAZY,cascade=CascadeType.ALL )
-
+	@JsonIgnore
 	private Set<Gallery> galleries; 
+
     @Column(nullable = true)
 
 	private int PhoneNumber;
