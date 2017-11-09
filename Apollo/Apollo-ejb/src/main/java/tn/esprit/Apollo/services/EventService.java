@@ -1,6 +1,7 @@
 package tn.esprit.Apollo.services;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -9,8 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import tn.esprit.Apollo.persistence.Event;
-import tn.esprit.Apollo.persistence.ShowRoom;
-import tn.esprit.Apollo.persistence.Ticket;
+
 
 /**
  * Session Bean implementation class EventService
@@ -65,10 +65,17 @@ public class EventService implements EventServiceRemote {
 		return false;
 	}
 	
+
+
+	@Override
+	public List<Event> findByTerm(String term) {
+		return em.createQuery("SELECT e FROM Event e WHERE"
+				+ " (e.description LIKE CONCAT('%',:term,'%') OR e.title LIKE CONCAT('%',:term,'%') )")
+				.setParameter("term", term).getResultList();
+
+	}
+	
 }
-
-
-
 //    @Override
 //	public Event addEvent(Event event) {
 //		em.persist(event);

@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
-import tn.esprit.Apollo.persistence.Event;
 import tn.esprit.Apollo.persistence.Ticket;
 
 @Remote
@@ -16,7 +15,9 @@ public interface TicketServiceRemote {
 	void deleteTicket(int id);
 	Ticket findById(int id);
 	public boolean FindTicketExist(int id);
-	public List<Ticket> readTicketsOfEvent(int id);
+	List<Ticket> readTicketsOfEvent(int id);
+	List<Ticket> readTicketsOfEventVip(int id);
+	List<Ticket> readTicketsOfEventNormal(int id);
 	
 	
 }

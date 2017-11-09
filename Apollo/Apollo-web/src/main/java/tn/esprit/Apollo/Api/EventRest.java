@@ -16,10 +16,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import tn.esprit.Apollo.persistence.Event;
-import tn.esprit.Apollo.persistence.Ticket;
 import tn.esprit.Apollo.services.EventService;
+import tn.esprit.Authentificateur.JWTTokenNeeded;
 
-@Path(value="event")
+@Path(value="events")
 @Stateless
 @LocalBean
 public class EventRest {
@@ -28,6 +28,7 @@ public class EventRest {
 
 	
 	@GET
+// 	@JWTTokenNeeded(role="Admin") 
 	@Path(value="{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response findOne(@PathParam("id") int id){
@@ -40,45 +41,63 @@ public class EventRest {
 	}
 	
 	@GET
+// 	@JWTTokenNeeded(role="user")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response findAll(){
-		for (Event e : eventService.readEvent()) {
-			System.out.println(e.getId());
-		}
 		if (eventService.readEvent().isEmpty() == false)
 			return Response.ok(eventService.readEvent()).build();
 		return Response.status(Response.Status.NOT_FOUND).build();
 	}
 	
 	@POST
+// 	@JWTTokenNeeded(role="GalleryOwner")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createEvent(Event event) {
-		eventService.createEvent(event);
-		return Response.status(Status.CREATED).build();
+		if (event.getCapacity() <= event.getGallery().getMaxCapacity())
+		{
+			eventService.createEvent(event);
+			return Response.status(Status.CREATED).build();
+		}
+	return Response.status(Status.NOT_FOUND).build();
 	}
 	
 	
 	@DELETE
+// 	@JWTTokenNeeded(role="Admin")
 	@Path(value="{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteEvent(@PathParam("id") int id) {
 		if (eventService.FindEventExist(id))
 		{
 			eventService.deleteEvent(id);
-			return Response.ok().build();
+			return Response.status(204).build();
 		}
 		return Response.status(Response.Status.NOT_FOUND).build();
 	}
 	
 	@PUT
+// 	@JWTTokenNeeded(role="Admin")
+	@Path(value="{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateTicket(Event event) {
-		if(eventService.FindEventExist(event.getId()))
+	public Response updateTicket(@PathParam("id") int id,Event event) {
+		if(eventService.FindEventExist(id))
 		{
+			event.setId(id);
 			eventService.updateEvent(event);
-			return Response.status(Status.ACCEPTED).build();
+			return Response.status(Status.OK).build();
 		}
 		return Response.status(Status.NOT_FOUND).build();
+	}
+	
+	@GET
+// 	@JWTTokenNeeded(role="user")
+	@Path(value="/search/{term}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response findByTerm(@PathParam("term") String term){
+		if (eventService.findByTerm(term).isEmpty() == false)
+			return Response.ok(eventService.findByTerm(term)).build();
+		return Response.status(Response.Status.NOT_FOUND).build();
+	
 	}
 	
 }
