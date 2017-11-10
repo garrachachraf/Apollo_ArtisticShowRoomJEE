@@ -1,7 +1,8 @@
 package tn.esprit.Apollo.persistence;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Embeddable;
 
 /**
  * Entity implementation class for Entity: RentingPk
@@ -10,12 +11,18 @@ import javax.persistence.*;
 @Embeddable
 
 public class RentingPk implements Serializable {
- private int galleryId;
- private int artistId;	
+	private int galleryId;
+	private int artistId;
 	private static final long serialVersionUID = 1L;
 
 	public RentingPk() {
 		super();
+	}
+
+	public RentingPk(int galleryId, int artistId) {
+		super();
+		this.galleryId = galleryId;
+		this.artistId = artistId;
 	}
 
 	public int getGalleryId() {
@@ -58,5 +65,5 @@ public class RentingPk implements Serializable {
 			return false;
 		return true;
 	}
-   
+
 }

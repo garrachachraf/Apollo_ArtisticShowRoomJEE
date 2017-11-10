@@ -6,47 +6,23 @@ import java.util.Date;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
-import tn.esprit.Apollo.loggerListener.TicketLoggerListener;
-
 /**
  * Entity implementation class for Entity: Ticket
  *
  */
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "id")
 @Entity
-
-@EntityListeners(TicketLoggerListener.class)
-public class Ticket implements Serializable {
-
-	   
+public class Ticket implements Serializable {  
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private static final long serialVersionUID = 1L;
-//    private Date ticketDate;
     private String title;
-    private String description;
+    private String note;
     private Float price;
     private Date orderDate;
-//    @JsonIgnore
-//	@JsonIdentityInfo
-//    @JsonManagedReference(value="event")
-//    @ManyToOne(fetch=FetchType.EAGER)
-//   @JoinColumn(name="forumAnswerId",referencedColumnName="id",insertable=true,updatable=true,nullable=true)
-//    @JsonManagedReference
-//    @JsonBackReference 
-//    @JoinColumn(name="event_id",referencedColumnName="id")
-//    @JsonBackReference("evtik")
+
     @ManyToOne
     private Event event;
-//    @JsonBackReference 
 	public Event getEvent() {
 		return event;
 	}
@@ -54,7 +30,14 @@ public class Ticket implements Serializable {
 		this.event = event;
 	}
 	public Ticket() {
-		super();
+	}
+	
+	
+	public Ticket(Integer id, String title, String note, Float price) {
+		this.id = id;
+		this.title = title;
+		this.note = note;
+		this.price = price;
 	}
 	public Integer getId() {
 		return id;
@@ -62,23 +45,22 @@ public class Ticket implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-//	public Date getTicketDate() {
-//		return ticketDate;
-//	}
-//	public void setTicketDate(Date ticketDate) {
-//		this.ticketDate = ticketDate;
-//	}
 	public String getTitle() {
 		return title;
 	}
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getDescription() {
-		return description;
+	public String getNote() {
+		return note;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setNote(String description) {
+		this.note = description;
+	}
+	@Override
+	public String toString() {
+		return "Ticket [title=" + title + ", note=" + note + ", price=" + price + ", orderDate="
+				+ orderDate+ "]";
 	}
 	public Float getPrice() {
 		return price;

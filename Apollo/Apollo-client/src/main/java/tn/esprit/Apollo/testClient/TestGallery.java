@@ -120,6 +120,10 @@ public class TestGallery {
 			
 			/****************************/
 		    proxy.AddGallery(gallery);
+		    proxy.EditGallery(gallery);
+		    
+		    
+		    
 		    proxy.AddGallery(gallery2);
 		     
 		    FileGenerator myFile = new FileGenerator() ;

@@ -9,16 +9,13 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import tn.esprit.Apollo.loggerListener.EventLoggerListener;
 
 /**
  * Entity implementation class for Entity: Event
  *
  */
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "id")
-@Entity
 
-@EntityListeners(EventLoggerListener.class)
+@Entity
 public class Event implements Serializable {
 
 	 
@@ -32,29 +29,30 @@ public class Event implements Serializable {
 	private Date startDate;
 	private Date endDate;
 	private Integer capacity;
-	private EventStatus status;
-	private String imagePath;
 	@ManyToOne
 	private Gallery gallery;
 	@JsonIgnore
 	@OneToMany(mappedBy="event",fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	private Set<Ticket> tickets;
-//	@JoinColumn(name = "galleryId", referencedColumnName = "id")
-//	@JsonManagedReference
-//	@JsonBackReference("galev")
-//	@OneToMany(fetch=FetchType.EAGER)
-//	@OneToMany(orphanRemoval=true) les enfs
-//	@JsonIgnore
-//	@JsonIdentityInfo
-//	@Cascade(org.hibernate.annotations.CascadeType.DELETE)
-//	@JsonBackReference(value="tickets")
-//	@OneToMany(mappedBy="event", fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
-//	@JsonManagedReference("evtik")
-
 	
 
 	public Set<Ticket> getTickets() {
 		return tickets;
+	}
+
+
+	public Event(Integer id, String title, String description, Date creationDate, Date startDate, Date endDate,
+			Integer capacity, Gallery gallery, Set<Ticket> tickets) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.description = description;
+		this.creationDate = creationDate;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.capacity = capacity;
+		this.gallery = gallery;
+		this.tickets = tickets;
 	}
 
 
@@ -128,27 +126,20 @@ public class Event implements Serializable {
 		this.capacity = capacity;
 	}
 	
-	public EventStatus getStatus() {
-		return status;
-	}
-	public void setStatus(EventStatus status) {
-		this.status = status;
-	}
 
 
 
-	public String getImagePath() {
-		return imagePath;
-	}
 
 
-	public void setImagePath(String imagePath) {
-		this.imagePath = imagePath;
+
+@Override
+	public String toString() {
+		return "Event [id=" + id + ", title=" + title + ", description=" + description + ", creationDate="
+				+ creationDate + ", startDate=" + startDate + ", endDate=" + endDate + ", capacity=" + capacity
+			 + ", gallery=" + gallery + ", tickets=" + tickets + "]";
 	}
 
-//	@JsonProperty(value = "galleryid")
-//	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-//	@JsonIdentityReference(alwaysAsId = true) 
+
 	public Gallery getGallery() {
 		return gallery;
 	}

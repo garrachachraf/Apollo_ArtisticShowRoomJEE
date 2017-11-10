@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response.Status;
 import tn.esprit.Apollo.persistence.Renting;
 import tn.esprit.Apollo.services.RentingServiceRemote;
 
-@Path(value="renting")
+@Path(value="rentings/v1")
 @Stateless
 @LocalBean
 public class RentingRest 
@@ -34,7 +34,7 @@ public class RentingRest
 	}
 	
 	@DELETE
-	@Path(value="erase/{id}")
+	@Path(value="{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteRenting(@PathParam("id") int id)
 	{

@@ -63,6 +63,7 @@ public class UserController {
 		
 		System.out.println(u.getRole().toString());
 		if (u.getRole().equals("Artist")) {
+			System.out.println("here !");
 			Artist a = new Artist() ;
 			a.setCity(u.getCity());
 			a.setCountry(u.getCountry());

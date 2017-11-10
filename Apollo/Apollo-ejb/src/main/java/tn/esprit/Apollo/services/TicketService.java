@@ -59,6 +59,17 @@ public class TicketService implements TicketServiceRemote {
 	public List<Ticket> readTicketsOfEvent(int id) {
 		return em.createQuery("select t from Ticket t where t.event.id = :id").setParameter("id", id).getResultList();
 	}
+	
+	
+	@Override
+	public List<Ticket> readTicketsOfEventVip(int id) {
+		return em.createQuery("select t from Ticket t where (t.event.id = :id and t.title LIKE ('%vip%'))").setParameter("id", id).getResultList();
+	}
+	
+	@Override
+	public List<Ticket> readTicketsOfEventNormal(int id) {
+		return em.createQuery("select t from Ticket t where (t.event.id = :id and t.title NOT LIKE ('%vip%'))").setParameter("id", id).getResultList();
+	}
 //
 //	public List<Ticket> readTickets(int id) {
 //	return em.createQuery("select t from Ticket t where t.event_id = :id").setParameter("id", id).getResultList();

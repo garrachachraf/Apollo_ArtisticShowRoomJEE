@@ -59,13 +59,13 @@ public class RentingService implements RentingServiceRemote {
 	@Override
 	public List<Renting> findRentingByArtist(int artistId) 
 	{
-		return (List<Renting>)(entityManager.createQuery("Select r from Renting r where r.rentingPk.artistId =: id").setParameter("id", artistId).getResultList());	
+		return (List<Renting>)(entityManager.createQuery("Select r from Renting r where r.rentingPk.artistId =:id").setParameter("id", artistId).getResultList());	
 	}
 
 	@Override
 	public List<Renting> findRentingByGallery(int galleryId) 
 	{
-		return (List<Renting>)(entityManager.createQuery("Select r from Renting r where r.rentingPk.galleryId =: id").setParameter("id", galleryId).getResultList());	
+		return (List<Renting>)(entityManager.createQuery("Select r from Renting r where r.rentingPk.galleryId =:id").setParameter("id", galleryId).getResultList());	
 	}
 
 }
