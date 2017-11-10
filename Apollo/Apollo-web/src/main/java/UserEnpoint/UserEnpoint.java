@@ -55,11 +55,12 @@ public class UserEnpoint {
 			 //Authenticate the user using the credentials provided
 		      String role=authenticate(login,password).getDecriminatorValue();
 		      int id= authenticate(login,password).getId();
+		      User u=authenticate(login,password);
 		      System.out.println(authenticate(login, password).toString());
 			 //Issue a token for the user
 			  String token = issueToken(login,role,id);
 			 //Return the token on the response
-			return Response.ok(role).header(AUTHORIZATION, "Bearer " + token).build();
+			return Response.ok(u).header(AUTHORIZATION, "Bearer " + token).build();
 
 		} catch (Exception e) {
 			System.out.println("" + e);
