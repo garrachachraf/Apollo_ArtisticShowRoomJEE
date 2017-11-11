@@ -8,6 +8,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -22,6 +23,7 @@ import io.jsonwebtoken.Jwts;
 import javax.ws.rs.core.Context;
 
 import tn.esprit.Apollo.persistence.Artist;
+import tn.esprit.Apollo.persistence.Event;
 import tn.esprit.Apollo.persistence.Gallery;
 import tn.esprit.Apollo.persistence.GalleryOwner;
 import tn.esprit.Apollo.persistence.ShowRoom;
@@ -60,8 +62,6 @@ public class UserController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createProfile(User u) {
 
-		
-		System.out.println(u.getRole().toString());
 		if (u.getRole().equals("Artist")) {
 			Artist a = new Artist() ;
 			a.setCity(u.getCity());
@@ -110,11 +110,33 @@ public class UserController {
 	}
 	
 	@GET
-	@JWTTokenNeeded(role="Artist")
+	@JWTTokenNeeded()
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response AllUsers(@Context HttpHeaders header){
 		
 		List<User> lst = UserService.GetAllUsers() ;
+		lst.forEach(u->u.setPassword("not allowed to see"));
+		return Response.status(Status.OK).entity(lst).build();
+	}
+	
+	@GET
+	@JWTTokenNeeded()
+	@Path("/artists")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response AllArtists(@Context HttpHeaders header){
+		
+		List<Artist> lst = ArtistService.GetAllUsers() ;
+		lst.forEach(u->u.setPassword("not allowed to see"));
+		return Response.status(Status.OK).entity(lst).build();
+	}
+	
+	@GET
+	@JWTTokenNeeded()
+	@Path("/gowners")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response AllGalleryOwners(@Context HttpHeaders header){
+		
+		List<GalleryOwner> lst = GalleryOwnerService.GetAllUsers() ;
 		lst.forEach(u->u.setPassword("not allowed to see"));
 		return Response.status(Status.OK).entity(lst).build();
 	}
@@ -132,6 +154,16 @@ public class UserController {
 		
 	}
 	
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updateTicket(Artist user) {
+		if(ArtistService.FindUserById(user.getId()) !=null)
+		{
+			ArtistService.UpdateUser(user);
+			return Response.status(Status.ACCEPTED).build();
+		}
+		return Response.status(Status.NOT_FOUND).build();
+	}
 	
 	public User usernameToken(String authorizationHeader){
 		

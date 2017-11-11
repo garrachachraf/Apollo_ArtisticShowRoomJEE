@@ -28,7 +28,7 @@ import tn.esprit.Apollo.loggerListener.GalleryOwnerLoggerListener;
 public class GalleryOwner extends User implements Serializable {
 	@JsonManagedReference("owner-galleries")
     @OneToMany(mappedBy="galleryOwner",fetch=FetchType.LAZY,cascade=CascadeType.ALL )
-	
+	@JsonIgnore
 	private Set<Gallery> galleries;
     @Column(nullable = true)
 

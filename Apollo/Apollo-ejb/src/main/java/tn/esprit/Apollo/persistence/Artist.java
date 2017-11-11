@@ -31,7 +31,7 @@ public class Artist extends GalleryOwner implements Serializable {
     @JsonIgnore
     private List<ArtWork> artworks;
     @OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )
-    
+    @JsonIgnore
 	private List<ShowRoom> showrooms ; 
     @Null
     private ArtistType type;
