@@ -22,7 +22,9 @@ import tn.esprit.Apollo.loggerListener.GalleryLoggerListener;
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue("Artist")
+
 @EntityListeners(ArtistLoggerListener.class)
+
 public class Artist extends GalleryOwner implements Serializable {
 	@OneToMany(mappedBy="artist",fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )
 	private List<Follow> followers;
@@ -32,7 +34,9 @@ public class Artist extends GalleryOwner implements Serializable {
     private List<ArtWork> artworks;
     @OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )
     @JsonIgnore
+
 	private List<ShowRoom> showrooms ; 
+
     @Null
     private ArtistType type;
     public List<ShowRoom> getShowrooms() {

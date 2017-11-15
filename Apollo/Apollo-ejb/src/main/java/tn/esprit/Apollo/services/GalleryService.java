@@ -21,7 +21,6 @@ import tn.esprit.Apollo.persistence.Schedule;
  * Session Bean implementation class GalleryService
  */
 @Stateless
-@LocalBean
 public class GalleryService implements GalleryServiceRemote {
 
     /**
@@ -35,9 +34,12 @@ public class GalleryService implements GalleryServiceRemote {
 
 	@Override
 	public void AddGallery(Gallery gallery)
-	{	
+	{	///
 			entityManager.persist(gallery);
+			//delete
+			//merge*****
 			entityManager.flush();
+	///
 	}
 
 	@Override
@@ -69,7 +71,6 @@ public class GalleryService implements GalleryServiceRemote {
 		} catch (Exception e) {
 			System.out.println(e);
 			return false ;
-			// TODO: handle exception
 		}
 	}
 

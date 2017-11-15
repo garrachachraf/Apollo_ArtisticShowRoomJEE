@@ -3,6 +3,7 @@ package tn.esprit.Apollo.services;
 import java.util.List;
 
 import javax.ejb.Remote;
+import javax.ws.rs.core.HttpHeaders;
 
 import tn.esprit.Apollo.persistence.User;
 

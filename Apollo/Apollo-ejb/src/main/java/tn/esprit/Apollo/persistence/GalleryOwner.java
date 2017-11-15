@@ -26,10 +26,11 @@ import tn.esprit.Apollo.loggerListener.GalleryOwnerLoggerListener;
 @EntityListeners(GalleryOwnerLoggerListener.class)
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "id")
 public class GalleryOwner extends User implements Serializable {
-	@JsonManagedReference("owner-galleries")
     @OneToMany(mappedBy="galleryOwner",fetch=FetchType.LAZY,cascade=CascadeType.ALL )
 	@JsonIgnore
+
 	private Set<Gallery> galleries;
+
     @Column(nullable = true)
 
 	private int PhoneNumber;

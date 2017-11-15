@@ -1,8 +1,9 @@
 package tn.esprit.Apollo.Api;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.POST;
@@ -16,57 +17,40 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import io.jsonwebtoken.Jwts;
+import tn.esprit.Apollo.persistence.ArtWork;
 import tn.esprit.Apollo.persistence.User;
+import tn.esprit.Apollo.services.OrderService;
 import tn.esprit.Apollo.services.UserService;
 import tn.esprit.Apollo.services.WishListService;
 import tn.esprit.Authentificateur.JWTTokenNeeded;
 
-@Path(value="wishlist")
-public class WishListController {
+@Path(value="order")
+public class OrderController {
 	@EJB
-	WishListService wishListService;
+	OrderService orderService;
 	@EJB
 	UserService userService;
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@JWTTokenNeeded(role="user")
-	public Response getWishList(@Context HttpHeaders header){
-		User user = usernameToken(header);
-		return Response.status(Status.OK).entity(wishListService.getWishList(user)).build();
-	}
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
 	@JWTTokenNeeded(role="user") // role Admin
-	@Path(value="all")
-	public Response getAllWishLists(){
-		return Response.status(Status.OK).entity(wishListService.getAllWishLists()).build();
+	public Response getAllorders(){
+		return Response.status(Status.OK).entity(orderService.GetAllOrders()).build();
 	}
 	
 	@GET
-	@Path(value="total")
+	@Path(value="{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@JWTTokenNeeded(role="user")
-	public Response getTotal(@Context HttpHeaders header){
-		User user = usernameToken(header);
-		return Response.status(Status.OK).entity(wishListService.getTotal(user)).build();
+	public Response getByUser(@PathParam("userId")int userId){
+		return Response.status(Status.OK).entity(orderService.GetOrdersByUser(userId)).build();
 	}	
 	@POST
-	@Path(value="{id}")
 	@JWTTokenNeeded(role="user")
-	public Response addItem(@PathParam("id")int itemId,@Context HttpHeaders header) {
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response createOrder(List<ArtWork> artworks,@Context HttpHeaders header) {
 		User user = usernameToken(header);
-		wishListService.addItem(itemId,user);
-		return Response.status(Status.OK).build();
-	}
-	
-	@DELETE
-	@Path(value="{id}")
-	@JWTTokenNeeded(role="user")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteItem(@PathParam("id") int id,@Context HttpHeaders header) {
-		User user = usernameToken(header);
-		wishListService.deleteItem(id,user);
+		orderService.createOrder(artworks,user);
 		return Response.status(Status.OK).build();
 	}
 	

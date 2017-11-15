@@ -1,10 +1,12 @@
 package tn.esprit.Apollo.persistence;
 
-import java.io.Serializable;
-import java.util.List;
-import javax.persistence.*;
+import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
 
 import tn.esprit.Apollo.Facade.EntityBone;
 
@@ -13,39 +15,28 @@ import tn.esprit.Apollo.Facade.EntityBone;
  *
  */
 @Entity
-
 public class Collection extends EntityBone {
 
-	   
 	@Transient
 	private static final long serialVersionUID = 1L;
 	private String description;
+	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	private Set<ArtWork> artworks;
 
-    @JsonManagedReference
-	@ManyToMany(cascade=CascadeType.PERSIST)
-	private List<ArtWork> artworks;
-	
-
-	
-	
-	
-	
-	
-	public List<ArtWork> getArtworks() {
+	public Set<ArtWork> getArtworks() {
 		return artworks;
 	}
-	public void setArtworks(List<ArtWork> artworks) {
+
+	public void setArtworks(Set<ArtWork> artworks) {
 		this.artworks = artworks;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-
-	
-   
 }

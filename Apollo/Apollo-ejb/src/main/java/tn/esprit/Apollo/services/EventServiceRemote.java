@@ -16,6 +16,8 @@ public interface EventServiceRemote {
 	void deleteEvent(int id);
 	Event findById(int id);
 	boolean FindEventExist(int id);
+	List<Event> findByTerm(String term);
+	
 //	List<ShowRoom> findByArtist(int artistId);
 //	List<ShowRoom> findByKeyWord(String keyWord);
 	

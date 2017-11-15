@@ -25,8 +25,7 @@ import tn.esprit.Apollo.loggerListener.ArtWorkLoggerListener;
  *
  */
 @Entity
-
-@EntityListeners(ArtWorkLoggerListener.class)
+//@EntityListeners(ArtWorkLoggerListener.class)
 public class ArtWork extends EntityBone {
 
 
@@ -46,6 +45,7 @@ public class ArtWork extends EntityBone {
 	private Set<Rating> ratings;
 	private float price;
 	private ArtWorkCategory category;
+	
 
 	public String getMediaPath() {
 		return mediaPath;

@@ -1,5 +1,7 @@
 package tn.esprit.Apollo.services;
 
+import java.util.List;
+
 import javax.ejb.Local;
 
 import tn.esprit.Apollo.persistence.User;
@@ -11,5 +13,5 @@ public interface WishListServiceLocal {
 	void deleteItem(int itemId, User user);
 	double getTotal(User user);
 	WhishList getWishList(User user);
-
+	List<WhishList> getAllWishLists();
 }

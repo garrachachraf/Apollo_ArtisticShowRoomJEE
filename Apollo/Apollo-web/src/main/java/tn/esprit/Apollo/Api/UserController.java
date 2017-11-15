@@ -63,6 +63,7 @@ public class UserController {
 	public Response createProfile(User u) {
 
 		if (u.getRole().equals("Artist")) {
+			System.out.println("here !");
 			Artist a = new Artist() ;
 			a.setCity(u.getCity());
 			a.setCountry(u.getCountry());
@@ -110,9 +111,9 @@ public class UserController {
 	}
 	
 	@GET
-	@JWTTokenNeeded()
+	//@JWTTokenNeeded()
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response AllUsers(@Context HttpHeaders header){
+	public Response AllUsers(){
 		
 		List<User> lst = UserService.GetAllUsers() ;
 		lst.forEach(u->u.setPassword("not allowed to see"));
@@ -120,7 +121,7 @@ public class UserController {
 	}
 	
 	@GET
-	@JWTTokenNeeded()
+	//@JWTTokenNeeded()
 	@Path("/artists")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response AllArtists(@Context HttpHeaders header){
@@ -131,7 +132,7 @@ public class UserController {
 	}
 	
 	@GET
-	@JWTTokenNeeded()
+	//@JWTTokenNeeded()
 	@Path("/gowners")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response AllGalleryOwners(@Context HttpHeaders header){

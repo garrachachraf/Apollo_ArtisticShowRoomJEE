@@ -12,6 +12,7 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -37,10 +38,6 @@ public class ArtWorkRest {
 	private ArtWorkService ARTWORK;
 	@EJB
 	UserServiceLocal UserService ;
-	
-	
-	
-	
 	
 	// recherche par id ( very simple one )
 	@GET
@@ -87,16 +84,17 @@ public class ArtWorkRest {
 	
 	@POST
 	@JWTTokenNeeded(role="Artist")
-	@Path(value = "add")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response create(ArtWork art,@HeaderParam("AUTHORIZATION") String token ) {
 		Artist artist=  new Artist();
 		String s = "maissen";
+		
 		// Extract the token from the HTTP Authorization header
-		token =token.substring("Bearer".length() + 1).trim();
+		token =token.substring("Bearer".length()+1).trim();
 		String id=Jwts.parser().setSigningKey(s).parseClaimsJws(token).getBody().getId();
 		artist.setId(UserService.FindUserById(Integer.valueOf(id)).getId());
-	    art.setArtist(artist);
+	    //art.setArtist(artist);
+		
 		if (ARTWORK.create(art) == null) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
@@ -106,33 +104,54 @@ public class ArtWorkRest {
 	}
 	// delete art work
 	@DELETE
-	@Path(value = "remove/{id}")
+	@JWTTokenNeeded(role="Artist")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response remove(@PathParam("id") int id) {
+	public Response remove(ArtWork art ,@HeaderParam("AUTHORIZATION") String token) {
 		ArtWork newArtWork = new ArtWork();
-		newArtWork.setId(id);
+		//newArtWork.setId(id);
 		System.out.println(newArtWork.toString());
-		if (ARTWORK.delete(newArtWork) == false) {
+		String s = "maissen";
+		// Extract the token from the HTTP Authorization header
+		token =token.substring("Bearer".length() + 1).trim();
+		String idUser=Jwts.parser().setSigningKey(s).parseClaimsJws(token).getBody().getId();
+		try {
+			int userart=ARTWORK.read(art.getId()).getArtist().getId();
+			if(userart != art.getArtist().getId()){
+				return Response.status(Response.Status.FORBIDDEN).build();}
+			
+		} catch (Exception e) {
+			System.out.println("not defined");
+		}
+		
+		if (ARTWORK.delete(art) == false) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		// return Response.status(Response.Status.OK).build();
 		return Response.ok().build();
 
 	}
-	@POST
-	@Path(value = "update")
+	@PUT
+	@JWTTokenNeeded(role="Artist")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response update(@FormParam("id") int id, @FormParam("title") String title,
-			@FormParam("descreption") String descreption, @FormParam("price") float price,
-			@FormParam("category") ArtWorkCategory category) {
-		ArtWork newArtWork = new ArtWork();
-		newArtWork.setId(id);
-		newArtWork.setTitle(title);
-		newArtWork.setDescreption(descreption);
-		newArtWork.setCategory(category);
-		newArtWork.setPrice(price);
-		System.out.println(newArtWork.toString());
-		if (ARTWORK.update(newArtWork) == false) {
+	public Response update(ArtWork art,@HeaderParam("AUTHORIZATION") String token) {
+		
+		String s = "maissen";
+		// Extract the token from the HTTP Authorization header
+		token =token.substring("Bearer".length() + 1).trim();
+		String idUser=Jwts.parser().setSigningKey(s).parseClaimsJws(token).getBody().getId();
+		try {
+			int userart=ARTWORK.read(art.getId()).getArtist().getId();
+			if(userart != art.getArtist().getId()){
+				return Response.status(Response.Status.FORBIDDEN).build();}
+			
+		} catch (Exception e) {
+			System.out.println("not defined");
+		}
+		
+	
+		
+	
+		if (ARTWORK.update(art) == false) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		// return Response.status(Response.Status.OK).build();

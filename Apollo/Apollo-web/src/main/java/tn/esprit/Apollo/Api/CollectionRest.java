@@ -6,15 +6,21 @@ import javax.ejb.Stateless;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import io.jsonwebtoken.Jwts;
+import tn.esprit.Apollo.persistence.Artist;
 import tn.esprit.Apollo.persistence.Collection;
 import tn.esprit.Apollo.services.CollectionServiceRemote;
+import tn.esprit.Apollo.services.UserServiceLocal;
+import tn.esprit.Authentificateur.JWTTokenNeeded;
 
 @Path(value = "Collection")
 @Stateless
@@ -22,6 +28,8 @@ import tn.esprit.Apollo.services.CollectionServiceRemote;
 public class CollectionRest {
 	@EJB
 	private CollectionServiceRemote Collection;
+	@EJB
+	UserServiceLocal UserService ;
 
 	// recherche par id
 	@GET
@@ -35,13 +43,10 @@ public class CollectionRest {
 	}
 
 	@POST
-	@Path(value = "add")
+	@JWTTokenNeeded(role="Artist")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(@FormParam("descreption") String descreption) {
-		Collection newCollection = new Collection();
-		newCollection.setDescription(descreption);
-		System.out.println(newCollection.toString());
-		if (Collection.create(newCollection) == null) {
+	public Response create(Collection col,@HeaderParam("AUTHORIZATION") String token) {
+		if (Collection.create(col) == null) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		// return Response.status(Response.Status.OK).build();
@@ -50,13 +55,12 @@ public class CollectionRest {
 	}
 
 	@DELETE
-	@Path(value = "remove/{id}")
+	@JWTTokenNeeded(role={"Artist"})
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response remove(@PathParam("id") int id) {
-		Collection newArtWork = new Collection();
-		newArtWork.setId(id);
-		System.out.println(newArtWork.toString());
-		if (Collection.delete(newArtWork) == false) {
+	public Response remove(Collection col) {
+		
+		
+		if (Collection.delete(col) == false) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		// return Response.status(Response.Status.OK).build();
@@ -64,14 +68,11 @@ public class CollectionRest {
 
 	}
 
-	@GET
-	@Path(value = "update/{id}")
+	@PUT
+	@JWTTokenNeeded(role={"Artist"})
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response update(@PathParam("id") int id) {
-		Collection newArtWork = new Collection();
-		newArtWork.setId(id);
-		System.out.println(newArtWork.toString());
-		if (Collection.update(newArtWork) == false) {
+	public Response update(Collection col) {
+		if (Collection.update(col) == false) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		// return Response.status(Response.Status.OK).build();
