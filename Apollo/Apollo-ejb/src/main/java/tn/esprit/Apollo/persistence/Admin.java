@@ -10,7 +10,9 @@ import javax.persistence.InheritanceType;
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue("Admin")
-
 public class Admin extends User implements Serializable{
-
+	public Admin() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 }
