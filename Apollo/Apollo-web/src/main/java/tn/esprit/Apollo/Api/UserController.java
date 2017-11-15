@@ -22,12 +22,14 @@ import io.jsonwebtoken.Jwts;
 
 import javax.ws.rs.core.Context;
 
+import tn.esprit.Apollo.persistence.Admin;
 import tn.esprit.Apollo.persistence.Artist;
 import tn.esprit.Apollo.persistence.Event;
 import tn.esprit.Apollo.persistence.Gallery;
 import tn.esprit.Apollo.persistence.GalleryOwner;
 import tn.esprit.Apollo.persistence.ShowRoom;
 import tn.esprit.Apollo.persistence.User;
+import tn.esprit.Apollo.services.AdminServiceLocal;
 import tn.esprit.Apollo.services.ArtistServiceLocal;
 import tn.esprit.Apollo.services.GalleryOwnerServiceLocal;
 import tn.esprit.Apollo.services.UserServiceLocal;
@@ -42,7 +44,8 @@ public class UserController {
 	ArtistServiceLocal ArtistService ;
 	@EJB
 	GalleryOwnerServiceLocal GalleryOwnerService ;
-	
+	@EJB
+	AdminServiceLocal AdminService ;
 	
 
 	
@@ -92,6 +95,21 @@ public class UserController {
 			g.setUserName(u.getUserName());
 			g.setZipCode(u.getZipCode());
 			GalleryOwnerService.CreateUser(g);
+		}
+		else if (u.getRole().equals("Admin")) {
+			Admin au = new Admin() ;
+			au.setCity(u.getCity());
+			au.setCountry(u.getCountry());
+			au.setEmail(u.getEmail());
+			au.setFirstname(u.getFirstname());
+			au.setGender(u.getGender());
+			au.setLastname(u.getLastname());
+			au.setPassword(u.getPassword());
+			au.setState(u.getState());
+			au.setStreet(u.getStreet());
+			au.setUserName(u.getUserName());
+			au.setZipCode(u.getZipCode());
+			AdminService.CreateAdmin(au);
 		}
 		else {
 			UserService.CreateUser(u);
