@@ -18,6 +18,7 @@ import tn.esprit.Apollo.loggerListener.NotificationLoggerListener;
 
 @EntityListeners(NotificationLoggerListener.class)
 public class Notification {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
