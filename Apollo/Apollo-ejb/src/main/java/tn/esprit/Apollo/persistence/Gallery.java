@@ -28,7 +28,7 @@ public class Gallery implements Serializable {
 	 private Double surface;
 	 private String description;
 	 @ManyToOne
-	 @JsonBackReference("owner-galleries")
+	 @JsonIgnore
      private GalleryOwner galleryOwner;
 	 
 	 @JsonIgnore

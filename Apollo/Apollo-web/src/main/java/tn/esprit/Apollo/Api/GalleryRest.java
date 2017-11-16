@@ -21,7 +21,7 @@ import tn.esprit.Apollo.persistence.Schedule;
 import tn.esprit.Apollo.services.GalleryServiceRemote;
 import tn.esprit.Authentificateur.JWTTokenNeeded;
 
-@Path(value="gallery")
+@Path(value="galleries/v2/")
 @Stateless
 @LocalBean
 
@@ -41,7 +41,7 @@ public class GalleryRest
 	}
 	
 	@POST
-	@Path(value="edit")
+	@JWTTokenNeeded(role="GalleryOwner")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response editGallery(Gallery gallery)
 	{
@@ -52,7 +52,8 @@ public class GalleryRest
 	}
 	
 	@DELETE
-	@Path(value="erase/{id}")
+	@JWTTokenNeeded(role="GalleryOwner")
+	@Path(value="{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteGallery(@PathParam("id") int id)
 	{
@@ -61,7 +62,6 @@ public class GalleryRest
 	}
 	
 	@GET
-	@Path(value="all/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response findAll()
 	{
@@ -106,7 +106,7 @@ public class GalleryRest
 	}
 	
 	@POST
-	@Path(value="affectToCalenddar/{id}/")
+	@Path(value="calendar/{id}/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response affectPlanToSchedule(@PathParam("id") int id ,Schedule sch)
 	{
@@ -115,7 +115,7 @@ public class GalleryRest
 	}	
 	
 	@DELETE
-	@Path(value="calenddarOf/{idG}/erase/{idS}")
+	@Path(value="calendarOf/{idG}/erase/{idS}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteFromCalendar(@PathParam("idG") int idGallery , @PathParam("idS") int idSch)
 	{

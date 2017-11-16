@@ -3,12 +3,18 @@ package tn.esprit.Apollo.algorithme;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class FileGenerator {
 	 
@@ -28,33 +34,44 @@ public class FileGenerator {
 	public FileGenerator() {
 	}
 	
-	public void writeOnTextFile(String data) throws IOException
+	public void writeOnTextFile(Audit data) throws IOException 
 	{
-		Path fullPath = new File(root, fileName).toPath();
+		/*Path fullPath = new File(root, fileName).toPath();
 		// make sure file exists
-		Files.createDirectories(fullPath.getParent());
+		Files.createDirectories(fullPath.getParent());*/
+
+        ObjectMapper mapperObj = new ObjectMapper();
+         
+
+            String jsonStr = mapperObj.writeValueAsString(data);
+ 
 		
-		try (BufferedWriter bw = Files.newBufferedWriter(fullPath))
-		{
-			bw.write("**********************");
-			bw.write(data);
-            bw.write("**********************");
-            bw.newLine();
-		}
+		    FileWriter fw = new FileWriter("D:\\Audit.txt",true); //the true will append the new data
+		    fw.write("*******************************");
+		    fw.write("\r\n");
+			fw.write(jsonStr);
+			fw.write("\r\n");
+			fw.close();
+		
 	}
 	
 	public void writeOnJsonFile(Object obj) throws IOException 
 	{
 		
-		ObjectMapper mapper = new ObjectMapper();
+  		ObjectMapper mapper = new ObjectMapper();
+  		ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
+  		File f = new File("D:\\audit.json");
+  		if(f.exists() && !f.isDirectory()) { 
+  	        try {
+  	            // Serialize Java object info JSON file.
 
-        File file = new File("D:\\audit.json");
-        try {
-            // Serialize Java object info JSON file.
-            mapper.writeValue(file, obj);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+  	    		 writer.writeValue(f, obj);
+  	        } catch (IOException e) {
+  	            e.printStackTrace();
+  	        }
+  		    // do something
+  		}
+
 	}
 	 
 	

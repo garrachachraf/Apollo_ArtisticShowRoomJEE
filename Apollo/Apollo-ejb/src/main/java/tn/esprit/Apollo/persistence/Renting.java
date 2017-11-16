@@ -1,9 +1,13 @@
 package tn.esprit.Apollo.persistence;
 
 import java.io.Serializable;
-import javax.persistence.*;
 
-import tn.esprit.Apollo.loggerListener.NotificationLoggerListener;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import tn.esprit.Apollo.loggerListener.RentingLoggerListener;
 
 /**
@@ -14,45 +18,52 @@ import tn.esprit.Apollo.loggerListener.RentingLoggerListener;
 
 @EntityListeners(RentingLoggerListener.class)
 public class Renting implements Serializable {
-	
 
 	@EmbeddedId
-	 private RentingPk rentingPk;   
-    
+	private RentingPk rentingPk;
+
 	@ManyToOne
-    @JoinColumn(name="galleryId",referencedColumnName="id",insertable=false,updatable=false)
-     private Gallery gallery ;
-	
-    @ManyToOne
-	@JoinColumn(name="artistId",referencedColumnName="id",insertable=false,updatable=false)
-	 private Artist artist;
-	
+	@JoinColumn(name = "galleryId", referencedColumnName = "id", insertable = false, updatable = false)
+	private Gallery gallery;
+
+	@ManyToOne
+	@JoinColumn(name = "artistId", referencedColumnName = "id", insertable = false, updatable = false)
+	private Artist artist;
+
 	private static final long serialVersionUID = 1L;
 
 	public Renting() {
 		super();
 	}
-	 public RentingPk getRentingPk() {
-			return rentingPk;
-		}
 
-		public void setRentingPk(RentingPk rentingPk) {
-			this.rentingPk = rentingPk;
-		}
+	public Renting(Gallery gallery, Artist artist) {
+		super();
+		this.gallery = gallery;
+		this.artist = artist;
+		this.rentingPk = new RentingPk(gallery.getId(), artist.getId());
+	}
 
-		public Gallery getGallery() {
-			return gallery;
-		}
+	public RentingPk getRentingPk() {
+		return rentingPk;
+	}
 
-		public void setGallery(Gallery gallery) {
-			this.gallery = gallery;
-		}
+	public void setRentingPk(RentingPk rentingPk) {
+		this.rentingPk = rentingPk;
+	}
 
-		public Artist getArtist() {
-			return artist;
-		}
+	public Gallery getGallery() {
+		return gallery;
+	}
 
-		public void setArtist(Artist artist) {
-			this.artist = artist;
-		}
+	public void setGallery(Gallery gallery) {
+		this.gallery = gallery;
+	}
+
+	public Artist getArtist() {
+		return artist;
+	}
+
+	public void setArtist(Artist artist) {
+		this.artist = artist;
+	}
 }
