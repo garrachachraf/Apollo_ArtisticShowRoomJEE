@@ -8,23 +8,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.batch.runtime.Metric.MetricType;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
 
 import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
+import io.jsonwebtoken.Jwts;
+import net.coobird.thumbnailator.Thumbnails;
 import tn.esprit.Apollo.persistence.Media;
 import tn.esprit.Apollo.persistence.MediaType;
 import tn.esprit.Apollo.persistence.User;
 import tn.esprit.Apollo.services.MediaServiceRemote;
+import tn.esprit.Apollo.services.UserService;
+import tn.esprit.Apollo.services.UserServiceRemote;
+import tn.esprit.Authentificateur.JWTTokenNeeded;
 
 
 @Path("/upload")
@@ -32,11 +42,14 @@ public class UploadFileService {
 
 	private final String UPLOADED_FILE_PATH = "/tmp/";
 	@EJB
+	UserServiceRemote userservice = new UserService();
+	@EJB
 	MediaServiceRemote mediaservice ;
 	@POST
 	@Consumes("multipart/form-data")
+	@JWTTokenNeeded()
 	@Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
-	public Response uploadFile(MultipartFormDataInput input) {
+	public Response uploadFile(MultipartFormDataInput input , @Context HttpHeaders headershttp) {
 
 		String fileName = "";
 		Media m = new Media();
@@ -57,11 +70,13 @@ public class UploadFileService {
 					byte [] bytes = IOUtils.toByteArray(inputStream);
 					if (allowedMIMEType(header) && allowedExt(fileName)){
 					//constructs upload file path
-						m = detectType(m, fileName);
+					m = detectType(m, fileName);
 					fileName = UUID.randomUUID().toString()+fileName;
 					m.setPath(fileName);
-					fileName = fileName + UPLOADED_FILE_PATH;
-					writeFile(bytes,fileName);
+					
+					
+					writeFile(bytes,UPLOADED_FILE_PATH +fileName);
+					
 					
 				}
 				
@@ -71,11 +86,21 @@ public class UploadFileService {
 			}
 
 		}
+		m.setUser(usernameToken(headershttp));
+		try {
+			if(m.getType()==MediaType.photo){
+				Thumbnails.of(new File(UPLOADED_FILE_PATH +m.getPath()))
+				.size(160, 160)
+				.toFile(new File(UPLOADED_FILE_PATH +"thumbnail-"+m.getPath()));
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		
-		mediaservice.AddMediafile(m);
 		return Response.status(200)
-				.entity(mediaservice.FindByPath(m.getPath())).build();
+				.entity(mediaservice.AddMediafile(m)).build();
 
 	}
 
@@ -150,21 +175,40 @@ public class UploadFileService {
 		
 		return m;
 	}
-	
-	//save to somewhere
-	private void writeFile(byte[] content, String filename) throws IOException {
-
-		File file = new File(filename);
-
-		if (!file.exists()) {
-			file.createNewFile();
+	public  User usernameToken(HttpHeaders header){
+		String authorizationHeader = header.getHeaderString(HttpHeaders.AUTHORIZATION);
+		
+		if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+			throw new NotAuthorizedException("Authorization header must be provided");
 		}
+		String s = "maissen";
+		// Extract the token from the HTTP Authorization header
+		String token = authorizationHeader.substring("Bearer".length() + 1).trim();
+		String userName=Jwts.parser().setSigningKey(s).parseClaimsJws(token).getBody().getSubject();
+		System.out.println(userName);
+		
+		return userservice.FindUserByUsername(userName);
+	}
+	//save to somewhere
+	private void writeFile(byte[] content, String filename) {
+		try {
+			File file = new File(filename);
 
-		FileOutputStream fop = new FileOutputStream(file);
+			if (!file.exists()) {
+				file.createNewFile();
+			}
 
-		fop.write(content);
-		fop.flush();
-		fop.close();
+			FileOutputStream fop = new FileOutputStream(file);
+
+			fop.write(content);
+			fop.flush();
+			fop.close();
+			System.out.println("created");
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("Here");
+		}
+		
 
 	}
 	
