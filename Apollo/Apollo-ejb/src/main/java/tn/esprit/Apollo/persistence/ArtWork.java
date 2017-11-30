@@ -37,6 +37,7 @@ public class ArtWork extends EntityBone {
 	private String mediaPath;
 	@ManyToOne
 	@JsonBackReference(value="usertoartwork")
+	@JsonManagedReference(value="artworktouser")
 	private Artist artist;
 	@OneToOne(mappedBy = "artWork", cascade = CascadeType.ALL)
 	private Media media;

@@ -43,6 +43,15 @@ public class RatingController {
 		return Response.status(Status.OK).entity(ratingService.findByArtworkAndUser(artWorkId, user.getId())).build();
 	}
 	
+	@GET
+	@JWTTokenNeeded(role="user")
+	@Path(value="/rating/avg/{artWorkId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAvgRating(@PathParam("artWorkId") int artWorkId,@Context HttpHeaders header){
+		User user =usernameToken(header);
+		return Response.status(Status.OK).entity(ratingService.findByArtworkAndUser(artWorkId, user.getId())).build();
+	}
+	
 	@POST
 	@JWTTokenNeeded(role="user")
 	@Path(value="{artWorkId}/{value}")
