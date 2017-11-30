@@ -45,7 +45,7 @@ public class ShowRoomController {
 	}
 	
 	@GET
-	@JWTTokenNeeded(role="user")
+	//@JWTTokenNeeded(role="user")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response findAll(){
 		return Response.status(Status.OK).entity(showroomService.findAll()).build();
@@ -63,7 +63,7 @@ public class ShowRoomController {
 		return Response.status(Status.OK).entity(showroomService.findByKeyWord(keyword)).build();
 	}
 	@POST
-	@JWTTokenNeeded(role="user")
+	//@JWTTokenNeeded(role="user")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createShowroom(ShowRoom showroom,@Context HttpHeaders header) {
 		showroomService.createShowRoom(showroom);
@@ -78,7 +78,7 @@ public class ShowRoomController {
 	
 	@DELETE
 	@Path(value="{id}")
-	@JWTTokenNeeded(role="user")
+	//@JWTTokenNeeded(role="user")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteShowroom(@PathParam("id") int id) {
 		showroomService.deleteShowroom(id);
