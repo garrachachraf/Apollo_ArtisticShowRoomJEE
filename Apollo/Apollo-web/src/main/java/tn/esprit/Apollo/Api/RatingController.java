@@ -39,28 +39,24 @@ public class RatingController {
 	@Path(value="myrating/{artWorkId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getMyRating(@PathParam("artWorkId") int artWorkId,@Context HttpHeaders header){
+		Double rating =(double) 0;
 		User user =usernameToken(header);
-		return Response.status(Status.OK).entity(ratingService.findByArtworkAndUser(artWorkId, user.getId())).build();
-	}
-	
-	@GET
-	@JWTTokenNeeded(role="user")
-	@Path(value="/rating/avg/{artWorkId}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAvgRating(@PathParam("artWorkId") int artWorkId,@Context HttpHeaders header){
-		User user =usernameToken(header);
-		return Response.status(Status.OK).entity(ratingService.findByArtworkAndUser(artWorkId, user.getId())).build();
+		if(ratingService.findByArtworkAndUser(artWorkId, user.getId()) != null)
+			rating = (double) ratingService.findByArtworkAndUser(artWorkId, user.getId()).getRatingValue();
+		return Response.status(Status.OK).entity(rating).build();
 	}
 	
 	@POST
 	@JWTTokenNeeded(role="user")
 	@Path(value="{artWorkId}/{value}")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response addRating(@PathParam("value") float value,@PathParam("artWorkId") int artWorkId,@Context HttpHeaders header) {
 		User user =usernameToken(header);
 		ratingService.addRating(artWorkId, value, user);
-		return Response.status(Status.CREATED).build();
+		return Response.status(Status.CREATED).entity(ratingService.getAverageRating(artWorkId)).build();
 	}
+	
 	public  User usernameToken(HttpHeaders header){
 		String authorizationHeader = header.getHeaderString(HttpHeaders.AUTHORIZATION);
 		
