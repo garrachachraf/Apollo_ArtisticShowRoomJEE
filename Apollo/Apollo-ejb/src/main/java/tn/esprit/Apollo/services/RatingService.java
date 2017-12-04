@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import tn.esprit.Apollo.persistence.ArtWork;
@@ -21,8 +22,13 @@ public class RatingService implements RatingServiceLocal,RatingServiceRemote{
 	
 	@Override
 	public double getAverageRating(int artworkId) {
-		return (double)(em.createQuery("SELECT AVG(r.ratingValue) FROM Rating r WHERE r.artWork.id = :artworkId ")
-				.setParameter("artworkId", artworkId)).getSingleResult();
+		try {
+			return (double)(em.createQuery("SELECT AVG(r.ratingValue) FROM Rating r WHERE r.artWork.id = :artworkId ")
+					.setParameter("artworkId", artworkId)).getSingleResult();
+		}
+		catch (Exception e) {
+			return 0;
+		}
 	}
 
 	@Override

@@ -31,6 +31,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.TextCodec;
 import io.jsonwebtoken.impl.crypto.MacProvider;
 import tn.esprit.Apollo.services.AuthentificationService;
+import tn.esprit.Authentificateur.JWTTokenNeeded;
 import tn.esprit.Apollo.persistence.User;
 @Path("/users")
 @Produces(APPLICATION_JSON)
@@ -66,6 +67,14 @@ public class UserEnpoint {
 			System.out.println("" + e);
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}
+	}
+	//	Check token
+	@POST
+	@Path("/check")
+	@Consumes(APPLICATION_FORM_URLENCODED)
+	@JWTTokenNeeded(role="user")
+	public Response checkToken(@FormParam("login") String login, @FormParam("password") String password) {
+		return Response.ok().build();
 	}
 //creating token with jjwt
 	private String issueToken(String login,String role,int id) {
