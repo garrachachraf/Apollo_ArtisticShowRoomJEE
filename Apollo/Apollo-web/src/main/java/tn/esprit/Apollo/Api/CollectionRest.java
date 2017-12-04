@@ -14,6 +14,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import io.jsonwebtoken.Jwts;
 import tn.esprit.Apollo.persistence.Artist;
@@ -33,13 +34,21 @@ public class CollectionRest {
 
 	// recherche par id
 	@GET
-	@Path(value = "find/{id}")
+	@Path(value = "{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response find(@PathParam("id") String id) {
 		if (Collection.read(Integer.valueOf(id)) == null) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		return Response.ok(Collection.read(Integer.valueOf(id))).build();
+	}
+	
+	
+	@GET
+	@Path(value="user/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response findByUser(@PathParam("id") int id){
+		return Response.status(Status.OK).entity(Collection.findByUser(id)).build();
 	}
 
 	@POST
@@ -69,7 +78,7 @@ public class CollectionRest {
 	}
 
 	@PUT
-	@JWTTokenNeeded(role={"Artist"})
+
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response update(Collection col) {
 		if (Collection.update(col) == false) {

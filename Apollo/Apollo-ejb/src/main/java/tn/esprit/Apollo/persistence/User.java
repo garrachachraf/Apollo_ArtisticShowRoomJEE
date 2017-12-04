@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import tn.esprit.Apollo.Facade.EntityBone;
 import tn.esprit.Apollo.loggerListener.UserLoggerListener;
@@ -22,6 +23,7 @@ import tn.esprit.Apollo.loggerListener.UserLoggerListener;
 @DiscriminatorValue("user")
 @DiscriminatorColumn(name = "role")
 @EntityListeners(UserLoggerListener.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User extends EntityBone {
 
 	/**
@@ -53,8 +55,8 @@ public class User extends EntityBone {
 	@OneToOne
 	@JsonIgnore
 	private WhishList whishList;
-	@OneToOne
-	private Collection collection;
+	@OneToMany
+	private List<Collection> collections;
 	@OneToOne(mappedBy = "user")
 	private Media avatar;
 

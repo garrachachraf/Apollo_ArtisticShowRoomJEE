@@ -29,12 +29,17 @@ import tn.esprit.Apollo.loggerListener.GalleryLoggerListener;
 public class Artist extends GalleryOwner implements Serializable {
 	@OneToMany(mappedBy="artist",fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )
 	private List<Follow> followers;
-    @OneToMany(mappedBy="artist",fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )
-    @JsonManagedReference(value="usertoartwork")
+    @OneToMany(mappedBy="artist",fetch=FetchType.EAGER,cascade=CascadeType.PERSIST )
 	@JsonBackReference(value="artworktouser")
-    @JsonIgnore
     private List<ArtWork> artworks;
-    @OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )
+    
+    public List<ArtWork> getArtworks() {
+		return artworks;
+	}
+	public void setArtworks(List<ArtWork> artworks) {
+		this.artworks = artworks;
+	}
+	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.PERSIST )
     @JsonIgnore
 
 	private List<ShowRoom> showrooms ; 

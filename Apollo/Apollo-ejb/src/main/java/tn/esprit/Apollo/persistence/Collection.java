@@ -6,7 +6,10 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import tn.esprit.Apollo.Facade.EntityBone;
 
@@ -21,7 +24,19 @@ public class Collection extends EntityBone {
 	private static final long serialVersionUID = 1L;
 	private String description;
 	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	
 	private Set<ArtWork> artworks;
+	    
+		@ManyToOne
+		private User user;
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 	public Set<ArtWork> getArtworks() {
 		return artworks;
