@@ -60,9 +60,11 @@ public class FollowController {
 	@Path(value="{artistId}/{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getFollow(@PathParam("artistId") int artistId,@PathParam("userId") int userId) {
-		return Response.status(Status.OK).entity(followService.findFollow(userId, artistId)).build();
+		if(followService.findFollow(userId, artistId) != null)
+			return Response.status(Status.OK).entity(followService.findFollow(userId, artistId)).build();
+		else
+			return Response.status(Status.NO_CONTENT).entity(followService.findFollow(userId, artistId)).build();
 	}
-	
 	
 	@POST
 	@JWTTokenNeeded(role="user")

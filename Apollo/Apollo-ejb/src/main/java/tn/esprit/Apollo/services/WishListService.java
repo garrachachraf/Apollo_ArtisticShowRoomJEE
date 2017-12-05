@@ -25,8 +25,8 @@ public class WishListService implements WishListServiceLocal, WishListServiceRem
 	public void addItem(int itemId, User user) {
 		System.out.println("testtttt");
 		ArtWork artwork =em.find(ArtWork.class, itemId);
-		WhishList wishList =user.getWhishList();
-		Set<ArtWork> artworks =  wishList.getArtWorks();
+		WhishList wishList =getWishList(user);
+		List<ArtWork> artworks =  wishList.getArtWorks();
 		artworks.add(artwork);
 		wishList.setArtWorks(artworks);
 		em.merge(wishList);
@@ -35,7 +35,7 @@ public class WishListService implements WishListServiceLocal, WishListServiceRem
 	@Override
 	public void deleteItem(int itemId, User user) {
 		ArtWork artwork =em.find(ArtWork.class, itemId);
-		WhishList wishList =user.getWhishList();
+		WhishList wishList =getWishList(user);
 		List<ArtWork> artworks = new ArrayList<>(wishList.getArtWorks());
 		for (int i = 0; i < artworks.size(); i++) {
 			System.out.println(artwork.getId());
@@ -43,7 +43,8 @@ public class WishListService implements WishListServiceLocal, WishListServiceRem
 				artworks.remove(i);
 			}
 		}
-		wishList.setArtWorks(new HashSet<>(artworks));
+		//wishList.setArtWorks(new HashSet<>(artworks));
+		wishList.setArtWorks(artworks);
 		em.merge(wishList);
 	}
 
@@ -59,8 +60,18 @@ public class WishListService implements WishListServiceLocal, WishListServiceRem
 	@Override
 	public WhishList getWishList(User user) {
 		System.out.println(user.getId());
-		return (WhishList) (em.createQuery("SELECT w FROM WhishList w WHERE w.user.id = :userId")
-				.setParameter("userId", user.getId())).getSingleResult();
+		List<WhishList> w = (List<WhishList>) (em.createQuery("SELECT w FROM WhishList w WHERE w.user.id = :userId")
+				.setParameter("userId", user.getId())).getResultList();
+		if(!w.isEmpty()) {
+			return w.get(0);
+		}
+		else {
+			WhishList wl = new WhishList();
+			wl.setUser(user);
+			wl.setArtWorks(new ArrayList<>());
+			em.persist(wl);
+			return wl;
+		}
 	}
 
 	@Override

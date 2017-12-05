@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import tn.esprit.Apollo.loggerListener.FollowLoggerListener;
 
 /**
@@ -20,10 +22,11 @@ public class Follow implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Date followDate;
 	
-
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="artistId",referencedColumnName="id",insertable=false,updatable=false)
     private Artist artist;
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="userId",referencedColumnName="id",insertable=false,updatable=false)
 	private User user;
@@ -33,22 +36,13 @@ public class Follow implements Serializable {
 		return followPk;
 	}
 
-
-
-
 	public void setFollowPk(FollowPk followPk) {
 		this.followPk = followPk;
 	}
 
-
-
-
 	public Artist getArtist() {
 		return artist;
 	}
-
-
-
 
 	public void setArtist(Artist artist) {
 		this.artist = artist;
