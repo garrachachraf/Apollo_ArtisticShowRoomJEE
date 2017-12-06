@@ -27,9 +27,12 @@ public class WishListService implements WishListServiceLocal, WishListServiceRem
 		ArtWork artwork =em.find(ArtWork.class, itemId);
 		WhishList wishList =getWishList(user);
 		List<ArtWork> artworks =  wishList.getArtWorks();
-		artworks.add(artwork);
-		wishList.setArtWorks(artworks);
-		em.merge(wishList);
+		if(!artworks.contains(artwork)) {
+			artworks.add(artwork);
+			wishList.setArtWorks(artworks);
+			em.merge(wishList);
+		}
+		
 	}
 
 	@Override

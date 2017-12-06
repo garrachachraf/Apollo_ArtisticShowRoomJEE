@@ -25,7 +25,7 @@ public class ShowRoom implements Serializable {
     private String title;
     private String description;
 
-	@OneToMany(cascade=CascadeType.PERSIST)
+	@ManyToMany(cascade=CascadeType.PERSIST)
 	List<ArtWork> artWorks;
     @JsonIgnore
 	@ManyToOne

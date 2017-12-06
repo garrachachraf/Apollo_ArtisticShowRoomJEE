@@ -55,7 +55,6 @@ public class OrderController {
 	public Response createOrder(List<ArtWork> artworks,@Context HttpHeaders header) {
 		System.out.println("hererere255");
 		for (ArtWork artWork : artworks) {
-			System.out.println(artWork.getPrice());
 		}
 		User user = usernameToken(header);
 		orderService.createOrder(artworks,user);

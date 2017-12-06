@@ -25,7 +25,9 @@ public class OrderService implements OrderServiceLocal{
 		Orders o = new Orders();
 		List<ArtWork> myArtworks= new ArrayList<ArtWork>();
 		for (ArtWork artWork : artworks) {
-			myArtworks.add(em.find(ArtWork.class, artWork.getId()));
+			ArtWork art = em.find(ArtWork.class, artWork.getId());
+			art.setSold(true);
+			myArtworks.add(art);
 		}
 		o.setArtWorks(myArtworks);
 		o.setOrderDate(new Date());
