@@ -1,5 +1,6 @@
 package tn.esprit.Apollo.Api;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -19,6 +20,7 @@ import javax.ws.rs.core.Response.Status;
 import io.jsonwebtoken.Jwts;
 import tn.esprit.Apollo.persistence.ArtWork;
 import tn.esprit.Apollo.persistence.User;
+import tn.esprit.Apollo.services.ArtWorkService;
 import tn.esprit.Apollo.services.OrderService;
 import tn.esprit.Apollo.services.UserService;
 import tn.esprit.Apollo.services.WishListService;
@@ -28,6 +30,8 @@ import tn.esprit.Authentificateur.JWTTokenNeeded;
 public class OrderController {
 	@EJB
 	OrderService orderService;
+	@EJB
+	WishListService wishListService;
 	@EJB
 	UserService userService;
 	
@@ -49,8 +53,15 @@ public class OrderController {
 	@JWTTokenNeeded(role="user")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createOrder(List<ArtWork> artworks,@Context HttpHeaders header) {
+		System.out.println("hererere255");
+		for (ArtWork artWork : artworks) {
+			System.out.println(artWork.getPrice());
+		}
 		User user = usernameToken(header);
 		orderService.createOrder(artworks,user);
+		for (ArtWork artWork : artworks) {
+			wishListService.deleteItem(artWork.getId(), user);
+		}
 		return Response.status(Status.OK).build();
 	}
 	

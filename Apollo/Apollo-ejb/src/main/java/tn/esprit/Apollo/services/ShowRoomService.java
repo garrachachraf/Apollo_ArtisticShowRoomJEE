@@ -8,7 +8,9 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import tn.esprit.Apollo.persistence.ArtWork;
 import tn.esprit.Apollo.persistence.ShowRoom;
+import tn.esprit.Apollo.persistence.User;
 
 @Stateless
 @LocalBean
@@ -60,6 +62,17 @@ public class ShowRoomService implements ShowRoomServiceLocal, ShowRoomServiceRem
 				.createQuery("SELECT s FROM ShowRoom s WHERE s.title LIKE CONCAT('%',:keyword,'%')")
 				.setParameter("keyword", keyWord).getResultList());
 		return showrooms;
+	}
+
+	public void addArtworks(List<ArtWork> artworks, User user,int showroomId) {
+		ShowRoom s = em.find(ShowRoom.class, showroomId);
+		List<ArtWork> myArtworks = new ArrayList<ArtWork>();
+
+		for (ArtWork artWork : artworks) {
+			myArtworks.add(em.find(ArtWork.class, artWork.getId()));
+		}
+		s.setArtWorks(myArtworks);
+		em.persist(s);
 	}
 
 }
