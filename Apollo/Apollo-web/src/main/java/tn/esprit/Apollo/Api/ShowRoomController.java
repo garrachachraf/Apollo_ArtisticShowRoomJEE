@@ -74,12 +74,12 @@ public class ShowRoomController {
 	}
 	
 	@POST
-	@JWTTokenNeeded(role="user")
-	@Path(value="artworks/{id}")
+	@JWTTokenNeeded(role="Artist")
+	@Path(value="artworks")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addArtworksToShowroom(List<ArtWork> artworks,@Context HttpHeaders header,@PathParam("id") int showroomId) {
+	public Response addArtworksToShowroom(ShowRoom showroom,@Context HttpHeaders header) {
 		User user = usernameToken(header);
-		showroomService.addArtworks(artworks,user,showroomId);
+		showroomService.addArtworks(showroom,user);
 		return Response.status(Status.CREATED).build();
 	}
 	@PUT

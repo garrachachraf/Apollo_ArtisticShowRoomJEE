@@ -30,7 +30,7 @@ public class WishListController {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@JWTTokenNeeded(role="user")
+	@JWTTokenNeeded()
 	public Response getWishList(@Context HttpHeaders header){
 		User user = usernameToken(header);
 		return Response.status(Status.OK).entity(wishListService.getWishList(user)).build();
@@ -53,7 +53,7 @@ public class WishListController {
 	}	
 	@POST
 	@Path(value="{id}")
-	@JWTTokenNeeded(role="user")
+	@JWTTokenNeeded()
 	public Response addItem(@PathParam("id")int itemId,@Context HttpHeaders header) {
 		User user = usernameToken(header);
 		wishListService.addItem(itemId,user);
@@ -62,7 +62,7 @@ public class WishListController {
 	
 	@DELETE
 	@Path(value="{id}")
-	@JWTTokenNeeded(role="user")
+	@JWTTokenNeeded()
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteItem(@PathParam("id") int id,@Context HttpHeaders header) {
 		User user = usernameToken(header);

@@ -35,7 +35,7 @@ public class RatingController {
 	}
 	
 	@GET
-	@JWTTokenNeeded(role="user")
+	@JWTTokenNeeded(role="Artist")
 	@Path(value="myrating/{artWorkId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getMyRating(@PathParam("artWorkId") int artWorkId,@Context HttpHeaders header){
@@ -47,7 +47,7 @@ public class RatingController {
 	}
 	
 	@POST
-	@JWTTokenNeeded(role="user")
+	@JWTTokenNeeded(role="Artist")
 	@Path(value="{artWorkId}/{value}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)

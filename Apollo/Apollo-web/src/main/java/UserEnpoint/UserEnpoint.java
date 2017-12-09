@@ -72,7 +72,7 @@ public class UserEnpoint {
 	@POST
 	@Path("/check")
 	@Consumes(APPLICATION_FORM_URLENCODED)
-	@JWTTokenNeeded(role="user")
+	@JWTTokenNeeded
 	public Response checkToken() {
 		return Response.ok().build();
 	}

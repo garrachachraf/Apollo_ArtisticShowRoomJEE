@@ -64,13 +64,15 @@ public class ShowRoomService implements ShowRoomServiceLocal, ShowRoomServiceRem
 		return showrooms;
 	}
 
-	public void addArtworks(List<ArtWork> artworks, User user,int showroomId) {
-		ShowRoom s = em.find(ShowRoom.class, showroomId);
+	public void addArtworks(ShowRoom showroom, User user) {
+		ShowRoom s = em.find(ShowRoom.class, showroom.getId());
+		//List<ArtWork> myArtworks = s.getArtWorks();
 		List<ArtWork> myArtworks = new ArrayList<ArtWork>();
-
-		for (ArtWork artWork : artworks) {
-			myArtworks.add(em.find(ArtWork.class, artWork.getId()));
+		for (ArtWork artWork : showroom.getArtWorks()) {
+			//if(! myArtworks.contains(artWork))
+				myArtworks.add(em.find(ArtWork.class, artWork.getId()));
 		}
+		s.setTitle(showroom.getTitle());
 		s.setArtWorks(myArtworks);
 		em.persist(s);
 	}

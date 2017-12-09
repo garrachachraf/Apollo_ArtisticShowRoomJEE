@@ -78,8 +78,12 @@ public class ArtWorkRest {
 	// add an artwork
 	
 	
-	//marwen this is the example of get user by token
-	
+	@GET
+	@Path(value = "artist/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response findByArtist(@PathParam("id") int artistId) {
+		return Response.ok(ARTWORK.getByArtist(artistId)).build();
+	}
 	
 	
 	@POST
