@@ -46,7 +46,7 @@ public class WishListController {
 	@GET
 	@Path(value="total")
 	@Produces(MediaType.APPLICATION_JSON)
-	@JWTTokenNeeded(role="user")
+	@JWTTokenNeeded
 	public Response getTotal(@Context HttpHeaders header){
 		User user = usernameToken(header);
 		return Response.status(Status.OK).entity(wishListService.getTotal(user)).build();
