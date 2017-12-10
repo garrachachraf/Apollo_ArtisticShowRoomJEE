@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import tn.esprit.Apollo.persistence.ArtWork;
+import tn.esprit.Apollo.persistence.Artist;
 import tn.esprit.Apollo.persistence.ShowRoom;
 import tn.esprit.Apollo.persistence.User;
 
@@ -19,7 +20,14 @@ public class ShowRoomService implements ShowRoomServiceLocal, ShowRoomServiceRem
 	EntityManager em;
 
 	@Override
-	public ShowRoom createShowRoom(ShowRoom showroom) {
+	public ShowRoom createShowRoom(ShowRoom showroom,User user) {
+		List<ArtWork> myArtworks = new ArrayList<ArtWork>();
+		for (ArtWork artWork : showroom.getArtWorks()) {
+			//if(! myArtworks.contains(artWork))
+				myArtworks.add(em.find(ArtWork.class, artWork.getId()));
+		}
+		showroom.setArtWorks(myArtworks);
+		showroom.setArtist((Artist) user);
 		em.persist(showroom);
 		em.flush();
 		return showroom;
