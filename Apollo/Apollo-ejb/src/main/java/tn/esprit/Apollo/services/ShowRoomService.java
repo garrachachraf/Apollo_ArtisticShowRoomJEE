@@ -12,7 +12,7 @@ import tn.esprit.Apollo.persistence.ArtWork;
 import tn.esprit.Apollo.persistence.Artist;
 import tn.esprit.Apollo.persistence.ShowRoom;
 import tn.esprit.Apollo.persistence.User;
-import tn.esprit.Apollo.utils.PushNotif;
+
 @Stateless
 @LocalBean
 public class ShowRoomService implements ShowRoomServiceLocal, ShowRoomServiceRemote{
@@ -30,12 +30,6 @@ public class ShowRoomService implements ShowRoomServiceLocal, ShowRoomServiceRem
 		showroom.setArtist((Artist) user);
 		em.persist(showroom);
 		em.flush();
-		FollowService fs = new FollowService();
-		List<User> followers =fs.getFollowers(user.getId());
-		String message = "has created a new Showroom !";
-		for (User user2 : followers) {
-			PushNotif.sendNotif(user2.getUserName()+message, Integer.toString(user2.getId()));
-		}
 		return showroom;
 	}
 
