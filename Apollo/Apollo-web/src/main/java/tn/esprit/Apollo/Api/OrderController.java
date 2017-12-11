@@ -37,7 +37,7 @@ public class OrderController {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@JWTTokenNeeded // role Admin
+	@JWTTokenNeeded(role="user") // role Admin
 	public Response getAllorders(){
 		return Response.status(Status.OK).entity(orderService.GetAllOrders()).build();
 	}
@@ -45,12 +45,12 @@ public class OrderController {
 	@GET
 	@Path(value="{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@JWTTokenNeeded
+	@JWTTokenNeeded(role="user")
 	public Response getByUser(@PathParam("userId")int userId){
 		return Response.status(Status.OK).entity(orderService.GetOrdersByUser(userId)).build();
 	}	
 	@POST
-	@JWTTokenNeeded
+	@JWTTokenNeeded(role="user")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createOrder(List<ArtWork> artworks,@Context HttpHeaders header) {
 		System.out.println("hererere255");

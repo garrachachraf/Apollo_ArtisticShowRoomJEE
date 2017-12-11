@@ -5,12 +5,11 @@ import java.util.List;
 import javax.ejb.Local;
 
 import tn.esprit.Apollo.persistence.ShowRoom;
-import tn.esprit.Apollo.persistence.User;
 
 @Local
 public interface ShowRoomServiceLocal {
 
-	ShowRoom createShowRoom(ShowRoom showroom, User user);
+	ShowRoom createShowRoom(ShowRoom showroom);
 	void deleteShowroom(int id);
 	void updateShowRoom(ShowRoom showroom);
 	List<ShowRoom> findAll();
