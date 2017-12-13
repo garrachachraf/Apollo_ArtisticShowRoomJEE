@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import tn.esprit.Apollo.persistence.Event;
 import tn.esprit.Apollo.persistence.Gallery;
 import tn.esprit.Apollo.persistence.GalleryOwner;
 import tn.esprit.Apollo.persistence.Schedule;
@@ -121,5 +122,13 @@ public class GalleryRest
 	{
 		galleryService.CancelPlanToGallery( idSch ,idGallery) ;
 		return Response.status(Status.OK).build();
+	}
+	
+	@GET
+	@Path(value="{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response findOne(@PathParam("id") int id){
+			Gallery gallery = galleryService.findById(id);
+			return Response.status(Status.OK).entity(gallery).build();
 	}
 }

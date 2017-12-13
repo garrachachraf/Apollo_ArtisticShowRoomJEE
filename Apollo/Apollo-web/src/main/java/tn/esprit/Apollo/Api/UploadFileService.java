@@ -40,7 +40,7 @@ import tn.esprit.Authentificateur.JWTTokenNeeded;
 @Path("/upload")
 public class UploadFileService {
 
-	private final String UPLOADED_FILE_PATH = "C:\\Users\\Maissen\\Documents\\projectpi\\media\\";
+	private final String UPLOADED_FILE_PATH = "D://";
 	@EJB
 	UserServiceRemote userservice = new UserService();
 	@EJB

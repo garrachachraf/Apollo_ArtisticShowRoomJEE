@@ -23,6 +23,18 @@ public class Ticket implements Serializable {
 
     @ManyToOne
     private Event event;
+    
+	@ManyToOne
+	private User user ;
+	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
 	public Event getEvent() {
 		return event;
 	}
