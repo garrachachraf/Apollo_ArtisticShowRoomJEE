@@ -69,7 +69,8 @@ public class ShowRoomController {
 	//@JWTTokenNeeded(role="user")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createShowroom(ShowRoom showroom,@Context HttpHeaders header) {
-		showroomService.createShowRoom(showroom);
+		User user = usernameToken(header);
+		showroomService.createShowRoom(showroom,user);
 		return Response.status(Status.CREATED).build();
 	}
 	
