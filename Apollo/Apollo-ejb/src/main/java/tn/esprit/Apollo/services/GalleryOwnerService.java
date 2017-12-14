@@ -30,6 +30,12 @@ public class GalleryOwnerService implements GalleryOwnerServiceLocal , GalleryOw
 	@Override
 	public void UpdateUser(GalleryOwner u) {
 		// TODO Auto-generated method stub
+		if(u.getPassword() != null){
+			u.setPassword(UserService.MD5It(u.getPassword()));
+		}
+		else {
+			u.setPassword(FindUserById(u.getId()).getPassword());
+		}
 		em.merge(u);
 	}
 
