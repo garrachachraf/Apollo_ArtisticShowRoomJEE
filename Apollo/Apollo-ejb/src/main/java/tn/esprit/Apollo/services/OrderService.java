@@ -1,5 +1,6 @@
 package tn.esprit.Apollo.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,9 +23,15 @@ public class OrderService implements OrderServiceLocal{
 	@Override
 	public void createOrder(List<ArtWork> artworks,User user) {
 		Orders o = new Orders();
-		o.setArtWorks(artworks);
+		List<ArtWork> myArtworks= new ArrayList<ArtWork>();
+		for (ArtWork artWork : artworks) {
+			ArtWork art = em.find(ArtWork.class, artWork.getId());
+			art.setSold(true);
+			myArtworks.add(art);
+		}
+		o.setArtWorks(myArtworks);
 		o.setOrderDate(new Date());
-		o.setTotalAmount(countTotal(artworks));
+		o.setTotalAmount(countTotal(myArtworks));
 		o.setUser(user);
 		em.persist(o);	
 	}

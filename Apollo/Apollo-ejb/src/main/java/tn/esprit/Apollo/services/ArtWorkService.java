@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -12,11 +14,13 @@ import javax.persistence.criteria.Root;
 
 import tn.esprit.Apollo.Facade.SearchCriteria;
 import tn.esprit.Apollo.persistence.ArtWork;
+import tn.esprit.Apollo.persistence.ShowRoom;
 
 @Stateless
 @LocalBean
 public class ArtWorkService extends AbstractFacade<ArtWork> implements ArtWorkServiceRemote {
-
+	@PersistenceContext
+	EntityManager em;
 	public ArtWorkService() {
 		super(ArtWork.class);
 		// TODO Auto-generated constructor stub
@@ -81,9 +85,11 @@ public class ArtWorkService extends AbstractFacade<ArtWork> implements ArtWorkSe
 		List<ArtWork> result = em.createQuery(query).getResultList();
 		return result;
 	}
-
 	
-	
+	public List<ArtWork> getByArtist(int artistId) {
+		return (em.createQuery("SELECT a FROM ArtWork a WHERE a.artist.id = :artistId")
+					.setParameter("artistId", artistId)).getResultList();
+		}
 	
 	
 }

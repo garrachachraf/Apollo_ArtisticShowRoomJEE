@@ -34,5 +34,7 @@ public interface GalleryServiceRemote {
 	public boolean EditPlanToGallery (int id, Schedule sch) ; 
 	public boolean CancelPlanToGallery (int id, int sch) ; 
 	
+	public Gallery findById(int id);
+	
 
 }

@@ -8,7 +8,10 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import tn.esprit.Apollo.persistence.ArtWork;
+import tn.esprit.Apollo.persistence.Artist;
 import tn.esprit.Apollo.persistence.ShowRoom;
+import tn.esprit.Apollo.persistence.User;
 
 @Stateless
 @LocalBean
@@ -17,7 +20,14 @@ public class ShowRoomService implements ShowRoomServiceLocal, ShowRoomServiceRem
 	EntityManager em;
 
 	@Override
-	public ShowRoom createShowRoom(ShowRoom showroom) {
+	public ShowRoom createShowRoom(ShowRoom showroom,User user) {
+		List<ArtWork> myArtworks = new ArrayList<ArtWork>();
+		for (ArtWork artWork : showroom.getArtWorks()) {
+			//if(! myArtworks.contains(artWork))
+				myArtworks.add(em.find(ArtWork.class, artWork.getId()));
+		}
+		showroom.setArtWorks(myArtworks);
+		showroom.setArtist((Artist) user);
 		em.persist(showroom);
 		em.flush();
 		return showroom;
@@ -60,6 +70,19 @@ public class ShowRoomService implements ShowRoomServiceLocal, ShowRoomServiceRem
 				.createQuery("SELECT s FROM ShowRoom s WHERE s.title LIKE CONCAT('%',:keyword,'%')")
 				.setParameter("keyword", keyWord).getResultList());
 		return showrooms;
+	}
+
+	public void addArtworks(ShowRoom showroom, User user) {
+		ShowRoom s = em.find(ShowRoom.class, showroom.getId());
+		//List<ArtWork> myArtworks = s.getArtWorks();
+		List<ArtWork> myArtworks = new ArrayList<ArtWork>();
+		for (ArtWork artWork : showroom.getArtWorks()) {
+			//if(! myArtworks.contains(artWork))
+				myArtworks.add(em.find(ArtWork.class, artWork.getId()));
+		}
+		s.setTitle(showroom.getTitle());
+		s.setArtWorks(myArtworks);
+		em.persist(s);
 	}
 
 }

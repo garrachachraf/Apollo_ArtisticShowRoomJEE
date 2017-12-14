@@ -2,6 +2,7 @@ package tn.esprit.Apollo.persistence;
 
 import java.io.Serializable;
 import java.lang.Integer;
+import java.util.List;
 import java.util.Set;
 
 
@@ -26,17 +27,17 @@ public class WhishList implements Serializable {
 	private int id;
 	private static final long serialVersionUID = 1L;
 	
-	@OneToMany(fetch=FetchType.EAGER)
-    private Set<ArtWork> artWorks;
+	@ManyToMany(fetch=FetchType.EAGER)
+    private List<ArtWork> artWorks;
 	
 	@JsonIgnore
 	@OneToOne
 	private User user;
-	public Set<ArtWork> getArtWorks() {
+	public List<ArtWork> getArtWorks() {
 		return artWorks;
 	}
 
-	public void setArtWorks(Set<ArtWork> artWorks) {
+	public void setArtWorks(List<ArtWork> artWorks) {
 		this.artWorks = artWorks;
 	}
 
@@ -48,6 +49,18 @@ public class WhishList implements Serializable {
 		this.id = id;
 	}
 
+	public User getUser() {
+		return user;
+	}
 
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	
    
 }

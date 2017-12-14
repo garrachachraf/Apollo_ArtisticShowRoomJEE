@@ -72,8 +72,8 @@ public class UserEnpoint {
 	@POST
 	@Path("/check")
 	@Consumes(APPLICATION_FORM_URLENCODED)
-	@JWTTokenNeeded(role="user")
-	public Response checkToken(@FormParam("login") String login, @FormParam("password") String password) {
+	@JWTTokenNeeded
+	public Response checkToken() {
 		return Response.ok().build();
 	}
 //creating token with jjwt

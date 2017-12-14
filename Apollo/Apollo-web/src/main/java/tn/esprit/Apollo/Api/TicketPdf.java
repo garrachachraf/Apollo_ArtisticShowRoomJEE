@@ -89,7 +89,7 @@ public class TicketPdf {
        	adress = ticket.getEvent().getGallery().getLocation().getAddress().split(",");
 //       System.out.println(s[2]+" "+s[3]);
 //        document.add(new Paragraph(block+block+block+nm+" \n ",new Font(Font.FontFamily.TIMES_ROMAN, 12,Font.BOLD)));
-        Paragraph tim = new Paragraph(block+block+block+block+"   "+y+" at "+h+block+"         Unique QR Identifier ",tmr10);
+        Paragraph tim = new Paragraph(block+block+block+block+"          "+y+block+"                 Unique QR Identifier ",tmr10);
         Paragraph adr = new Paragraph(block+block+block+"          "+adress[0]+adress[1]+decalline+
         						"          "+adress[2]+decalline+"          "+adress[3],tmr10);
         document.add(adr);
@@ -105,7 +105,7 @@ public class TicketPdf {
         Paragraph tp = new Paragraph(decalline+block+type+block+ticket.getPrice()+" DT",tmr10);
         document.add(tp);
         
-        Paragraph info = new Paragraph("\n        Order N°"+ticket.getId()+".  "+" Order Date "+ticket.getOrderDate().toString().substring(0, 19),tmr10);
+        Paragraph info = new Paragraph("\n        Ticket N°"+ticket.getId()+".  "+" Order Date "+ticket.getOrderDate().toString().substring(0, 19)+", Ordered by "+ticket.getUser().getFirstname()+" "+ticket.getUser().getLastname(),tmr10);
         document.add(info);
         
         Paragraph notice = new Paragraph("         "+"Notice : "+ticket.getNote(),tmr7);
