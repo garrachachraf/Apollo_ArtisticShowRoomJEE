@@ -31,6 +31,9 @@ public class Event implements Serializable {
 	private Integer capacity;
 	@ManyToOne
 	private Gallery gallery;
+	@ManyToOne
+	private User user ;
+	private Integer priceTicket;
 	@JsonIgnore
 	@OneToMany(mappedBy="event",fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	private Set<Ticket> tickets;
@@ -42,7 +45,7 @@ public class Event implements Serializable {
 
 
 	public Event(Integer id, String title, String description, Date creationDate, Date startDate, Date endDate,
-			Integer capacity, Gallery gallery, Set<Ticket> tickets) {
+			Integer capacity, Gallery gallery,User user, Set<Ticket> tickets) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -53,9 +56,19 @@ public class Event implements Serializable {
 		this.capacity = capacity;
 		this.gallery = gallery;
 		this.tickets = tickets;
+		this.user = user;
+	}
+	
+	
+	public User getUser() {
+		return user;
 	}
 
 
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
 	public void setTickets(Set<Ticket> tickets) {
 		this.tickets = tickets;
 	}
@@ -152,7 +165,20 @@ public class Event implements Serializable {
 
 	public Event() {
 		super();
-	}   
+	}
+
+
+	public Integer getPriceTicket() {
+		return priceTicket;
+	}
+
+
+	public void setPriceTicket(Integer priceTicket) {
+		this.priceTicket = priceTicket;
+	}
+
+
+ 
 	
    
 }
