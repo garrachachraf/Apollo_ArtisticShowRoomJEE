@@ -31,7 +31,12 @@ public class ArtistService implements ArtistServiceLocal,ArtistServiceRemote {
 	@Override
 	public void UpdateUser(Artist u) {
 		// TODO Auto-generated method stub
-		u.setPassword(UserService.MD5It(u.getPassword()));
+		if(u.getPassword() != null){
+			u.setPassword(UserService.MD5It(u.getPassword()));
+		}
+		else {
+			u.setPassword(FindUserById(u.getId()).getPassword());
+		}
 		em.merge(u);
 	}
 
