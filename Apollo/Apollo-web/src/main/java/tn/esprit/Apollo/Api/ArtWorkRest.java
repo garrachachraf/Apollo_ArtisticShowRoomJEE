@@ -87,7 +87,7 @@ public class ArtWorkRest {
 	
 	
 	@POST
-	@JWTTokenNeeded(role="user")
+
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response create(ArtWork art,@HeaderParam("AUTHORIZATION") String token ) {
 		Artist artist=  new Artist();
