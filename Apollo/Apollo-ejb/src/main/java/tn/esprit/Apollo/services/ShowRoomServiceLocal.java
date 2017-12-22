@@ -17,4 +17,5 @@ public interface ShowRoomServiceLocal {
 	ShowRoom findOne(int id);
 	List<ShowRoom> findByArtist(int artistId);
 	List<ShowRoom> findByKeyWord(String keyWord);
+
 }

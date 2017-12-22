@@ -30,6 +30,12 @@ public class UserService implements UserServiceLocal , UserServiceRemote {
 	@Override
 	public void UpdateUser(User u) {
 		// TODO Auto-generated method stub
+		if(u.getPassword() != null){
+			u.setPassword(UserService.MD5It(u.getPassword()));
+		}
+		else {
+			u.setPassword(FindUserById(u.getId()).getPassword());
+		}
 		em.merge(u);
 		
 	}
