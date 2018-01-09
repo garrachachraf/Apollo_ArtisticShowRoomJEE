@@ -1,5 +1,6 @@
 package tn.esprit.Apollo.Api;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -19,6 +20,7 @@ import javax.ws.rs.core.Response.Status;
 import io.jsonwebtoken.Jwts;
 import tn.esprit.Apollo.persistence.ArtWork;
 import tn.esprit.Apollo.persistence.User;
+import tn.esprit.Apollo.services.ArtWorkService;
 import tn.esprit.Apollo.services.OrderService;
 import tn.esprit.Apollo.services.UserService;
 import tn.esprit.Apollo.services.WishListService;
@@ -29,11 +31,13 @@ public class OrderController {
 	@EJB
 	OrderService orderService;
 	@EJB
+	WishListService wishListService;
+	@EJB
 	UserService userService;
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@JWTTokenNeeded(role="user") // role Admin
+	@JWTTokenNeeded // role Admin
 	public Response getAllorders(){
 		return Response.status(Status.OK).entity(orderService.GetAllOrders()).build();
 	}
@@ -41,16 +45,22 @@ public class OrderController {
 	@GET
 	@Path(value="{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@JWTTokenNeeded(role="user")
+	@JWTTokenNeeded
 	public Response getByUser(@PathParam("userId")int userId){
 		return Response.status(Status.OK).entity(orderService.GetOrdersByUser(userId)).build();
 	}	
 	@POST
-	@JWTTokenNeeded(role="user")
+	@JWTTokenNeeded
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createOrder(List<ArtWork> artworks,@Context HttpHeaders header) {
+		System.out.println("hererere255");
+		for (ArtWork artWork : artworks) {
+		}
 		User user = usernameToken(header);
 		orderService.createOrder(artworks,user);
+		for (ArtWork artWork : artworks) {
+			wishListService.deleteItem(artWork.getId(), user);
+		}
 		return Response.status(Status.OK).build();
 	}
 	

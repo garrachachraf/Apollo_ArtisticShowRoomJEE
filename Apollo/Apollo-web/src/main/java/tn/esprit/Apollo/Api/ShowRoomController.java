@@ -1,5 +1,7 @@
 package tn.esprit.Apollo.Api;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -18,6 +20,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import io.jsonwebtoken.Jwts;
+import tn.esprit.Apollo.persistence.ArtWork;
 import tn.esprit.Apollo.persistence.ShowRoom;
 import tn.esprit.Apollo.persistence.User;
 import tn.esprit.Apollo.services.ShowRoomService;
@@ -66,7 +69,18 @@ public class ShowRoomController {
 	//@JWTTokenNeeded(role="user")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createShowroom(ShowRoom showroom,@Context HttpHeaders header) {
-		showroomService.createShowRoom(showroom);
+		User user = usernameToken(header);
+		showroomService.createShowRoom(showroom,user);
+		return Response.status(Status.CREATED).build();
+	}
+	
+	@POST
+	@JWTTokenNeeded(role="Artist")
+	@Path(value="artworks")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addArtworksToShowroom(ShowRoom showroom,@Context HttpHeaders header) {
+		User user = usernameToken(header);
+		showroomService.addArtworks(showroom,user);
 		return Response.status(Status.CREATED).build();
 	}
 	@PUT

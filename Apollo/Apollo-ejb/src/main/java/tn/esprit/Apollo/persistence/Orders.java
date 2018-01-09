@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import tn.esprit.Apollo.loggerListener.OrderLoggerListener;
 
 /**
@@ -22,10 +24,11 @@ public class Orders implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Date orderDate;
 	private float totalAmount;
+
 	@ManyToOne
 	private User user;
 	@OneToMany(fetch=FetchType.EAGER)
-    private List<ArtWork> ArtWorks;
+    private List<ArtWork> artWorks;
     
     public Integer getId() {
 		return Id;
@@ -47,10 +50,10 @@ public class Orders implements Serializable {
 		this.totalAmount = totalAmount;
 	}
 	public List<ArtWork> getArtWorks() {
-		return ArtWorks;
+		return artWorks;
 	}
 	public void setArtWorks(List<ArtWork> artWorks) {
-		ArtWorks = artWorks;
+		this.artWorks = artWorks;
 	}
 	public User getUser() {
 		return user;

@@ -3,25 +3,47 @@ package tn.esprit.Apollo.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import tn.esprit.Apollo.persistence.ArtWork;
+import tn.esprit.Apollo.persistence.Artist;
 import tn.esprit.Apollo.persistence.ShowRoom;
+import tn.esprit.Apollo.persistence.User;
+import tn.esprit.Apollo.utils.PushNotif;
 
 @Stateless
 @LocalBean
 public class ShowRoomService implements ShowRoomServiceLocal, ShowRoomServiceRemote{
 	@PersistenceContext
 	EntityManager em;
+	@EJB
+	FollowService fs;
+	 
+		@Override
+		public ShowRoom createShowRoom(ShowRoom showroom,User user) {
+			List<ArtWork> myArtworks = new ArrayList<ArtWork>();
+			for (ArtWork artWork : showroom.getArtWorks()) {
+				//if(! myArtworks.contains(artWork))
+					myArtworks.add(em.find(ArtWork.class, artWork.getId()));
+			}
+			showroom.setArtWorks(myArtworks);
+			showroom.setArtist((Artist) user);
+			em.persist(showroom);
+			em.flush();
+			List<User> followers =fs.getFollowers(user.getId());
+			String message = "has created a new Showroom !";
+			if(followers != null) {
+				for (User user2 : followers) {
+					PushNotif.sendNotif(user.getUserName()+message, Integer.toString(user2.getId()));
+				}
+			}
 
-	@Override
-	public ShowRoom createShowRoom(ShowRoom showroom) {
-		em.persist(showroom);
-		em.flush();
-		return showroom;
-	}
+			return showroom;
+		}
 
 	@Override
 	public void deleteShowroom(int id) {
@@ -60,6 +82,19 @@ public class ShowRoomService implements ShowRoomServiceLocal, ShowRoomServiceRem
 				.createQuery("SELECT s FROM ShowRoom s WHERE s.title LIKE CONCAT('%',:keyword,'%')")
 				.setParameter("keyword", keyWord).getResultList());
 		return showrooms;
+	}
+
+	public void addArtworks(ShowRoom showroom, User user) {
+		ShowRoom s = em.find(ShowRoom.class, showroom.getId());
+		//List<ArtWork> myArtworks = s.getArtWorks();
+		List<ArtWork> myArtworks = new ArrayList<ArtWork>();
+		for (ArtWork artWork : showroom.getArtWorks()) {
+			//if(! myArtworks.contains(artWork))
+				myArtworks.add(em.find(ArtWork.class, artWork.getId()));
+		}
+		s.setTitle(showroom.getTitle());
+		s.setArtWorks(myArtworks);
+		em.persist(s);
 	}
 
 }

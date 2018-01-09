@@ -27,7 +27,7 @@ public class WhishList implements Serializable {
 	private int id;
 	private static final long serialVersionUID = 1L;
 	
-	@OneToMany(fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.EAGER)
     private List<ArtWork> artWorks;
 	
 	@JsonIgnore

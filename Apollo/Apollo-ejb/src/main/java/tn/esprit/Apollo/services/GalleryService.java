@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import tn.esprit.Apollo.algorithme.CompareDate;
+import tn.esprit.Apollo.persistence.Event;
 import tn.esprit.Apollo.persistence.Gallery;
 import tn.esprit.Apollo.persistence.GalleryOwner;
 import tn.esprit.Apollo.persistence.Schedule;
@@ -246,6 +247,10 @@ public class GalleryService implements GalleryServiceRemote {
 	@Override
 	public List<Gallery> FindAllGalleries() {
 		return (List<Gallery>)(entityManager.createQuery("Select g from Gallery g ").getResultList());
+	}
+	
+	public Gallery findById(int id) {
+		return entityManager.find(Gallery.class, id);
 	}
 
 	@Override

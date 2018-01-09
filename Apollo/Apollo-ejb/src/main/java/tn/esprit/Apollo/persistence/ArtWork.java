@@ -45,7 +45,16 @@ public class ArtWork extends EntityBone {
 	private Set<Rating> ratings;
 	private float price;
 	private ArtWorkCategory category;
+	private boolean isSold;
 	
+
+	public boolean isSold() {
+		return isSold;
+	}
+
+	public void setSold(boolean isSold) {
+		this.isSold = isSold;
+	}
 
 	public String getMediaPath() {
 		return mediaPath;

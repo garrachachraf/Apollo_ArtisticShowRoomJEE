@@ -51,7 +51,6 @@ public class UserController {
 	
 
 	@GET
-	//@JWTTokenNeeded(role="user")
 	@Path(value="{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response findOne(@PathParam("id") int id){
@@ -79,6 +78,7 @@ public class UserController {
 			a.setStreet(u.getStreet());
 			a.setUserName(u.getUserName());
 			a.setZipCode(u.getZipCode());
+			a.setImagePath(u.getImagePath());
 			ArtistService.CreateUser(a);
 		}
 		else if (u.getRole().equals("GalleryOwner")) {
@@ -94,6 +94,7 @@ public class UserController {
 			g.setStreet(u.getStreet());
 			g.setUserName(u.getUserName());
 			g.setZipCode(u.getZipCode());
+			g.setImagePath(u.getImagePath());
 			GalleryOwnerService.CreateUser(g);
 		}
 		else if (u.getRole().equals("Admin")) {
@@ -109,6 +110,7 @@ public class UserController {
 			au.setStreet(u.getStreet());
 			au.setUserName(u.getUserName());
 			au.setZipCode(u.getZipCode());
+			au.setImagePath(u.getImagePath());
 			AdminService.CreateAdmin(au);
 		}
 		else {
@@ -177,7 +179,8 @@ public class UserController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateTicket(Artist user) {
 		if(ArtistService.FindUserById(user.getId()) !=null)
-		{
+		{	
+			
 			ArtistService.UpdateUser(user);
 			return Response.status(Status.ACCEPTED).build();
 		}

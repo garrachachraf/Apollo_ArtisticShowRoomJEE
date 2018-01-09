@@ -40,14 +40,16 @@ import tn.esprit.Authentificateur.JWTTokenNeeded;
 @Path("/upload")
 public class UploadFileService {
 
+
 	private final String UPLOADED_FILE_PATH = "C:\\Users\\Maissen\\Documents\\projectpi\\media\\";
+
 	@EJB
 	UserServiceRemote userservice = new UserService();
 	@EJB
 	MediaServiceRemote mediaservice ;
 	@POST
 	@Consumes("multipart/form-data")
-	@JWTTokenNeeded()
+	@JWTTokenNeeded
 	@Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public Response uploadFile(MultipartFormDataInput input , @Context HttpHeaders headershttp) {
 
@@ -86,7 +88,9 @@ public class UploadFileService {
 			}
 
 		}
+		if(headershttp.getHeaderString(HttpHeaders.AUTHORIZATION) != null){
 		m.setUser(usernameToken(headershttp));
+		}
 		try {
 			if(m.getType()==MediaType.photo){
 				Thumbnails.of(new File(UPLOADED_FILE_PATH +m.getPath()))
