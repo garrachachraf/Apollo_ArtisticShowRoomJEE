@@ -71,8 +71,8 @@ public class TestGallery {
 			//
 			Marker gLocation = new Marker();
 			gLocation.setAddress("45 avenue habib bourguiba cité el ghazela Ariana 2080 , Tunisia");
-			gLocation.setLatitude(37.422329);
-			gLocation.setLongitude(-122.08430550000003);
+			gLocation.setLatitude(36.422329);
+			gLocation.setLongitude(11.08430550000003);
 			//
 			Pricing gPricing = new Pricing();
 			gPricing.setCleaningFee((float) 80);
@@ -104,8 +104,8 @@ public class TestGallery {
 			
 			Marker gLocation2 = new Marker();
 			gLocation2.setAddress("45 avenue habib bourguiba cité el ghazela Ariana 2080 , Tunisia");
-			gLocation2.setLatitude(37.422329);
-			gLocation2.setLongitude(-122.08430550000003);
+			gLocation2.setLatitude(36.422329);
+			gLocation2.setLongitude(10.08430);
 			//
 			Pricing gPricing2 = new Pricing();
 			gPricing2.setCleaningFee((float) 80);

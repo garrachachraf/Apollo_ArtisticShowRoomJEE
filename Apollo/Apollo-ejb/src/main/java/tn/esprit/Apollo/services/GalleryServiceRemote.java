@@ -23,7 +23,9 @@ public interface GalleryServiceRemote {
 	
 	public GalleryOwner findOwner(int id);
 	
-	public Gallery FindGalleryByName(String name); 	
+	public Gallery FindGalleryByName(String name); 
+
+	public Gallery FindGalleryById(int id); 
 	public List<Gallery> FindGalleriesByOwner(GalleryOwner owner);
 	public List<Gallery> FindGalleriesByLocation(String zone);
 	

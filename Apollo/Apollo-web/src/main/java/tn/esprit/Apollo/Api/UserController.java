@@ -51,7 +51,7 @@ public class UserController {
 	
 
 	@GET
-	@JWTTokenNeeded(role="user")
+	//@JWTTokenNeeded(role="user")
 	@Path(value="{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response findOne(@PathParam("id") int id){

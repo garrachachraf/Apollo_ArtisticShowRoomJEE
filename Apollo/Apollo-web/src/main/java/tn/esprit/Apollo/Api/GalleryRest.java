@@ -80,6 +80,18 @@ public class GalleryRest
 			return  Response.status(Status.NO_CONTENT).build();
 		
 	}
+	@GET
+	@Path(value="/{id}/")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response findgalleryByName(@PathParam("id") int id)
+	{
+		Gallery tmp = galleryService.FindGalleryById(id); 
+		if (tmp != null)
+			return Response.status(Status.OK).entity(tmp).build();
+		else
+			return  Response.status(Status.NO_CONTENT).build();
+		
+	}
 	
 	@GET
 	@Path(value="allByZone/{str}/")

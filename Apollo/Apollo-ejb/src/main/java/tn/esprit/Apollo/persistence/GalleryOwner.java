@@ -26,8 +26,7 @@ import tn.esprit.Apollo.loggerListener.GalleryOwnerLoggerListener;
 @EntityListeners(GalleryOwnerLoggerListener.class)
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "id")
 public class GalleryOwner extends User implements Serializable {
-    @OneToMany(mappedBy="galleryOwner",fetch=FetchType.LAZY,cascade=CascadeType.ALL )
-	@JsonIgnore
+    @OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL )
 
 	private Set<Gallery> galleries;
 

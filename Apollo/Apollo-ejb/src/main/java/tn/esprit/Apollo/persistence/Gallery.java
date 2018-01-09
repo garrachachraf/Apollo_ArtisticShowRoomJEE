@@ -28,7 +28,6 @@ public class Gallery implements Serializable {
 	 private Double surface;
 	 private String description;
 	 @ManyToOne
-	 @JsonIgnore
      private GalleryOwner galleryOwner;
 	 
 	 @JsonIgnore

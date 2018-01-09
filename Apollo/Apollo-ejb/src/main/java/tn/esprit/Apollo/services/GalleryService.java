@@ -248,4 +248,9 @@ public class GalleryService implements GalleryServiceRemote {
 		return (List<Gallery>)(entityManager.createQuery("Select g from Gallery g ").getResultList());
 	}
 
+	@Override
+	public Gallery FindGalleryById(int id) {
+		return  entityManager.find(Gallery.class, id);
+	}
+
 }
